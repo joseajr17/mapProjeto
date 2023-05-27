@@ -8,9 +8,9 @@ public interface LojaDao {
 	
 	void cadastrar(Loja obj);
 	//o de exibir seria o toString???
-	Loja buscar(Integer cpfOUcnpj);
+	Loja buscar(String cpfOUcnpj);
 	void atualizar(Loja obj);
-	void remover(Integer cpfOUcnpj);
+	void remover(String cpfOUcnpj);
 	List<Loja> listarLojas();
 	
 
