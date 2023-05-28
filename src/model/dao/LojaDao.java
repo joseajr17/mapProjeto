@@ -12,6 +12,7 @@ public interface LojaDao {
 	void atualizar(Loja obj);
 	void remover(String cpfOUcnpj);
 	List<Loja> listarLojas();
+	boolean verificarCpfOuCnpjExiste(String cpfOUcnpj);
 	
 
 }

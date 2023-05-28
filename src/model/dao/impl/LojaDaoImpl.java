@@ -150,4 +150,17 @@ public class LojaDaoImpl implements LojaDao {
 		return lojas;
 	}
 
+	@Override
+	public boolean verificarCpfOuCnpjExiste(String cpfOUcnpj) {
+		List<Loja> lojas = lerLojas();
+
+	    for (Loja loja : lojas) {
+	        if (loja.getCpfOUcnpj().equals(cpfOUcnpj)) {
+	            return true;
+	        }
+	    }
+
+	    return false;
+	}
+
 }

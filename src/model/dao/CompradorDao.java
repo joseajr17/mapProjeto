@@ -12,6 +12,7 @@ public interface CompradorDao {
 	void atualizar(Comprador obj);
 	void remover(String cpf);
 	List<Comprador> listarCompradores();
+	boolean verificarCpfExiste(String cpf);
 	
 	
 }

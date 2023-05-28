@@ -150,4 +150,17 @@ public class CompradorDaoImpl implements CompradorDao {
 	    return compradores;
 	}
 
+	@Override
+	public boolean verificarCpfExiste(String cpf) {
+		List<Comprador> compradores = lerCompradores();
+
+	    for (Comprador comprador : compradores) {
+	        if (comprador.getCpf().equals(cpf)) {
+	            return true;
+	        }
+	    }
+
+	    return false;
+	}
+
 }
