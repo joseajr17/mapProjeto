@@ -53,14 +53,28 @@ public class CadastroMenu {
         System.out.print("Nome: ");
         String nome = sc.nextLine();
 
-        System.out.print("Email: ");
-        String email = sc.nextLine();
+        String email;
+
+        do{
+            System.out.print("Email: ");
+            email = sc.nextLine();
+            if(!Validar.validarEmail(email)){
+                System.out.println("Email inválido.");
+            }
+        } while(!Validar.validarEmail(email));
 
         System.out.print("Senha: ");
         String senha = sc.nextLine();
 
-        System.out.print("CPF: ");
-        String cpf = sc.nextLine();
+        String cpf;
+        do{
+            System.out.print("CPF: ");
+            cpf = sc.nextLine();
+            if(!Validar.validarCpf(cpf)){
+                System.out.println("CPF inválido.");
+            }
+        } while(!Validar.validarCpf(cpf));
+        
 
         System.out.print("Endereço: ");
         String endereco = sc.nextLine();
@@ -81,14 +95,28 @@ public class CadastroMenu {
         System.out.print("Nome: ");
         String nome = sc.nextLine();
 
-        System.out.print("Email: ");
-        String email = sc.nextLine();
+        String email;
+
+        do{
+            System.out.print("Email: ");
+            email = sc.nextLine();
+            if(!Validar.validarEmail(email)){
+                System.out.println("Email inválido.");
+            }
+        } while(!Validar.validarEmail(email));
 
         System.out.print("Senha: ");
         String senha = sc.nextLine();
 
-        System.out.print("CPF ou CNPJ: ");
-        String cpfOUcnpj = sc.nextLine();
+        String cpfOUcnpj;
+
+        do{
+            System.out.print("CPF ou CNPJ: ");
+            cpfOUcnpj = sc.nextLine();
+            if(!Validar.validarCpfOuCnpj(cpfOUcnpj)){
+                System.out.println("CPF ou CNPJ inválido.");
+            }
+        } while(!Validar.validarCpfOuCnpj(cpfOUcnpj));
 
         System.out.print("Endereço: ");
         String endereco = sc.nextLine();
