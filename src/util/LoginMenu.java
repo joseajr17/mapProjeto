@@ -79,7 +79,9 @@ public class LoginMenu {
         // Verificar se as informações de login são válidas
         if (verificarLoginLoja(email, senha)) {
             System.out.println("Login bem-sucedido! Bem-vindo, " + email + "!");
-            exibirPaginaInicialLoja();
+            LojaMenu lojaMenu = new LojaMenu();
+            Loja loja = lojaDao.buscar(email);
+            lojaMenu.exibirMenuLoja(loja);
             // Chamada de método ou exibição de menu para o perfil da loja
         } else {
             System.out.println("Email ou senha inválidos. Tente novamente.");

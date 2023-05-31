@@ -8,7 +8,7 @@ public interface LojaDao {
 	
 	void cadastrar(Loja obj);
 	//o de exibir seria o toString???
-	Loja buscar(String cpfOUcnpj);
+	Loja buscar(String email);
 	void atualizar(Loja obj);
 	void remover(String cpfOUcnpj);
 	List<Loja> listarLojas();

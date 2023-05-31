@@ -81,11 +81,11 @@ public class LojaDaoImpl implements LojaDao {
 	}
 
 	@Override
-	public Loja buscar(String cpfOUcnpj) {
+	public Loja buscar(String email) {
 		List<Loja> lojas = lerLojas();
 
 	    for (Loja loja : lojas) {
-	        if (loja.getCpfOUcnpj().equals(cpfOUcnpj)) {
+	        if (loja.getEmail().equals(email)) {
 	            return loja;
 	        }
 	    }

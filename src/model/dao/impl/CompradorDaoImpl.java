@@ -29,7 +29,7 @@ public class CompradorDaoImpl implements CompradorDao {
 
 		try {
 			// Verificar se o arquivo existe
-			File arquivo = new File("C:\\Teste\\filejson.json");
+			File arquivo = new File("C:\\Teste\\compradoresExistentes.json");
 			if (!arquivo.exists())
 				arquivo.createNewFile();
 
@@ -43,7 +43,7 @@ public class CompradorDaoImpl implements CompradorDao {
 			String json = gson.toJson(compradoresExistentes);
 
 			// Gravar o JSON no arquivo
-			FileWriter writer = new FileWriter("C:\\Teste\\filejson.json");
+			FileWriter writer = new FileWriter("C:\\Teste\\compradoresExistentes.json");
 			writer.write(json);
 			writer.close();
 
@@ -62,9 +62,9 @@ public class CompradorDaoImpl implements CompradorDao {
 		List<Comprador> compradores = new ArrayList<>();
 
 		try {
-			File arquivo = new File("C:\\Teste\\filejson.json");
+			File arquivo = new File("C:\\Teste\\compradoresExistentes.json");
 			if (arquivo.exists()) {
-				BufferedReader br = new BufferedReader(new FileReader("C:\\Teste\\filejson.json"));
+				BufferedReader br = new BufferedReader(new FileReader("C:\\Teste\\compradoresExistentes.json"));
 				Type listType = new TypeToken<ArrayList<Comprador>>() {
 				}.getType();
 				compradores = gson.fromJson(br, listType);
@@ -82,11 +82,11 @@ public class CompradorDaoImpl implements CompradorDao {
 	}
 
 	@Override
-	public Comprador buscar(String cpf) {
+	public Comprador buscar(String email) {
 		List<Comprador> compradores = lerCompradores();
 
 	    for (Comprador comprador : compradores) {
-	        if (comprador.getCpf().equals(cpf)) {
+	        if (comprador.getEmail().equals(email)) {
 	            return comprador;
 	        }
 	    }
@@ -117,7 +117,7 @@ public class CompradorDaoImpl implements CompradorDao {
 		Gson gson = new Gson();
 
 	    try {
-	        FileWriter writer = new FileWriter("C:\\Teste\\filejson.json");
+	        FileWriter writer = new FileWriter("C:\\Teste\\compradoresExistentes.json");
 	        gson.toJson(compradores, writer);
 	        writer.close();
 	        System.out.println("Comprador atualizado com sucesso!");
