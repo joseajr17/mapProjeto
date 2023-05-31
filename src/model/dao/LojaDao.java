@@ -8,11 +8,10 @@ public interface LojaDao {
 	
 	void cadastrar(Loja obj);
 	//o de exibir seria o toString???
-	Loja buscar(String email);
+	Loja buscarPeloNome(String nome);
+	Loja buscarPeloEmail(String email);
 	void atualizar(Loja obj);
 	void remover(String cpfOUcnpj);
 	List<Loja> listarLojas();
-	boolean verificarCpfOuCnpjExiste(String cpfOUcnpj);
 	
-
 }

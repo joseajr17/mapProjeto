@@ -79,11 +79,6 @@ public class CadastroMenu {
         System.out.print("Endereço: ");
         String endereco = sc.nextLine();
 
-        // Verificar se o CPF já existe no arquivo JSON
-        if (compradorDao.verificarCpfExiste(cpf)) {
-            System.out.println("Já existe um usuário com o CPF informado.");
-            return;
-        }
 
         Comprador comprador = new Comprador(nome, email, senha, cpf, endereco);
 
@@ -120,12 +115,6 @@ public class CadastroMenu {
 
         System.out.print("Endereço: ");
         String endereco = sc.nextLine();
-
-        // Verificar se o CPF ou CNPJ já existe no arquivo JSON
-        if (lojaDao.verificarCpfOuCnpjExiste(cpfOUcnpj)) {
-            System.out.println("Já existe uma loja com o CPF ou CNPJ informado.");
-            return;
-        }
 
         Loja loja = new Loja(nome, email, senha, cpfOUcnpj, endereco, null);
 

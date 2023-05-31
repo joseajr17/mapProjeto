@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import model.dao.LojaDao;
+import model.entities.Comprador;
 import model.entities.Loja;
 
 public class LojaDaoImpl implements LojaDao {
@@ -33,8 +34,15 @@ public class LojaDaoImpl implements LojaDao {
 			if (!arquivo.exists())
 				arquivo.createNewFile();
 
-			// Ler os compradores existentes do arquivo
+			// Ler as lojas existentes do arquivo
 			List<Loja> lojasExistentes = lerLojas();
+			
+			for (Loja loja : lojasExistentes) {
+		        if (loja.getCpfOUcnpj().equals(obj.getCpfOUcnpj()) || loja.getEmail().equals(obj.getEmail())) {
+		        	System.out.println("ERRO: Já existe uma loja com o CPF/CNPJ informado ou com o email informado.");
+		            return;
+		        }
+			}
 
 			// Adicionar o novo comprador à lista
 			lojasExistentes.add(obj);
@@ -81,7 +89,20 @@ public class LojaDaoImpl implements LojaDao {
 	}
 
 	@Override
-	public Loja buscar(String email) {
+	public Loja buscarPeloNome(String nome) {
+		List<Loja> lojas = lerLojas();
+
+	    for (Loja loja : lojas) {
+	        if (loja.getNome().equals(nome)) {
+	            return loja;
+	        }
+	    }
+
+	    return null;
+	   }
+	
+	@Override
+	public Loja buscarPeloEmail(String email) {
 		List<Loja> lojas = lerLojas();
 
 	    for (Loja loja : lojas) {
@@ -93,7 +114,6 @@ public class LojaDaoImpl implements LojaDao {
 	    return null;
 	   }
 
-
 	@Override
 	public void atualizar(Loja obj) {
 		
@@ -102,11 +122,21 @@ public class LojaDaoImpl implements LojaDao {
 	    for (int i = 0; i < lojas.size(); i++) {
 	        Loja loja = lojas.get(i);
 	        if (loja.getCpfOUcnpj().equals(obj.getCpfOUcnpj())) {
-	        	loja.setEmail(obj.getEmail());
-	        	loja.setEndereco(obj.getEndereco());
-	        	loja.setNome(obj.getNome());
-	        	loja.setProdutos(obj.getProdutos());
-	            loja.setSenha(obj.getSenha());
+	        	if (!obj.getNome().isEmpty()) {
+	        		loja.setNome(obj.getNome());
+	    	    }
+	        	if (!obj.getEmail().isEmpty()) {
+	        		loja.setEmail(obj.getEmail());
+	    	    }
+	        	if (!obj.getEndereco().isEmpty()) {
+	        		loja.setEndereco(obj.getEndereco());
+	    	    }
+	        	if (obj.getProdutos() != null) {
+	        		loja.setProdutos(obj.getProdutos());
+	    	    }
+	        	if (!obj.getSenha().isEmpty()) {
+	        		loja.setSenha(obj.getSenha());
+	    	    }
 	            break;
 	        }
 	    }
@@ -122,7 +152,7 @@ public class LojaDaoImpl implements LojaDao {
 	        FileWriter writer = new FileWriter("C:\\Teste\\lojasExistentes.json");
 	        gson.toJson(lojas, writer);
 	        writer.close();
-	        System.out.println("Loja atualizada com sucesso!");
+	        System.out.println("Informações pessoais atualizadas com sucesso.");	
 	    }
 		catch (IOException e) {
 	        System.out.println("Erro ao atualizar a loja: " + e.getMessage());
@@ -149,18 +179,4 @@ public class LojaDaoImpl implements LojaDao {
 		List<Loja> lojas = lerLojas();
 		return lojas;
 	}
-
-	@Override
-	public boolean verificarCpfOuCnpjExiste(String cpfOUcnpj) {
-		List<Loja> lojas = lerLojas();
-
-	    for (Loja loja : lojas) {
-	        if (loja.getCpfOUcnpj().equals(cpfOUcnpj)) {
-	            return true;
-	        }
-	    }
-
-	    return false;
-	}
-
 }

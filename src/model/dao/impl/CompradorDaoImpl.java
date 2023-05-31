@@ -35,6 +35,13 @@ public class CompradorDaoImpl implements CompradorDao {
 
 			// Ler os compradores existentes do arquivo
 			List<Comprador> compradoresExistentes = lerCompradores();
+			
+			for (Comprador comprador : compradoresExistentes) {
+		        if (comprador.getCpf().equals(obj.getCpf()) || comprador.getEmail().equals(obj.getEmail())) {
+		        	System.out.println("ERRO: Já existe um comprador com o CPF informado ou com o email informado.");
+		            return;
+		        }
+			}
 
 			// Adicionar o novo comprador à lista
 			compradoresExistentes.add(obj);
@@ -101,10 +108,18 @@ public class CompradorDaoImpl implements CompradorDao {
 	    for (int i = 0; i < compradores.size(); i++) {
 	        Comprador comprador = compradores.get(i);
 	        if (comprador.getCpf().equals(obj.getCpf())) {
-	            comprador.setNome(obj.getNome());
-	            comprador.setEmail(obj.getEmail());
-	            comprador.setSenha(obj.getSenha());
-	            comprador.setEndereco(obj.getEndereco());
+	        	if (!obj.getNome().isEmpty()) {
+	        		comprador.setNome(obj.getNome());
+	    	    }
+	        	if (!obj.getEmail().isEmpty()) {
+	        		comprador.setEmail(obj.getEmail());
+	    	    }
+	        	if (!obj.getSenha().isEmpty()) {
+	        		comprador.setSenha(obj.getSenha());
+	    	    }
+	        	if (!obj.getEndereco().isEmpty()) {
+	        		comprador.setEndereco(obj.getEndereco());
+	    	    }	       
 	            break;
 	        }
 	    }
@@ -120,7 +135,7 @@ public class CompradorDaoImpl implements CompradorDao {
 	        FileWriter writer = new FileWriter("C:\\Teste\\compradoresExistentes.json");
 	        gson.toJson(compradores, writer);
 	        writer.close();
-	        System.out.println("Comprador atualizado com sucesso!");
+		    System.out.println("Informações pessoais atualizadas com sucesso.");
 	    } catch (IOException e) {
 	        System.out.println("Erro ao atualizar o comprador: " + e.getMessage());
 	    }

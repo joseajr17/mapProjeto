@@ -1,19 +1,12 @@
 package util;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import model.dao.CompradorDao;
 import model.dao.DaoFactory;
 import model.dao.LojaDao;
+import model.dao.ProdutoDao;
 import model.entities.Comprador;
 import model.entities.Loja;
 import model.entities.Produto;
@@ -21,6 +14,7 @@ import model.entities.Produto;
 public class CompradorMenu {
 	private static CompradorDao compradorDao = DaoFactory.criarCompradorDao();
 	private static LojaDao lojaDao = DaoFactory.criarLojaDao();
+	private static ProdutoDao produtoDao = DaoFactory.criarProdutoDao();
 	private static Scanner sc = new Scanner(System.in);
 	
 
@@ -35,6 +29,7 @@ public class CompradorMenu {
 			System.out.println("4. Listar todos os produtos");
 			System.out.println("5. Listar todos os produtos de uma loja específica");
 			System.out.println("6. Ir para a edição de perfil");
+			System.out.println("7. Excluir perfil");
 			System.out.println("0. Sair");
 			System.out.print("Escolha uma opção: ");
 			opcao = sc.nextInt();
@@ -59,6 +54,8 @@ public class CompradorMenu {
 			case 6:
 				editarPerfilComprador(comprador);
 				break;
+			case 7:
+				excluirPerfilComprador(comprador);
 			case 0:
 				System.out.println("Saindo do menu do comprador...");
 				break;
@@ -68,49 +65,47 @@ public class CompradorMenu {
 		} while (opcao != 0);
 	}
 
-	private static List<Loja> getLojas() {
-		try (Reader reader = new FileReader("C:\\Teste\\lojasExistentes.json")) {
-			Gson gson = new Gson();
-			Type listType = new TypeToken<List<Loja>>() {
-			}.getType();
-			List<Loja> lojas = gson.fromJson(reader, listType);
-			return lojas;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return new ArrayList<>(); // Retornar uma lista vazia em caso de erro
+	private void excluirPerfilComprador(Comprador comprador) {
+		System.out.println("----- EXCLUIR PERFIL DO COMPRADOR -----");
+
+		System.out.print("Digite o seu CPF: ");
+		String cpf = sc.nextLine();
+
+		// Verificar se o CPF ou CNPJ corresponde ao do comprador logado
+		if (!cpf.equals(comprador.getCpf())) {
+			System.out.println("Você não digitou o CPF.");
+			return;
+			
+		}
+
+		System.out.println("Tem certeza disso(DIGITE S para confirmar)?");
+
+		String resp = sc.nextLine();
+
+		if (resp.equalsIgnoreCase("s")) {
+			// Remover a loja do arquivo JSON
+			compradorDao.remover(cpf);
+			System.out.println("Perfil do comprador excluído com sucesso.");
+		} else {
+			return;
 		}
 	}
 
 	private void buscarLoja() {
-		List<Loja> lojas = getLojas();
 
 		System.out.print("Digite o nome da loja: ");
 		String nomeLoja = sc.nextLine();
-
-		// Realizar a busca na lista de lojas
-		List<Loja> lojasEncontradas = new ArrayList<>();
-		for (Loja loja : lojas) {
-			if (loja.getNome().equalsIgnoreCase(nomeLoja)) {
-				lojasEncontradas.add(loja);
-			}
-		}
-
-		// Exibir os resultados da busca
-		if (lojasEncontradas.isEmpty()) {
-			System.out.println("Nenhuma loja encontrada com o nome informado.");
-		} else {
-			System.out.println("Lojas encontradas:");
-			for (Loja loja : lojasEncontradas) {
-				System.out.println("Nome: " + loja.getNome());
-				System.out.println("Endereço: " + loja.getEndereco());
-				System.out.println("Email: " + loja.getEmail());
-				System.out.println();
-			}
-		}
+		
+		Loja loja = lojaDao.buscarPeloNome(nomeLoja);
+		
+		System.out.println("Nome: " + loja.getNome());
+		System.out.println("Endereço: " + loja.getEndereco());
+		System.out.println("Email: " + loja.getEmail());
+		System.out.println();
 	}
 
 	private void listarTodasAsLojas() {
-		List<Loja> lojas = getLojas();
+		List<Loja> lojas = lojaDao.listarLojas();
 
 		if (lojas.isEmpty()) {
 			System.out.println("Não há lojas cadastradas.");
@@ -121,49 +116,27 @@ public class CompradorMenu {
 			}
 		}
 	}
-
-	private static List<Produto> getProdutos() {
-		try (Reader reader = new FileReader("C:\\Teste\\produtosExistentes.json")) {
-			Gson gson = new Gson();
-			Type listType = new TypeToken<List<Produto>>() {
-			}.getType();
-			List<Produto> produtos = gson.fromJson(reader, listType);
-			return produtos;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return new ArrayList<>(); // Retornar uma lista vazia em caso de erro
-		}
-	}
-
+	
 	private void buscarProduto() {
-		List<Produto> produtos = getProdutos();
+		
+		////////ta exibindo apenas o primeiro produto do arquivo JSON/////////
 
 		System.out.print("Digite o nome do produto: ");
 		String nomeProduto = sc.nextLine();
-
-		// Realizar a busca na lista de produtos
-		List<Produto> produtosEncontrados = new ArrayList<>();
-		for (Produto produto : produtos) {
-			if (produto.getNome().equalsIgnoreCase(nomeProduto)) {
-				produtosEncontrados.add(produto);
-			}
+		
+		Produto produto = produtoDao.buscar(nomeProduto);
+		
+		if(produto!= null)
+			System.out.println(produto.toString());
+		else {
+			System.out.println("Não existe produto com esse nome!");
+			return;
 		}
-
-		// Exibir os resultados da busca
-		if (produtosEncontrados.isEmpty()) {
-			System.out.println("Nenhum produto encontrado com o nome informado.");
-		} else {
-			System.out.println("Produtos encontrados:");
-			for (Produto produto : produtosEncontrados) {
-				System.out.println(produto.toString());
-				System.out.println();
-				
-			}
-		}
+			
 	}
 
 	private void listarTodosOsProdutos() {
-		List<Produto> produtos = getProdutos();
+		List<Produto> produtos = produtoDao.listarProdutos();
 
 		if (produtos.isEmpty()) {
 			System.out.println("Não há produtos cadastrados.");
@@ -177,18 +150,18 @@ public class CompradorMenu {
 	}
 
 	private void listarProdutosDeLojaEspecifica() {
-		System.out.print("Digite o nome da loja: ");
+	    System.out.print("Digite o nome da loja: ");
 	    String nomeLoja = sc.nextLine();
 
 	    // Buscar a loja pelo nome
-	    Loja lojaEncontrada = lojaDao.buscar(nomeLoja);
+	    Loja lojaEncontrada = lojaDao.buscarPeloNome(nomeLoja);
 
 	    // Exibir os resultados da busca
 	    if (lojaEncontrada == null) {
 	        System.out.println("Loja não encontrada.");
 	    } else {
 	        List<Produto> produtosDaLoja = lojaEncontrada.getProdutos();
-	        if (produtosDaLoja.isEmpty()) {
+	        if (produtosDaLoja == null || produtosDaLoja.isEmpty()) {
 	            System.out.println("Nenhum produto encontrado para a loja informada.");
 	        } else {
 	            System.out.println("Produtos da loja " + nomeLoja + ":");
@@ -198,6 +171,7 @@ public class CompradorMenu {
 	        }
 	    }
 	}
+
 	
 	private void editarPerfilComprador(Comprador comprador) {
 		System.out.print("Digite o seu CPF: ");
@@ -213,36 +187,20 @@ public class CompradorMenu {
 
 	    System.out.print("Novo nome (deixe em branco para manter o atual): ");
 	    String novoNome = sc.nextLine();
+	    comprador.setNome(novoNome);
 
 	    System.out.print("Novo email (deixe em branco para manter o atual): ");
 	    String novoEmail = sc.nextLine();
+	    comprador.setEmail(novoEmail);
 
 	    System.out.print("Nova senha (deixe em branco para manter a atual): ");
 	    String novaSenha = sc.nextLine();
-
+	    comprador.setSenha(novaSenha);
+	    
 	    System.out.print("Novo endereço (deixe em branco para manter o atual): ");
 	    String novoEndereco = sc.nextLine();
-
-	    // Verificar e atualizar as informações pessoais do comprador
-	    if (!novoNome.isEmpty()) {
-	        comprador.setNome(novoNome);
-	    }
-
-	    if (!novoEmail.isEmpty()) {
-	        comprador.setEmail(novoEmail);
-	    }
-
-	    if (!novaSenha.isEmpty()) {
-	        comprador.setSenha(novaSenha);
-	    }
-
-	    if (!novoEndereco.isEmpty()) {
-	        comprador.setEndereco(novoEndereco);
-	    }
-
-	    // Atualizar o comprador no arquivo JSON
-	    compradorDao.atualizar(comprador);
-
-	    System.out.println("Informações pessoais atualizadas com sucesso.");	
+	    comprador.setEndereco(novoEndereco);
+	 
+	    compradorDao.atualizar(comprador);	
 	}
 }

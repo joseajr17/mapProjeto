@@ -80,7 +80,7 @@ public class LoginMenu {
         if (verificarLoginLoja(email, senha)) {
             System.out.println("Login bem-sucedido! Bem-vindo, " + email + "!");
             LojaMenu lojaMenu = new LojaMenu();
-            Loja loja = lojaDao.buscar(email);
+            Loja loja = lojaDao.buscarPeloEmail(email);
             lojaMenu.exibirMenuLoja(loja);
             // Chamada de método ou exibição de menu para o perfil da loja
         } else {
