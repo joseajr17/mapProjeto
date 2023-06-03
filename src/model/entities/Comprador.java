@@ -13,7 +13,7 @@ public class Comprador implements Serializable{
 	private String endereco;
 	
 	public Comprador() {
-		
+		this("", "", "", "", "");
 	}
 
 	public Comprador(String nome, String email, String senha, String cpf, String endereco) {
