@@ -15,7 +15,7 @@ public class Loja implements Serializable{
 	private List<Produto> produtos;
 	
 	public Loja() {
-		
+		this("", "", "", "", "", null);
 	}
 
 	public Loja(String nome, String email, String senha, String cpfOUcnpj, String endereco, List<Produto> produtos) {
