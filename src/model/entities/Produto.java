@@ -14,7 +14,7 @@ public class Produto implements Serializable{
 	private String descricao;
 	
 	public Produto() {
-		
+		this("", null, null, null,"", "");
 	}
 	
 	public Produto(String nome, Double valor, ProdutoTipo tipo, Integer quantidade, String marca, String descricao) {
