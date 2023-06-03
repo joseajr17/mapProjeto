@@ -18,6 +18,7 @@ import model.entities.Produto;
 
 public class ProdutoDaoImpl implements ProdutoDao{
 	
+	private static final String produtosPath = "C:\\Teste\\produtosExistentes.json";
 	public ProdutoDaoImpl() {
 		
 	}
@@ -28,7 +29,7 @@ public class ProdutoDaoImpl implements ProdutoDao{
 		
 		try {
 			// Verificar se o arquivo existe
-			File arquivo = new File("C:\\Teste\\produtosExistentes.json");
+			File arquivo = new File(produtosPath);
 			if (!arquivo.exists())
 				arquivo.createNewFile();
 
@@ -42,7 +43,7 @@ public class ProdutoDaoImpl implements ProdutoDao{
 			String json = gson.toJson(produtosExistentes);
 
 			// Gravar o JSON no arquivo
-			FileWriter writer = new FileWriter("C:\\Teste\\produtosExistentes.json");
+			FileWriter writer = new FileWriter(produtosPath);
 			writer.write(json);
 			writer.close();
 
@@ -61,9 +62,9 @@ public class ProdutoDaoImpl implements ProdutoDao{
 		List<Produto> produtos = new ArrayList<>();
 
 		try {
-			File arquivo = new File("C:\\Teste\\produtosExistentes.json");
+			File arquivo = new File(produtosPath);
 			if (arquivo.exists()) {
-				BufferedReader br = new BufferedReader(new FileReader("C:\\Teste\\produtosExistentes.json"));
+				BufferedReader br = new BufferedReader(new FileReader(produtosPath));
 				Type listType = new TypeToken<ArrayList<Produto>>() {
 				}.getType();
 				produtos = gson.fromJson(br, listType);
@@ -101,7 +102,7 @@ public class ProdutoDaoImpl implements ProdutoDao{
 	        Produto produto = produtos.get(i);
 	        if (produto.getNome().equals(obj.getNome())) {
 	            produto.setDescricao(obj.getDescricao());
-	            produto.setMarca(obj.getDescricao());
+	            produto.setMarca(obj.getMarca());
 	            produto.setQuantidade(obj.getQuantidade());
 	            produto.setTipo(obj.getTipo());
 	            produto.setValor(obj.getValor());
@@ -117,7 +118,7 @@ public class ProdutoDaoImpl implements ProdutoDao{
 		Gson gson = new Gson();
 
 	    try {
-	        FileWriter writer = new FileWriter("C:\\Teste\\produtosExistentes.json");
+	        FileWriter writer = new FileWriter(produtosPath);
 	        gson.toJson(produtos, writer);
 	        writer.close();
 	        System.out.println("Produto atualizado com sucesso!");
