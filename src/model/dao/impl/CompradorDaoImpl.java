@@ -17,6 +17,7 @@ import model.dao.CompradorDao;
 import model.entities.Comprador;
 
 public class CompradorDaoImpl implements CompradorDao {
+	private static final String compradoresPath = "C:\\Teste\\compradoresExistentes.json";
 
 	public CompradorDaoImpl() {
 
@@ -29,7 +30,7 @@ public class CompradorDaoImpl implements CompradorDao {
 
 		try {
 			// Verificar se o arquivo existe
-			File arquivo = new File("C:\\Teste\\compradoresExistentes.json");
+			File arquivo = new File(compradoresPath);
 			if (!arquivo.exists())
 				arquivo.createNewFile();
 
@@ -50,7 +51,7 @@ public class CompradorDaoImpl implements CompradorDao {
 			String json = gson.toJson(compradoresExistentes);
 
 			// Gravar o JSON no arquivo
-			FileWriter writer = new FileWriter("C:\\Teste\\compradoresExistentes.json");
+			FileWriter writer = new FileWriter(compradoresPath);
 			writer.write(json);
 			writer.close();
 
@@ -69,9 +70,9 @@ public class CompradorDaoImpl implements CompradorDao {
 		List<Comprador> compradores = new ArrayList<>();
 
 		try {
-			File arquivo = new File("C:\\Teste\\compradoresExistentes.json");
+			File arquivo = new File(compradoresPath);
 			if (arquivo.exists()) {
-				BufferedReader br = new BufferedReader(new FileReader("C:\\Teste\\compradoresExistentes.json"));
+				BufferedReader br = new BufferedReader(new FileReader(compradoresPath));
 				Type listType = new TypeToken<ArrayList<Comprador>>() {
 				}.getType();
 				compradores = gson.fromJson(br, listType);
@@ -132,7 +133,7 @@ public class CompradorDaoImpl implements CompradorDao {
 		Gson gson = new Gson();
 
 	    try {
-	        FileWriter writer = new FileWriter("C:\\Teste\\compradoresExistentes.json");
+	        FileWriter writer = new FileWriter(compradoresPath);
 	        gson.toJson(compradores, writer);
 	        writer.close();
 		    System.out.println("Informações pessoais atualizadas com sucesso.");
