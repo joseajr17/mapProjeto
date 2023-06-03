@@ -19,6 +19,8 @@ import model.entities.Loja;
 
 public class LojaDaoImpl implements LojaDao {
 
+	private static final String lojasPath = "C:\\Teste\\lojasExistentes.json";
+
 	public LojaDaoImpl() {
 
 	}
@@ -30,7 +32,7 @@ public class LojaDaoImpl implements LojaDao {
 
 		try {
 			// Verificar se o arquivo existe
-			File arquivo = new File("C:\\Teste\\lojasExistentes.json");
+			File arquivo = new File(lojasPath);
 			if (!arquivo.exists())
 				arquivo.createNewFile();
 
@@ -51,7 +53,7 @@ public class LojaDaoImpl implements LojaDao {
 			String json = gson.toJson(lojasExistentes);
 
 			// Gravar o JSON no arquivo
-			FileWriter writer = new FileWriter("C:\\Teste\\lojasExistentes.json");
+			FileWriter writer = new FileWriter(lojasPath);
 			writer.write(json);
 			writer.close();
 
@@ -68,9 +70,9 @@ public class LojaDaoImpl implements LojaDao {
 		List<Loja> lojas = new ArrayList<>();
 
 		try {
-			File arquivo = new File("C:\\Teste\\lojasExistentes.json");
+			File arquivo = new File(lojasPath);
 			if (arquivo.exists()) {
-				BufferedReader br = new BufferedReader(new FileReader("C:\\Teste\\lojasExistentes.json"));
+				BufferedReader br = new BufferedReader(new FileReader(lojasPath));
 				Type listType = new TypeToken<ArrayList<Loja>>() {
 				}.getType();
 				lojas = gson.fromJson(br, listType);
@@ -149,7 +151,7 @@ public class LojaDaoImpl implements LojaDao {
 		Gson gson = new Gson();
 		
 		try {
-	        FileWriter writer = new FileWriter("C:\\Teste\\lojasExistentes.json");
+	        FileWriter writer = new FileWriter(lojasPath);
 	        gson.toJson(lojas, writer);
 	        writer.close();
 	        System.out.println("Informações pessoais atualizadas com sucesso.");	
