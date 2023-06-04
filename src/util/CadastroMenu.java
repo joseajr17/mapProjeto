@@ -63,8 +63,14 @@ public class CadastroMenu {
             }
         } while(!Validar.validarEmail(email));
 
+        String senha;
+        do{
         System.out.print("Senha: ");
-        String senha = sc.nextLine();
+        senha = sc.nextLine();
+        if(!Validar.validarSenha(senha)){
+            System.out.println("Digite uma senha com no minimo 6 caracteres, com letras e números!");
+        }
+        } while(!Validar.validarSenha(senha));
 
         String cpf;
         do{
@@ -100,8 +106,14 @@ public class CadastroMenu {
             }
         } while(!Validar.validarEmail(email));
 
+        String senha;
+        do{
         System.out.print("Senha: ");
-        String senha = sc.nextLine();
+        senha = sc.nextLine();
+        if(!Validar.validarSenha(senha)){
+            System.out.println("Digite uma senha com no minimo 6 caracteres, com letras e números!");
+        }
+        } while(!Validar.validarSenha(senha));
 
         String cpfOUcnpj;
 
