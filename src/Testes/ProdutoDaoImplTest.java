@@ -1,14 +1,12 @@
 package Testes;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,11 +21,6 @@ public class ProdutoDaoImplTest {
     @Before
     public void setUp() {
         dao = new ProdutoDaoImpl();
-    }
-
-    @After
-    public void at() {
-        dao.remover("Headphone");
     }
     
     @Test
@@ -47,6 +40,7 @@ public class ProdutoDaoImplTest {
             assertEquals(ProdutoTipo.ELETRÔNICO, cadastrado.getTipo());
             assertEquals(29.99, cadastrado.getValor(), 0.01);
         }
+        dao.remover(produto);
     }
     
     @Test
@@ -71,6 +65,7 @@ public class ProdutoDaoImplTest {
         	assertEquals(ProdutoTipo.ELETRÔNICO, encontrado.getTipo());
             assertEquals(79.99, encontrado.getValor(), 0.01);
         }
+        dao.remover(novoProduto);
     }
     
     @Test
@@ -94,6 +89,7 @@ public class ProdutoDaoImplTest {
             assertEquals(ProdutoTipo.ELETRÔNICO, produtoModificado.getTipo());
             assertEquals(39.99, produtoModificado.getValor(), 0.01);
         }
+        dao.remover(atualizado);
     }
     
     @Test
@@ -101,7 +97,7 @@ public class ProdutoDaoImplTest {
         Produto produto = new Produto("Headphone", 29.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto");
         dao.cadastrar(produto);
         
-        dao.remover("Headphone");
+        dao.remover(produto);
         
         List<Produto> naoEncontrado = dao.buscar("Headphone");
         assertNotNull(naoEncontrado);
