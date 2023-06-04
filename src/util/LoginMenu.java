@@ -88,11 +88,6 @@ public class LoginMenu {
         }
     }
 
-    private void exibirPaginaInicialLoja() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	private boolean verificarLoginComprador(String email, String senha) {
 		List<Comprador> compradores = compradorDao.listarCompradores();
 
@@ -101,7 +96,6 @@ public class LoginMenu {
 				return true;
 			}
 		}
-
 		return false;
     }
 
@@ -113,7 +107,6 @@ public class LoginMenu {
 				return true;
 			}
 		}
-
 		return false;
 	}
 }

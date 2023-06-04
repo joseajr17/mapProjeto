@@ -1,8 +1,9 @@
 package model.entities;
 
 public enum ProdutoTipo {
-	LIVRO,
+	CALÇADO,
+	COSMÉTICO,
 	ELETRÔNICO,
+	LIVRO,
 	ROUPA
-
 }

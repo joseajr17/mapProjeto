@@ -143,21 +143,24 @@ public class LojaDaoImpl implements LojaDao {
 	        }
 	    }
 
-	    salvarCompradores(lojas);
+	    salvarLojas(lojas, true);
 
 	}
 
-	private void salvarCompradores(List<Loja> lojas) {
-		Gson gson = new Gson();
-		
-		try {
+	private void salvarLojas(List<Loja> lojas, boolean acaoAtualizacao) {
+	    Gson gson = new Gson();
+
+	    try {
 	        FileWriter writer = new FileWriter(lojasPath);
 	        gson.toJson(lojas, writer);
 	        writer.close();
-	        System.out.println("Informações pessoais atualizadas com sucesso.");	
-	    }
-		catch (IOException e) {
-	        System.out.println("Erro ao atualizar a loja: " + e.getMessage());
+	        if (acaoAtualizacao) {
+	            System.out.println("Informações da loja atualizadas com sucesso.");
+	        } else {
+	            System.out.println("Loja removida com sucesso.");
+	        }
+	    } catch (IOException e) {
+	        System.out.println("Erro ao atualizar/remover a loja: " + e.getMessage());
 	    }
 	}
 
@@ -173,7 +176,7 @@ public class LojaDaoImpl implements LojaDao {
 	            break;
 	        }
 	    }
-		salvarCompradores(lojas);
+		salvarLojas(lojas, false);
 	}
 
 	@Override

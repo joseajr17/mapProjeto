@@ -77,16 +77,4 @@ public class CompradorDaoImplTest {
         Comprador naoEncontrado = dao.buscar("ana@gmail.com");
         assertNull(naoEncontrado);
     }
-    
-    
-    @Test
-    public void testVerificarCpfExiste() {
-        assertFalse(dao.verificarCpfExiste("11122233344"));
-        
-        Comprador novoComprador = new Comprador("Paulo", "paulo@gmail.com", "123456", "11122233344", "Rua H");
-        dao.cadastrar(novoComprador);
-        
-        assertTrue(dao.verificarCpfExiste("11122233344"));
-        dao.remover("11122233344");
-    }
 }

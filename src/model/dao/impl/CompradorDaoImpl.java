@@ -36,12 +36,12 @@ public class CompradorDaoImpl implements CompradorDao {
 
 			// Ler os compradores existentes do arquivo
 			List<Comprador> compradoresExistentes = lerCompradores();
-			
+
 			for (Comprador comprador : compradoresExistentes) {
-		        if (comprador.getCpf().equals(obj.getCpf()) || comprador.getEmail().equals(obj.getEmail())) {
-		        	System.out.println("ERRO: Já existe um comprador com o CPF informado ou com o email informado.");
-		            return;
-		        }
+				if (comprador.getCpf().equals(obj.getCpf()) || comprador.getEmail().equals(obj.getEmail())) {
+					System.out.println("ERRO: Já existe um comprador com o CPF informado ou com o email informado.");
+					return;
+				}
 			}
 
 			// Adicionar o novo comprador à lista
@@ -57,11 +57,9 @@ public class CompradorDaoImpl implements CompradorDao {
 
 			System.out.println("Comprador cadastrado com sucesso!");
 		}
-
 		catch (IOException e) {
 			System.out.println("Erro ao cadastrar o comprador: " + e.getMessage());
 		}
-
 	}
 
 	private List<Comprador> lerCompradores() {
@@ -81,11 +79,10 @@ public class CompradorDaoImpl implements CompradorDao {
 		} catch (IOException e) {
 			System.out.println("Erro ao ler o arquivo de compradores: " + e.getMessage());
 		}
-		
-		if (compradores == null) {
-	        compradores = new ArrayList<>();
-	    }
 
+		if (compradores == null) {
+			compradores = new ArrayList<>();
+		}
 		return compradores;
 	}
 
@@ -93,90 +90,74 @@ public class CompradorDaoImpl implements CompradorDao {
 	public Comprador buscar(String email) {
 		List<Comprador> compradores = lerCompradores();
 
-	    for (Comprador comprador : compradores) {
-	        if (comprador.getEmail().equals(email)) {
-	            return comprador;
-	        }
-	    }
-
-	    return null;
-	   }
+		for (Comprador comprador : compradores) {
+			if (comprador.getEmail().equals(email)) {
+				return comprador;
+			}
+		}
+		return null;
+	}
 
 	@Override
 	public void atualizar(Comprador obj) {
 		List<Comprador> compradores = lerCompradores();
 
-	    for (int i = 0; i < compradores.size(); i++) {
-	        Comprador comprador = compradores.get(i);
-	        if (comprador.getCpf().equals(obj.getCpf())) {
-	        	if (!obj.getNome().isEmpty()) {
-	        		comprador.setNome(obj.getNome());
-	    	    }
-	        	if (!obj.getEmail().isEmpty()) {
-	        		comprador.setEmail(obj.getEmail());
-	    	    }
-	        	if (!obj.getSenha().isEmpty()) {
-	        		comprador.setSenha(obj.getSenha());
-	    	    }
-	        	if (!obj.getEndereco().isEmpty()) {
-	        		comprador.setEndereco(obj.getEndereco());
-	    	    }	       
-	            break;
-	        }
-	    }
-
-	    salvarCompradores(compradores);
-
+		for (int i = 0; i < compradores.size(); i++) {
+			Comprador comprador = compradores.get(i);
+			if (comprador.getCpf().equals(obj.getCpf())) {
+				if (!obj.getNome().isEmpty()) {
+					comprador.setNome(obj.getNome());
+				}
+				if (!obj.getEmail().isEmpty()) {
+					comprador.setEmail(obj.getEmail());
+				}
+				if (!obj.getSenha().isEmpty()) {
+					comprador.setSenha(obj.getSenha());
+				}
+				if (!obj.getEndereco().isEmpty()) {
+					comprador.setEndereco(obj.getEndereco());
+				}
+				break;
+			}
+		}
+		salvarCompradores(compradores, true);
 	}
 
-	private void salvarCompradores(List<Comprador> compradores) {
+	private void salvarCompradores(List<Comprador> compradores, boolean acaoBemSucedida) {
 		Gson gson = new Gson();
 
-	    try {
-	        FileWriter writer = new FileWriter(compradoresPath);
-	        gson.toJson(compradores, writer);
-	        writer.close();
-		    System.out.println("Informações pessoais atualizadas com sucesso.");
-	    } catch (IOException e) {
-	        System.out.println("Erro ao atualizar o comprador: " + e.getMessage());
-	    }
-		
+		try {
+			FileWriter writer = new FileWriter(compradoresPath);
+			gson.toJson(compradores, writer);
+			writer.close();
+			if (acaoBemSucedida) {
+				System.out.println("Informações pessoais atualizadas com sucesso.");
+			} else {
+				System.out.println("Informações pessoais removidas com sucesso.");
+			}
+		} catch (IOException e) {
+			System.out.println("Erro ao atualizar/remover o comprador: " + e.getMessage());
+		}
 	}
 
 	@Override
 	public void remover(String cpf) {
 		List<Comprador> compradores = lerCompradores();
 
-	    for (Iterator<Comprador> iterator = compradores.iterator(); iterator.hasNext();) {
-	        Comprador comprador = iterator.next();
-	        if (comprador.getCpf().equals(cpf.toString())) {
-	            iterator.remove();
-	            System.out.println("Comprador removido com sucesso!");
-	            break;
-	        }
-	    }
-
-	    salvarCompradores(compradores);
-
+		for (Iterator<Comprador> iterator = compradores.iterator(); iterator.hasNext();) {
+			Comprador comprador = iterator.next();
+			if (comprador.getCpf().equals(cpf.toString())) {
+				iterator.remove();
+				System.out.println("Comprador removido com sucesso!");
+				break;
+			}
+		}
+		salvarCompradores(compradores, false);
 	}
 
 	@Override
 	public List<Comprador> listarCompradores() {
 		List<Comprador> compradores = lerCompradores();
-	    return compradores;
+		return compradores;
 	}
-
-	@Override
-	public boolean verificarCpfExiste(String cpf) {
-		List<Comprador> compradores = lerCompradores();
-
-	    for (Comprador comprador : compradores) {
-	        if (comprador.getCpf().equals(cpf)) {
-	            return true;
-	        }
-	    }
-
-	    return false;
-	}
-
 }

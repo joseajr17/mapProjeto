@@ -85,7 +85,6 @@ public class CompradorMenu {
 		if (resp.equalsIgnoreCase("s")) {
 			// Remover a loja do arquivo JSON
 			compradorDao.remover(cpf);
-			System.out.println("Perfil do comprador excluído com sucesso.");
 		} else {
 			return;
 		}
@@ -124,10 +123,10 @@ public class CompradorMenu {
 		System.out.print("Digite o nome do produto: ");
 		String nomeProduto = sc.nextLine();
 		
-		Produto produto = produtoDao.buscar(nomeProduto);
+		List<Produto> produtos = produtoDao.buscar(nomeProduto);
 		
-		if(produto!= null)
-			System.out.println(produto.toString());
+		if(produtos!= null)
+			produtos.forEach(System.out::print);
 		else {
 			System.out.println("Não existe produto com esse nome!");
 			return;

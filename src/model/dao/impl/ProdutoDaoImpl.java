@@ -52,7 +52,6 @@ public class ProdutoDaoImpl implements ProdutoDao{
 		catch (IOException e) {
 			System.out.println("Erro ao cadastrar o produto: " + e.getMessage());
 		}
-		
 	}
 
 	private List<Produto> lerProdutos() {
@@ -77,21 +76,20 @@ public class ProdutoDaoImpl implements ProdutoDao{
 		if (produtos == null) {
 	        produtos = new ArrayList<>();
 	    }
-
 		return produtos;
 	}
 
 	@Override
-	public Produto buscar(String nome) {
-		List<Produto> produtos = lerProdutos();
+	public List<Produto> buscar(String nome) {
+	    List<Produto> produtos = lerProdutos();
+	    List<Produto> produtosEncontrados = new ArrayList<>();
 
 	    for (Produto produto : produtos) {
 	        if (produto.getNome().equals(nome)) {
-	            return produto;
+	            produtosEncontrados.add(produto);
 	        }
 	    }
-
-	    return null;
+	    return produtosEncontrados;
 	}
 
 	@Override
@@ -110,21 +108,25 @@ public class ProdutoDaoImpl implements ProdutoDao{
 	        }
 	    }
 
-	    salvarProdutos(produtos);
+	    salvarProdutos(produtos, true);
 		
 	}
 
-	private void salvarProdutos(List<Produto> produtos) {
+	private void salvarProdutos(List<Produto> produtos, boolean acaoAtualizacao) {
 		Gson gson = new Gson();
 
-	    try {
-	        FileWriter writer = new FileWriter(produtosPath);
-	        gson.toJson(produtos, writer);
-	        writer.close();
-	        System.out.println("Produto atualizado com sucesso!");
-	    } catch (IOException e) {
-	        System.out.println("Erro ao atualizar o produto: " + e.getMessage());
-	    }
+		try {
+			FileWriter writer = new FileWriter(produtosPath);
+			gson.toJson(produtos, writer);
+			writer.close();
+			if (acaoAtualizacao) {
+				System.out.println("Produto atualizado com sucesso!");
+			} else {
+				System.out.println("Produto removido com sucesso!");
+			}
+		} catch (IOException e) {
+			System.out.println("Erro ao atualizar/remover o produto: " + e.getMessage());
+		}
 	}
 
 	@Override
@@ -139,9 +141,7 @@ public class ProdutoDaoImpl implements ProdutoDao{
 	            break;
 	        }
 	    }
-
-	    salvarProdutos(produtos);
-		
+	    salvarProdutos(produtos, false);
 	}
 
 	@Override

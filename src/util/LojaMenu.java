@@ -74,7 +74,6 @@ public class LojaMenu {
 		if (resp.equalsIgnoreCase("s")) {
 			// Remover a loja do arquivo JSON
 			lojaDao.remover(cpfOuCnpj);
-			System.out.println("Perfil da loja excluído com sucesso.");
 		} else {
 			return;
 		}
@@ -206,8 +205,6 @@ public class LojaMenu {
 
 		// Atualizar o produto no arquivo JSON produtosExistentes
 		produtoDao.atualizar(produtoAtualizado);
-
-		System.out.println("Informações do produto atualizadas com sucesso.");
 	}
 
 	private void removerProduto(Loja loja) {
@@ -244,8 +241,6 @@ public class LojaMenu {
 
 	        // Remover o produto do arquivo JSON produtosExistentes
 	        produtoDao.remover(nomeProduto);
-
-	        System.out.println("Produto removido com sucesso.");
 
 	        // Verificar se a lista de produtos da loja está vazia e exibir mensagem apropriada
 	        if (loja.getProdutos().isEmpty()) {
