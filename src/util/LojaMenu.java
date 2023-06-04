@@ -93,9 +93,15 @@ public class LojaMenu {
 	    System.out.print("Tipo do produto: ");
 	    ProdutoTipo tipo = ProdutoTipo.valueOf(sc.next().toUpperCase());
 
-	    System.out.print("Quantidade do produto: ");
-	    Integer quant = sc.nextInt();
+	    Integer quant;
+	    do{
+            System.out.print("Quantidade do produto: ");
+	    quant = sc.nextInt();
 	    sc.nextLine();
+        if(quant < 0){
+            System.out.println("A quantidade de produto não pode ser negativa!");
+        }
+        } while(quant < 0);
 
 	    System.out.print("Marca do produto: ");
 	    String marca = sc.nextLine();
