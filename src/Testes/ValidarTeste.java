@@ -46,4 +46,17 @@ public class ValidarTeste {
         Assert.assertFalse(Validar.validarEmail("adriana@"));
         Assert.assertFalse(Validar.validarEmail("@gmail.com"));
     }
+    
+    @Test
+    public void testValidarSenha() {
+        // Senhas válidas
+        Assert.assertTrue(Validar.validarSenha("SenhaSegura123!"));
+        Assert.assertTrue(Validar.validarSenha("OutraSenhaSegura567@"));
+        Assert.assertTrue(Validar.validarSenha("senhasegura123"));
+        
+        // Senhas inválidas
+        Assert.assertFalse(Validar.validarSenha("senhafraca"));
+        Assert.assertFalse(Validar.validarSenha("123456789"));
+        Assert.assertFalse(Validar.validarSenha("senha"));
+    }
 }
