@@ -130,12 +130,12 @@ public class ProdutoDaoImpl implements ProdutoDao{
 	}
 
 	@Override
-	public void remover(String nome) {
+	public void remover(Produto prod) {
 		List<Produto> produtos = lerProdutos();
 
 	    for (Iterator<Produto> iterator = produtos.iterator(); iterator.hasNext();) {
 	        Produto produto = iterator.next();
-	        if (produto.getNome().equals(nome.toString())) {
+	        if (produto.equals(prod)) {
 	            iterator.remove();
 	            System.out.println("Produto removido com sucesso!");
 	            break;
