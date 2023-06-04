@@ -118,4 +118,26 @@ public class Validar {
         Pattern pattern = Pattern.compile(EMAIL);
         return pattern.matcher(email).matches();
     }
+	
+	public static boolean validarSenha(String senha) {
+        // Verificar o comprimento mínimo da senha
+        if (senha.length() < 6) {
+            return false;
+        }
+        
+        // Verificar a presença de letras e dígitos 
+        boolean letra = false, digito = false;
+        
+        for (char c : senha.toCharArray()) {
+            if (Character.isUpperCase(c) || Character.isLowerCase(c)) {
+                letra = true;
+            } 
+            if (Character.isDigit(c)) {
+                digito = true;
+            }
+        }
+        
+        // Verificar se todos os critérios foram atendidos
+        return letra && digito;
+    }
 }
