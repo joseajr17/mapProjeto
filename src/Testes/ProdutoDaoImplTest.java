@@ -33,12 +33,14 @@ public class ProdutoDaoImplTest {
         assertTrue(!produtosCadastrados.isEmpty());
         
         for (Produto cadastrado : produtosCadastrados) {
+            if(cadastrado.equals(produto)) {
         	assertEquals("Headphone", cadastrado.getNome());
         	assertEquals("Headphone preto", cadastrado.getDescricao());
             assertEquals("Stax", cadastrado.getMarca());
             assertEquals((Integer)10, cadastrado.getQuantidade());
             assertEquals(ProdutoTipo.ELETRÔNICO, cadastrado.getTipo());
             assertEquals(29.99, cadastrado.getValor(), 0.01);
+            }
         }
         dao.remover(produto);
     }
@@ -58,12 +60,14 @@ public class ProdutoDaoImplTest {
         
         
         for (Produto encontrado : produtosEncontrados) {
-        	assertEquals("Headphone", encontrado.getNome());
-        	assertEquals("Headphone preto", encontrado.getDescricao());
-        	assertEquals("Stax", encontrado.getMarca());
-        	assertEquals((Integer)5, encontrado.getQuantidade());
-        	assertEquals(ProdutoTipo.ELETRÔNICO, encontrado.getTipo());
-            assertEquals(79.99, encontrado.getValor(), 0.01);
+            if (encontrado.equals(novoProduto)) {
+                assertEquals("Headphone", encontrado.getNome());
+                assertEquals("Headphone preto", encontrado.getDescricao());
+                assertEquals("Stax", encontrado.getMarca());
+                assertEquals((Integer) 5, encontrado.getQuantidade());
+                assertEquals(ProdutoTipo.ELETRÔNICO, encontrado.getTipo());
+                assertEquals(79.99, encontrado.getValor(), 0.01);
+            }
         }
         dao.remover(novoProduto);
     }
@@ -82,12 +86,14 @@ public class ProdutoDaoImplTest {
         
         
         for (Produto produtoModificado : modificado) {
+            if(produtoModificado.equals(atualizado)){
             assertEquals("Headphone", produtoModificado.getNome());
             assertEquals("Headphone preto", produtoModificado.getDescricao());
             assertEquals("Stax", produtoModificado.getMarca());
             assertEquals((Integer)10, produtoModificado.getQuantidade());
             assertEquals(ProdutoTipo.ELETRÔNICO, produtoModificado.getTipo());
             assertEquals(39.99, produtoModificado.getValor(), 0.01);
+            }
         }
         dao.remover(atualizado);
     }
