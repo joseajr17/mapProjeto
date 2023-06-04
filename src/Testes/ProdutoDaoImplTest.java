@@ -83,9 +83,9 @@ public class ProdutoDaoImplTest {
         
         for (Produto produtoModificado : modificado) {
             assertEquals("Headphone", produtoModificado.getNome());
-            assertEquals("Headphone branco", produtoModificado.getDescricao());
-            assertEquals("Sony", produtoModificado.getMarca());
-            assertEquals((Integer)5, produtoModificado.getQuantidade());
+            assertEquals("Headphone preto", produtoModificado.getDescricao());
+            assertEquals("Stax", produtoModificado.getMarca());
+            assertEquals((Integer)10, produtoModificado.getQuantidade());
             assertEquals(ProdutoTipo.ELETRÔNICO, produtoModificado.getTipo());
             assertEquals(39.99, produtoModificado.getValor(), 0.01);
         }
