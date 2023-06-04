@@ -9,6 +9,6 @@ public interface ProdutoDao {
 	void cadastrar(Produto obj);
 	List<Produto> buscar(String nome);
 	void atualizar(Produto obj);
-	void remover(String nome);
+	void remover(Produto prod);
 	List<Produto> listarProdutos();
 }
