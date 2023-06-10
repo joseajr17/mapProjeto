@@ -3,11 +3,16 @@ package util;
 import java.util.List;
 import java.util.Scanner;
 
+import javax.xml.transform.SourceLocator;
+
 import model.dao.CarrinhoDeComprasDao;
 import model.dao.CompradorDao;
 import model.dao.DaoFactory;
+import model.dao.HistoricoDeComprasDao;
 import model.dao.LojaDao;
 import model.dao.ProdutoDao;
+import model.dao.impl.HistoricoDeComprasDaoImpl;
+import model.entities.Compra;
 import model.entities.Comprador;
 import model.entities.Loja;
 import model.entities.Produto;
@@ -17,6 +22,7 @@ public class CompradorMenu {
 	private static LojaDao lojaDao = DaoFactory.criarLojaDao();
 	private static ProdutoDao produtoDao = DaoFactory.criarProdutoDao();
 	private static CarrinhoDeComprasDao carrinhoDeComprasDao = DaoFactory.criarCarrinhoDeComprasDao();
+	private static HistoricoDeComprasDao HistoricoDeCompras = DaoFactory.criarHistoricoDeComprasDao();
 	private static Scanner sc = new Scanner(System.in);
 
 	public void exibirMenuComprador(Comprador comprador) {
@@ -30,8 +36,9 @@ public class CompradorMenu {
 			System.out.println("4. Listar todos os produtos");
 			System.out.println("5. Listar todos os produtos de uma loja específica");
 			System.out.println("6. Listar todos os produtos do carrinho de compras");
-			System.out.println("7. Ir para a edição de perfil");
-			System.out.println("8. Excluir perfil");
+			System.out.println("7. Ver histórico de compras");
+			System.out.println("8. Ir para a edição de perfil");
+			System.out.println("9. Excluir perfil");
 			System.out.println("0. Sair");
 			System.out.print("Escolha uma opção: ");
 			opcao = sc.nextInt();
@@ -57,9 +64,14 @@ public class CompradorMenu {
 				listarProdutosDoCarrinho(comprador);
 				break;
 			case 7:
-				editarPerfilComprador(comprador);
+				verHidtoricoDeCompras(comprador);
+				break;
 			case 8:
+				editarPerfilComprador(comprador);
+				break;
+			case 9:
 				excluirPerfilComprador(comprador);
+				break;
 			case 0:
 				System.out.println("Saindo do menu do comprador...");
 				break;
@@ -282,6 +294,19 @@ public class CompradorMenu {
 			compradorDao.remover(cpf);
 		} else {
 			return;
+		}
+	}
+
+	private void verHidtoricoDeCompras(Comprador comprador) {
+		List<Compra> historico = HistoricoDeCompras.verHistorico(comprador);
+
+		if(historico.isEmpty()){
+			System.out.println("Ainda não foi realizada nenhuma compra.\n");
+		} else {
+			System.out.println("Histórico de compras\n");
+			for (Compra compra : historico) {
+				System.out.println(compra);
+			}
 		}
 	}
 }
