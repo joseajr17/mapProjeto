@@ -1,6 +1,6 @@
 package model.dao;
 
-//import model.dao.impl.CarrinhoDeComprasDaoImpl;
+import model.dao.impl.CarrinhoDeComprasDaoImpl;
 import model.dao.impl.CompradorDaoImpl;
 import model.dao.impl.LojaDaoImpl;
 import model.dao.impl.ProdutoDaoImpl;
@@ -19,7 +19,7 @@ public class DaoFactory {
 		return new ProdutoDaoImpl();
 	}
 
-	/*public static CarrinhoDeComprasDao criarCarrinhoDeComprasDao() {
+	public static CarrinhoDeComprasDao criarCarrinhoDeComprasDao() {
 		return new CarrinhoDeComprasDaoImpl();
-	}*/
+	}
 }

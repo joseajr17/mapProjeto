@@ -3,6 +3,7 @@ package util;
 import java.util.List;
 import java.util.Scanner;
 
+import model.dao.CarrinhoDeComprasDao;
 import model.dao.CompradorDao;
 import model.dao.DaoFactory;
 import model.dao.LojaDao;
@@ -15,8 +16,8 @@ public class CompradorMenu {
 	private static CompradorDao compradorDao = DaoFactory.criarCompradorDao();
 	private static LojaDao lojaDao = DaoFactory.criarLojaDao();
 	private static ProdutoDao produtoDao = DaoFactory.criarProdutoDao();
+	private static CarrinhoDeComprasDao carrinhoDeComprasDao = DaoFactory.criarCarrinhoDeComprasDao();
 	private static Scanner sc = new Scanner(System.in);
-	
 
 	public void exibirMenuComprador(Comprador comprador) {
 		int opcao;
@@ -28,8 +29,9 @@ public class CompradorMenu {
 			System.out.println("3. Buscar produto");
 			System.out.println("4. Listar todos os produtos");
 			System.out.println("5. Listar todos os produtos de uma loja específica");
-			System.out.println("6. Ir para a edição de perfil");
-			System.out.println("7. Excluir perfil");
+			System.out.println("6. Listar todos os produtos do carrinho de compras");
+			System.out.println("7. Ir para a edição de perfil");
+			System.out.println("8. Excluir perfil");
 			System.out.println("0. Sair");
 			System.out.print("Escolha uma opção: ");
 			opcao = sc.nextInt();
@@ -49,12 +51,14 @@ public class CompradorMenu {
 				listarTodosOsProdutos();
 				break;
 			case 5:
-				listarProdutosDeLojaEspecifica();
+				listarProdutosDeLojaEspecifica(comprador);
 				break;
 			case 6:
-				editarPerfilComprador(comprador);
+				listarProdutosDoCarrinho(comprador);
 				break;
 			case 7:
+				editarPerfilComprador(comprador);
+			case 8:
 				excluirPerfilComprador(comprador);
 			case 0:
 				System.out.println("Saindo do menu do comprador...");
@@ -65,38 +69,13 @@ public class CompradorMenu {
 		} while (opcao != 0);
 	}
 
-	private void excluirPerfilComprador(Comprador comprador) {
-		System.out.println("----- EXCLUIR PERFIL DO COMPRADOR -----");
-
-		System.out.print("Digite o seu CPF: ");
-		String cpf = sc.nextLine();
-
-		// Verificar se o CPF ou CNPJ corresponde ao do comprador logado
-		if (!cpf.equals(comprador.getCpf())) {
-			System.out.println("Você não digitou o CPF.");
-			return;
-			
-		}
-
-		System.out.println("Tem certeza disso(DIGITE S para confirmar)?");
-
-		String resp = sc.nextLine();
-
-		if (resp.equalsIgnoreCase("s")) {
-			// Remover a loja do arquivo JSON
-			compradorDao.remover(cpf);
-		} else {
-			return;
-		}
-	}
-
 	private void buscarLoja() {
 
 		System.out.print("Digite o nome da loja: ");
 		String nomeLoja = sc.nextLine();
-		
+
 		Loja loja = lojaDao.buscarPeloNome(nomeLoja);
-		
+
 		System.out.println("Nome: " + loja.getNome());
 		System.out.println("Endereço: " + loja.getEndereco());
 		System.out.println("Email: " + loja.getEmail());
@@ -115,23 +94,23 @@ public class CompradorMenu {
 			}
 		}
 	}
-	
+
 	private void buscarProduto() {
-		
-		////////ta exibindo apenas o primeiro produto do arquivo JSON/////////
+
+		//////// ta exibindo apenas o primeiro produto do arquivo JSON/////////
 
 		System.out.print("Digite o nome do produto: ");
 		String nomeProduto = sc.nextLine();
-		
+
 		List<Produto> produtos = produtoDao.buscar(nomeProduto);
-		
-		if(produtos!= null)
+
+		if (produtos != null)
 			produtos.forEach(System.out::print);
 		else {
 			System.out.println("Não existe produto com esse nome!");
 			return;
 		}
-			
+
 	}
 
 	private void listarTodosOsProdutos() {
@@ -141,65 +120,135 @@ public class CompradorMenu {
 			System.out.println("Não há produtos cadastrados.");
 		} else {
 			System.out.println("Lista de todos os produtos:");
-			for (Produto produto: produtos) {
+			for (Produto produto : produtos) {
 				System.out.println(produto.getNome());
 			}
 			System.out.println();
 		}
 	}
 
-	private void listarProdutosDeLojaEspecifica() {
-	    System.out.print("Digite o nome da loja: ");
-	    String nomeLoja = sc.nextLine();
+	private void listarProdutosDeLojaEspecifica(Comprador comprador) {
+		System.out.print("Digite o nome da loja: ");
+		String nomeLoja = sc.nextLine();
 
-	    // Buscar a loja pelo nome
-	    Loja lojaEncontrada = lojaDao.buscarPeloNome(nomeLoja);
+		// Buscar a loja pelo nome
+		Loja lojaEncontrada = lojaDao.buscarPeloNome(nomeLoja);
 
-	    // Exibir os resultados da busca
-	    if (lojaEncontrada == null) {
-	        System.out.println("Loja não encontrada.");
-	    } else {
-	        List<Produto> produtosDaLoja = lojaEncontrada.getProdutos();
-	        if (produtosDaLoja == null || produtosDaLoja.isEmpty()) {
-	            System.out.println("Nenhum produto encontrado para a loja informada.");
-	        } else {
-	            System.out.println("Produtos da loja " + nomeLoja + ":");
-	            for (Produto produto : produtosDaLoja) {
-	                System.out.println(produto);
-	            }
-	        }
-	    }
+		// Exibir os resultados da busca
+		if (lojaEncontrada == null) {
+			System.out.println("Loja não encontrada.");
+		} else {
+			List<Produto> produtosDaLoja = lojaEncontrada.getProdutos();
+			if (produtosDaLoja == null || produtosDaLoja.isEmpty()) {
+				System.out.println("Nenhum produto encontrado para a loja informada.");
+			} else {
+				System.out.println("Produtos da loja " + nomeLoja + ":");
+				for (int i = 0; i < produtosDaLoja.size(); i++) {
+					Produto produto = produtosDaLoja.get(i);
+					System.out.println((i + 1) + ". " + produto);
+				}
+
+				System.out.print("Digite o número do produto que deseja adicionar ao carrinho (ou 0 para voltar): ");
+				int escolha = sc.nextInt();
+				sc.nextLine();
+
+				if (escolha == 0) {
+					// Voltar para o menu
+					return;
+				} else if (escolha >= 1 && escolha <= produtosDaLoja.size()) {
+					Produto produtoEscolhido = produtosDaLoja.get(escolha - 1);
+					System.out.println("Produto escolhido: " + produtoEscolhido);
+
+					adicionarProdutoAoCarrinho(comprador, produtoEscolhido);
+				} else {
+					System.out.println("Escolha inválida!");
+				}
+			}
+		}
 	}
 
-	
+	private void adicionarProdutoAoCarrinho(Comprador comprador, Produto produto) {
+		System.out.print("Deseja adicionar o produto ao carrinho (S/N)? ");
+		String resposta = sc.nextLine();
+
+		if (resposta.equalsIgnoreCase("S")) {
+			// Obtenha o objeto Comprador atualizado
+			Comprador compradorAtualizado = compradorDao.buscar(comprador.getEmail());
+
+			// Agora você pode adicionar o produto ao carrinho de compras
+			carrinhoDeComprasDao.adicionar(compradorAtualizado, produto);
+		} else {
+			System.out.println("Produto não foi adicionado ao carrinho.");
+		}
+	}
+
+	private void listarProdutosDoCarrinho(Comprador comprador) {
+		List<Produto> produtos = carrinhoDeComprasDao.listarProdutos(comprador);
+		if (produtos.isEmpty()) {
+			System.out.println("Não há produtos no carrinho.");
+		} else {
+			System.out.println("Lista de todos os produtos do seu carrinho:");
+			for (Produto produto : produtos) {
+				System.out.println(produto.getNome());
+			}
+			System.out.println();
+		}
+
+	}
+
 	private void editarPerfilComprador(Comprador comprador) {
 		System.out.print("Digite o seu CPF: ");
-	    String cpf = sc.nextLine();
+		String cpf = sc.nextLine();
 
-	    // Verificar se o CPF corresponde ao comprador logado
-	    if (!cpf.equals(comprador.getCpf())) {
-	        System.out.println("Você não digitou o seu CPF corretamente.");
-	        return;
-	    }
+		// Verificar se o CPF corresponde ao comprador logado
+		if (!cpf.equals(comprador.getCpf())) {
+			System.out.println("Você não digitou o seu CPF corretamente.");
+			return;
+		}
 
-	    System.out.println("CPF correto! Atualize as informações que desejar:");
+		System.out.println("CPF correto! Atualize as informações que desejar:");
 
-	    System.out.print("Novo nome (deixe em branco para manter o atual): ");
-	    String novoNome = sc.nextLine();
-	    comprador.setNome(novoNome);
+		System.out.print("Novo nome (deixe em branco para manter o atual): ");
+		String novoNome = sc.nextLine();
+		comprador.setNome(novoNome);
 
-	    System.out.print("Novo email (deixe em branco para manter o atual): ");
-	    String novoEmail = sc.nextLine();
-	    comprador.setEmail(novoEmail);
+		System.out.print("Novo email (deixe em branco para manter o atual): ");
+		String novoEmail = sc.nextLine();
+		comprador.setEmail(novoEmail);
 
-	    System.out.print("Nova senha (deixe em branco para manter a atual): ");
-	    String novaSenha = sc.nextLine();
-	    comprador.setSenha(novaSenha);
-	    
-	    System.out.print("Novo endereço (deixe em branco para manter o atual): ");
-	    String novoEndereco = sc.nextLine();
-	    comprador.setEndereco(novoEndereco);
-	 
-	    compradorDao.atualizar(comprador);	
+		System.out.print("Nova senha (deixe em branco para manter a atual): ");
+		String novaSenha = sc.nextLine();
+		comprador.setSenha(novaSenha);
+
+		System.out.print("Novo endereço (deixe em branco para manter o atual): ");
+		String novoEndereco = sc.nextLine();
+		comprador.setEndereco(novoEndereco);
+
+		compradorDao.atualizar(comprador);
+	}
+
+	private void excluirPerfilComprador(Comprador comprador) {
+		System.out.println("----- EXCLUIR PERFIL DO COMPRADOR -----");
+
+		System.out.print("Digite o seu CPF: ");
+		String cpf = sc.nextLine();
+
+		// Verificar se o CPF ou CNPJ corresponde ao do comprador logado
+		if (!cpf.equals(comprador.getCpf())) {
+			System.out.println("Você não digitou o CPF.");
+			return;
+
+		}
+
+		System.out.println("Tem certeza disso(DIGITE S para confirmar)?");
+
+		String resp = sc.nextLine();
+
+		if (resp.equalsIgnoreCase("s")) {
+			// Remover a loja do arquivo JSON
+			compradorDao.remover(cpf);
+		} else {
+			return;
+		}
 	}
 }
