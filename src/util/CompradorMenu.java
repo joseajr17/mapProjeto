@@ -64,7 +64,7 @@ public class CompradorMenu {
 				listarProdutosDoCarrinho(comprador);
 				break;
 			case 7:
-				verHidtoricoDeCompras(comprador);
+				verHistoricoDeCompras(comprador);
 				break;
 			case 8:
 				editarPerfilComprador(comprador);
@@ -297,7 +297,7 @@ public class CompradorMenu {
 		}
 	}
 
-	private void verHidtoricoDeCompras(Comprador comprador) {
+	private void verHistoricoDeCompras(Comprador comprador) {
 		List<Compra> historico = HistoricoDeCompras.verHistorico(comprador);
 
 		if(historico.isEmpty()){
