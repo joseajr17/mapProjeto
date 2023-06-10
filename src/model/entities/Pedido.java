@@ -6,7 +6,6 @@ public class Pedido {
     private double valor;
 
     public Pedido() {
-        this(null, 0);
     }
 
    public Pedido(Produto produto, int quantidade) {
