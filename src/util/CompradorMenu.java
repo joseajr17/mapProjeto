@@ -183,18 +183,51 @@ public class CompradorMenu {
 	}
 
 	private void listarProdutosDoCarrinho(Comprador comprador) {
-		List<Produto> produtos = carrinhoDeComprasDao.listarProdutos(comprador);
-		if (produtos.isEmpty()) {
-			System.out.println("Não há produtos no carrinho.");
-		} else {
-			System.out.println("Lista de todos os produtos do seu carrinho:");
-			for (Produto produto : produtos) {
-				System.out.println(produto.getNome());
-			}
-			System.out.println();
-		}
+	    List<Produto> produtos = carrinhoDeComprasDao.listarProdutos(comprador);
+	    if (produtos.isEmpty()) {
+	        System.out.println("Não há produtos no carrinho.");
+	    } else {
+	        System.out.println("Lista de todos os produtos do seu carrinho:");
+	        for (int i = 0; i < produtos.size(); i++) {
+	            Produto produto = produtos.get(i);
+	            System.out.println((i + 1) + ". " + produto.getNome());
+	        }
+	        System.out.println();
 
+	        System.out.print("Digite o número do produto que deseja remover (ou 0 para voltar): ");
+	        int escolha = sc.nextInt();
+	        sc.nextLine();
+
+	        if (escolha == 0) {
+	            // Voltar para o menu
+	            return;
+	        } else if (escolha >= 1 && escolha <= produtos.size()) {
+	            Produto produtoEscolhido = produtos.get(escolha - 1);
+	            System.out.println("Produto escolhido: " + produtoEscolhido.getNome());
+
+	            removerProdutoDoCarrinho(comprador, produtoEscolhido);
+	        } else {
+	            System.out.println("Escolha inválida!");
+	        }
+	    }
 	}
+
+	private void removerProdutoDoCarrinho(Comprador comprador, Produto produto) {
+	    System.out.print("Deseja remover o produto do carrinho (S/N)? ");
+	    String resposta = sc.nextLine();
+
+	    if (resposta.equalsIgnoreCase("S")) {
+	        // Obtenha o objeto Comprador atualizado
+	        Comprador compradorAtualizado = compradorDao.buscar(comprador.getEmail());
+
+	        // Remova o produto do carrinho de compras
+	        carrinhoDeComprasDao.remover(compradorAtualizado, produto);
+	        System.out.println("Produto removido do carrinho com sucesso!");
+	    } else {
+	        System.out.println("Produto não foi removido do carrinho.");
+	    }
+	}
+
 
 	private void editarPerfilComprador(Comprador comprador) {
 		System.out.print("Digite o seu CPF: ");

@@ -8,7 +8,7 @@ import model.entities.Produto;
 public interface CarrinhoDeComprasDao {
 	
 	void adicionar(Comprador comprador, Produto obj);
-	void remover(Produto obj);
+	void remover(Comprador comprador, Produto obj);
 	List<Produto> listarProdutos(Comprador comprador);
 	void comprar(Produto obj);
 

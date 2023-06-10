@@ -40,14 +40,44 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 	}
 
 	@Override
-	public void remover(Produto obj) {
-		// TODO Auto-generated method stub
+	public void remover(Comprador comprador, Produto obj) {
+	    List<Produto> carrinhoDeCompras = comprador.getCarrinhoDeCompras();
 
+	    if (carrinhoDeCompras == null || carrinhoDeCompras.isEmpty()) {
+	        System.out.println("O carrinho de compras está vazio.");
+	        return;
+	    }
+
+	    // Verificar se o produto está no carrinho
+	    boolean produtoEncontrado = carrinhoDeCompras.stream()
+	            .anyMatch(p -> p.getNome().equalsIgnoreCase(obj.getNome())
+	                    && p.getEmailLoja().equals(obj.getEmailLoja()));
+
+	    if (!produtoEncontrado) {
+	        System.out.println("O produto da mesma loja com o mesmo nome não está presente no carrinho.");
+	        return;
+	    }
+
+	    carrinhoDeCompras.removeIf(p -> p.getNome().equalsIgnoreCase(obj.getNome())
+	            && p.getEmailLoja().equals(obj.getEmailLoja()));
+
+	    comprador.setCarrinhoDeCompras(carrinhoDeCompras);
+
+	    compradorDao.atualizar(comprador);
 	}
+
 
 	@Override
 	public List<Produto> listarProdutos(Comprador comprador) {
-		return null;
+		List<Produto> produtos = new ArrayList<>();
+
+		List<Produto> carrinhoDeCompras = comprador.getCarrinhoDeCompras();
+
+		if (carrinhoDeCompras != null) {
+			produtos.addAll(carrinhoDeCompras);
+		}
+
+		return produtos;
 	}
 
 	@Override
