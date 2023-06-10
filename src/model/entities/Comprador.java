@@ -1,6 +1,7 @@
 package model.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Comprador implements Serializable{
 
@@ -11,18 +12,20 @@ public class Comprador implements Serializable{
 	private String senha;
 	private String cpf;
 	private String endereco;
+	private List<Produto> carrinhoDeCompras;
 	
 	public Comprador() {
-		this("", "", "", "", "");
+		this("", "", "", "", "", null);
 	}
 
-	public Comprador(String nome, String email, String senha, String cpf, String endereco) {
+	public Comprador(String nome, String email, String senha, String cpf, String endereco, List<Produto> carrinhoDeCompras) {
 		super();
 		this.nome = nome;
 		this.email = email;
 		this.senha = senha;
 		this.cpf = cpf;
 		this.endereco = endereco;
+		this.carrinhoDeCompras = carrinhoDeCompras;
 	}
 
 	public String getNome() {
@@ -65,12 +68,19 @@ public class Comprador implements Serializable{
 		this.endereco = endereco;
 	}
 
-	
+	public List<Produto> getCarrinhoDeCompras() {
+		return carrinhoDeCompras;
+	}
+
+	public void setCarrinhoDeCompras(List<Produto> carrinhoDeCompras) {
+		this.carrinhoDeCompras = carrinhoDeCompras;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((carrinhoDeCompras == null) ? 0 : carrinhoDeCompras.hashCode());
 		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((endereco == null) ? 0 : endereco.hashCode());
@@ -88,6 +98,11 @@ public class Comprador implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		Comprador other = (Comprador) obj;
+		if (carrinhoDeCompras == null) {
+			if (other.carrinhoDeCompras != null)
+				return false;
+		} else if (!carrinhoDeCompras.equals(other.carrinhoDeCompras))
+			return false;
 		if (cpf == null) {
 			if (other.cpf != null)
 				return false;
@@ -119,6 +134,6 @@ public class Comprador implements Serializable{
 	@Override
 	public String toString() {
 		return "Comprador [nome=" + nome + ", email=" + email + ", senha=" + senha + ", cpf=" + cpf + ", endereco="
-				+ endereco + "]";
+				+ endereco + ", carrinhoDeCompras=" + carrinhoDeCompras + "]";
 	}
 }

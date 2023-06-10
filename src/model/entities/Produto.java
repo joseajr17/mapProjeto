@@ -12,19 +12,25 @@ public class Produto implements Serializable{
 	private Integer quantidade;
 	private String marca;
 	private String descricao;
+	private String emailLoja;
 	
 	public Produto() {
-		this("", null, null, null,"", "");
+		this("", null, null, null,"", "", "");
 	}
-	
-	public Produto(String nome, Double valor, ProdutoTipo tipo, Integer quantidade, String marca, String descricao) {
+
+	public Produto(String nome, Double valor, ProdutoTipo tipo, Integer quantidade, String marca, String descricao,
+			String emailLoja) {
+		super();
 		this.nome = nome;
 		this.valor = valor;
 		this.tipo = tipo;
 		this.quantidade = quantidade;
 		this.marca = marca;
 		this.descricao = descricao;
+		this.emailLoja = emailLoja;
 	}
+
+
 
 	public String getNome() {
 		return nome;
@@ -63,14 +69,23 @@ public class Produto implements Serializable{
 		this.descricao = descricao;
 	}
 
+	public String getEmailLoja() {
+		return emailLoja;
+	}
+
+	public void setEmailLoja(String emailLoja) {
+		this.emailLoja = emailLoja;
+	}
+
 	@Override
 	public int hashCode() {
-		final Integer prime = 31;
-		Integer result = 1;
+		final int prime = 31;
+		int result = 1;
 		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
+		result = prime * result + ((emailLoja == null) ? 0 : emailLoja.hashCode());
 		result = prime * result + ((marca == null) ? 0 : marca.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result + quantidade;
+		result = prime * result + ((quantidade == null) ? 0 : quantidade.hashCode());
 		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
 		result = prime * result + ((valor == null) ? 0 : valor.hashCode());
 		return result;
@@ -90,6 +105,11 @@ public class Produto implements Serializable{
 				return false;
 		} else if (!descricao.equals(other.descricao))
 			return false;
+		if (emailLoja == null) {
+			if (other.emailLoja != null)
+				return false;
+		} else if (!emailLoja.equals(other.emailLoja))
+			return false;
 		if (marca == null) {
 			if (other.marca != null)
 				return false;
@@ -100,7 +120,10 @@ public class Produto implements Serializable{
 				return false;
 		} else if (!nome.equals(other.nome))
 			return false;
-		if (quantidade != other.quantidade)
+		if (quantidade == null) {
+			if (other.quantidade != null)
+				return false;
+		} else if (!quantidade.equals(other.quantidade))
 			return false;
 		if (tipo != other.tipo)
 			return false;
@@ -114,8 +137,7 @@ public class Produto implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Nome: " + nome + "\nValor: R$" + valor + "\nTipo: " + tipo
-				+ "\nQuant. disponível: " + quantidade + "\nMarca: " + marca 
-				+ "\nDescricao: " + descricao + "\n\n";
-	}	
+		return "Produto [nome=" + nome + ", valor=" + valor + ", tipo=" + tipo + ", quantidade=" + quantidade
+				+ ", marca=" + marca + ", descricao=" + descricao + ", emailLoja=" + emailLoja + "]";
+	}
 }

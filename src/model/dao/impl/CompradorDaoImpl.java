@@ -117,6 +117,9 @@ public class CompradorDaoImpl implements CompradorDao {
 				if (!obj.getEndereco().isEmpty()) {
 					comprador.setEndereco(obj.getEndereco());
 				}
+				if(!obj.getCarrinhoDeCompras().isEmpty()) {
+					comprador.setCarrinhoDeCompras(obj.getCarrinhoDeCompras());
+				}
 				break;
 			}
 		}

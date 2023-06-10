@@ -86,7 +86,7 @@ public class CadastroMenu {
         String endereco = sc.nextLine();
 
 
-        Comprador comprador = new Comprador(nome, email, senha, cpf, endereco);
+        Comprador comprador = new Comprador(nome, email, senha, cpf, endereco, null);
 
         compradorDao.cadastrar(comprador);
     }

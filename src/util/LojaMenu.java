@@ -108,7 +108,7 @@ public class LojaMenu {
 	    System.out.print("Descrição do produto: ");
 	    String descricao = sc.nextLine();
 
-	    Produto produto = new Produto(nome, valor, tipo, quant, marca, descricao);
+	    Produto produto = new Produto(nome, valor, tipo, quant, marca, descricao, loja.getEmail());
 
 	    // Verificar se a lista de produtos da loja está inicializada
 	    if (loja.getProdutos() == null) {
@@ -240,7 +240,7 @@ public class LojaMenu {
 	        lojaDao.atualizar(loja);
 
 	        // Remover o produto do arquivo JSON produtosExistentes
-	        produtoDao.remover(nomeProduto);
+	        //produtoDao.remover(nomeProduto);
 
 	        // Verificar se a lista de produtos da loja está vazia e exibir mensagem apropriada
 	        if (loja.getProdutos().isEmpty()) {

@@ -33,13 +33,13 @@ public class ProdutoDaoImpl implements ProdutoDao{
 			if (!arquivo.exists())
 				arquivo.createNewFile();
 
-			// Ler os compradores existentes do arquivo
+			// Ler os produtos existentes do arquivo
 			List<Produto> produtosExistentes = lerProdutos();
 
-			// Adicionar o novo comprador à lista
+			// Adicionar o novo produto à lista
 			produtosExistentes.add(obj);
 
-			// Serializar a lista de compradores para JSON
+			// Serializar a lista de produtos para JSON
 			String json = gson.toJson(produtosExistentes);
 
 			// Gravar o JSON no arquivo
