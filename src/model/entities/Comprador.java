@@ -1,6 +1,7 @@
 package model.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Comprador implements Serializable{
@@ -16,18 +17,18 @@ public class Comprador implements Serializable{
 	private List<Compra> historicoDeCompras;
 	
 	public Comprador() {
-		this("", "", "", "", "", null, null);
+		this("", "", "", "", "");
 	}
 
-	public Comprador(String nome, String email, String senha, String cpf, String endereco, List<Produto> carrinhoDeCompras, List<Compra> historicoDeCompras) {
+	public Comprador(String nome, String email, String senha, String cpf, String endereco) {
 		super();
 		this.nome = nome;
 		this.email = email;
 		this.senha = senha;
 		this.cpf = cpf;
 		this.endereco = endereco;
-		this.carrinhoDeCompras = carrinhoDeCompras;
-		this.historicoDeCompras = historicoDeCompras;
+		this.carrinhoDeCompras = new ArrayList<>();
+		this.historicoDeCompras = new ArrayList<>();
 	}
 
 	public String getNome() {
