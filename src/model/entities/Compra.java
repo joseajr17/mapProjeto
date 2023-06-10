@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Compra {
-    private LocalDate date;
-    private LocalTime time;
+    private String date;
+    private String time;
     private Pedido pedido;
     
     public Compra() {
@@ -14,24 +14,24 @@ public class Compra {
     
     public Compra(Pedido pedido) {
         this.pedido = pedido;
-        this.date = LocalDate.now();
-        this.time = LocalTime.now();
+        this.date = LocalDate.now().toString();
+        this.time = LocalTime.now().toString();
     }
 
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
-    public LocalTime getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(LocalTime time) {
+    public void setTime(String time) {
         this.time = time;
     }
 
@@ -46,7 +46,7 @@ public class Compra {
 
     @Override
     public String toString() {
-        return "Compra: " + pedido + "Data: " + date + "Hora: " + time;
+        return  "Data: " + date + "Hora: " + time + "\nCompra: " + pedido;
     }
    
 }
