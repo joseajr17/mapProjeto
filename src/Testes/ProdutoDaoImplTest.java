@@ -25,7 +25,7 @@ public class ProdutoDaoImplTest {
     
     @Test
     public void testCadastrar() {
-        Produto produto = new Produto("Headphone", 29.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto");
+        Produto produto = new Produto("Headphone", 29.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto", "teste@gamil.com");
         dao.cadastrar(produto);
         
         List<Produto> produtosCadastrados = dao.buscar("Headphone");
@@ -40,6 +40,7 @@ public class ProdutoDaoImplTest {
             assertEquals((Integer)10, cadastrado.getQuantidade());
             assertEquals(ProdutoTipo.ELETRÔNICO, cadastrado.getTipo());
             assertEquals(29.99, cadastrado.getValor(), 0.01);
+            assertEquals(produto.getEmailLoja(), cadastrado.getEmailLoja());
             }
         }
         dao.remover(produto);
@@ -51,7 +52,7 @@ public class ProdutoDaoImplTest {
     	assertNotNull(produtos);
         assertTrue(produtos.isEmpty());
         
-        Produto novoProduto = new Produto("Headphone", 79.99, ProdutoTipo.ELETRÔNICO, 5, "Stax", "Headphone preto");
+        Produto novoProduto = new Produto("Headphone", 79.99, ProdutoTipo.ELETRÔNICO, 5, "Stax", "Headphone preto", "teste@gmail.com");
         dao.cadastrar(novoProduto);
         
         List<Produto> produtosEncontrados = dao.buscar("Headphone");
@@ -67,6 +68,7 @@ public class ProdutoDaoImplTest {
                 assertEquals((Integer) 5, encontrado.getQuantidade());
                 assertEquals(ProdutoTipo.ELETRÔNICO, encontrado.getTipo());
                 assertEquals(79.99, encontrado.getValor(), 0.01);
+                assertEquals("teste@gmail.com", encontrado.getEmailLoja());
             }
         }
         dao.remover(novoProduto);
@@ -74,10 +76,10 @@ public class ProdutoDaoImplTest {
     
     @Test
     public void testAtualizar() {
-    	Produto produto = new Produto("Headphone", 29.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto");
+    	Produto produto = new Produto("Headphone", 29.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto", "teste@gmail.com");
         dao.cadastrar(produto);
         
-        Produto atualizado = new Produto("Headphone", 39.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto");
+        Produto atualizado = new Produto("Headphone", 39.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto", "teste@gmail.com");
         dao.atualizar(atualizado);
         
         List<Produto> modificado = dao.buscar("Headphone");
@@ -93,6 +95,7 @@ public class ProdutoDaoImplTest {
             assertEquals((Integer)10, produtoModificado.getQuantidade());
             assertEquals(ProdutoTipo.ELETRÔNICO, produtoModificado.getTipo());
             assertEquals(39.99, produtoModificado.getValor(), 0.01);
+            assertEquals("teste@gmail.com", produtoModificado.getEmailLoja());
             }
         }
         dao.remover(atualizado);
@@ -100,7 +103,7 @@ public class ProdutoDaoImplTest {
     
     @Test
     public void testRemover() {
-        Produto produto = new Produto("Headphone", 29.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto");
+        Produto produto = new Produto("Headphone", 29.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto", "teste@gmail.com");
         dao.cadastrar(produto);
         
         dao.remover(produto);
