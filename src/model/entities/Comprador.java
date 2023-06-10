@@ -13,13 +13,13 @@ public class Comprador implements Serializable{
 	private String cpf;
 	private String endereco;
 	private List<Produto> carrinhoDeCompras;
-	private List<Produto> historicoDeCompras;
+	private List<Compra> historicoDeCompras;
 	
 	public Comprador() {
 		this("", "", "", "", "", null, null);
 	}
 
-	public Comprador(String nome, String email, String senha, String cpf, String endereco, List<Produto> carrinhoDeCompras, List<Produto> historicoDeCompras) {
+	public Comprador(String nome, String email, String senha, String cpf, String endereco, List<Produto> carrinhoDeCompras, List<Compra> historicoDeCompras) {
 		super();
 		this.nome = nome;
 		this.email = email;
@@ -78,11 +78,11 @@ public class Comprador implements Serializable{
 		this.carrinhoDeCompras = carrinhoDeCompras;
 	}
 
-	public List<Produto> getHistoricoDeCompras() {
+	public List<Compra> getHistoricoDeCompras() {
 		return historicoDeCompras;
 	}
 
-	public void setHistoricoDeCompras(List<Produto> historicoDeCompras) {
+	public void setHistoricoDeCompras(List<Compra> historicoDeCompras) {
 		this.historicoDeCompras = historicoDeCompras;
 	}
 
