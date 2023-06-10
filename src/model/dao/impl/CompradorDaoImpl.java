@@ -120,6 +120,9 @@ public class CompradorDaoImpl implements CompradorDao {
 				if(!obj.getCarrinhoDeCompras().isEmpty()) {
 					comprador.setCarrinhoDeCompras(obj.getCarrinhoDeCompras());
 				}
+				if(!obj.getHistoricoDeCompras().isEmpty()) {
+					comprador.setHistoricoDeCompras(obj.getHistoricoDeCompras());
+				}
 				break;
 			}
 		}

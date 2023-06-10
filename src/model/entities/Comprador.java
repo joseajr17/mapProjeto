@@ -13,12 +13,13 @@ public class Comprador implements Serializable{
 	private String cpf;
 	private String endereco;
 	private List<Produto> carrinhoDeCompras;
+	private List<Produto> historicoDeCompras;
 	
 	public Comprador() {
-		this("", "", "", "", "", null);
+		this("", "", "", "", "", null, null);
 	}
 
-	public Comprador(String nome, String email, String senha, String cpf, String endereco, List<Produto> carrinhoDeCompras) {
+	public Comprador(String nome, String email, String senha, String cpf, String endereco, List<Produto> carrinhoDeCompras, List<Produto> historicoDeCompras) {
 		super();
 		this.nome = nome;
 		this.email = email;
@@ -26,6 +27,7 @@ public class Comprador implements Serializable{
 		this.cpf = cpf;
 		this.endereco = endereco;
 		this.carrinhoDeCompras = carrinhoDeCompras;
+		this.historicoDeCompras = historicoDeCompras;
 	}
 
 	public String getNome() {
@@ -76,6 +78,14 @@ public class Comprador implements Serializable{
 		this.carrinhoDeCompras = carrinhoDeCompras;
 	}
 
+	public List<Produto> getHistoricoDeCompras() {
+		return historicoDeCompras;
+	}
+
+	public void setHistoricoDeCompras(List<Produto> historicoDeCompras) {
+		this.historicoDeCompras = historicoDeCompras;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -84,6 +94,7 @@ public class Comprador implements Serializable{
 		result = prime * result + ((cpf == null) ? 0 : cpf.hashCode());
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((endereco == null) ? 0 : endereco.hashCode());
+		result = prime * result + ((historicoDeCompras == null) ? 0 : historicoDeCompras.hashCode());
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
 		result = prime * result + ((senha == null) ? 0 : senha.hashCode());
 		return result;
@@ -118,6 +129,11 @@ public class Comprador implements Serializable{
 				return false;
 		} else if (!endereco.equals(other.endereco))
 			return false;
+		if (historicoDeCompras == null) {
+			if (other.historicoDeCompras != null)
+				return false;
+		} else if (!historicoDeCompras.equals(other.historicoDeCompras))
+			return false;
 		if (nome == null) {
 			if (other.nome != null)
 				return false;
@@ -134,6 +150,7 @@ public class Comprador implements Serializable{
 	@Override
 	public String toString() {
 		return "Comprador [nome=" + nome + ", email=" + email + ", senha=" + senha + ", cpf=" + cpf + ", endereco="
-				+ endereco + ", carrinhoDeCompras=" + carrinhoDeCompras + "]";
+				+ endereco + ", carrinhoDeCompras=" + carrinhoDeCompras + ", historicoDeCompras=" + historicoDeCompras
+				+ "]";
 	}
 }

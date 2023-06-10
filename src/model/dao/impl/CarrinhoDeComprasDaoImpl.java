@@ -23,8 +23,7 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 		} else {
 			// Verificar se o produto já está no carrinho
 			boolean produtoRepetido = carrinhoDeCompras.stream().anyMatch(
-					p -> p.getNome().equalsIgnoreCase(obj.getNome()) 
-						 && p.getEmailLoja().equals(obj.getEmailLoja()));
+					p -> p.getNome().equalsIgnoreCase(obj.getNome()) && p.getEmailLoja().equals(obj.getEmailLoja()));
 
 			if (produtoRepetido) {
 				System.out.println("Esse produto dessa loja já está no seu carrinho.");
@@ -41,31 +40,29 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 
 	@Override
 	public void remover(Comprador comprador, Produto obj) {
-	    List<Produto> carrinhoDeCompras = comprador.getCarrinhoDeCompras();
+		List<Produto> carrinhoDeCompras = comprador.getCarrinhoDeCompras();
 
-	    if (carrinhoDeCompras == null || carrinhoDeCompras.isEmpty()) {
-	        System.out.println("O carrinho de compras está vazio.");
-	        return;
-	    }
+		if (carrinhoDeCompras == null || carrinhoDeCompras.isEmpty()) {
+			System.out.println("O carrinho de compras está vazio.");
+			return;
+		}
 
-	    // Verificar se o produto está no carrinho
-	    boolean produtoEncontrado = carrinhoDeCompras.stream()
-	            .anyMatch(p -> p.getNome().equalsIgnoreCase(obj.getNome())
-	                    && p.getEmailLoja().equals(obj.getEmailLoja()));
+		// Verificar se o produto está no carrinho
+		boolean produtoEncontrado = carrinhoDeCompras.stream().anyMatch(
+				p -> p.getNome().equalsIgnoreCase(obj.getNome()) && p.getEmailLoja().equals(obj.getEmailLoja()));
 
-	    if (!produtoEncontrado) {
-	        System.out.println("O produto da mesma loja com o mesmo nome não está presente no carrinho.");
-	        return;
-	    }
+		if (!produtoEncontrado) {
+			System.out.println("O produto da mesma loja com o mesmo nome não está presente no carrinho.");
+			return;
+		}
 
-	    carrinhoDeCompras.removeIf(p -> p.getNome().equalsIgnoreCase(obj.getNome())
-	            && p.getEmailLoja().equals(obj.getEmailLoja()));
+		carrinhoDeCompras.removeIf(
+				p -> p.getNome().equalsIgnoreCase(obj.getNome()) && p.getEmailLoja().equals(obj.getEmailLoja()));
 
-	    comprador.setCarrinhoDeCompras(carrinhoDeCompras);
+		comprador.setCarrinhoDeCompras(carrinhoDeCompras);
 
-	    compradorDao.atualizar(comprador);
+		compradorDao.atualizar(comprador);
 	}
-
 
 	@Override
 	public List<Produto> listarProdutos(Comprador comprador) {
@@ -81,9 +78,7 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 	}
 
 	@Override
-	public void comprar(Produto obj) {
-		// TODO Auto-generated method stub
-
+	public void comprar(Comprador comprador, Produto obj) {
+		
 	}
-
 }
