@@ -33,7 +33,7 @@ public class HistoricoDeComprasDaoImplTest {
         historico.adicionar(comprador, new Compra(new Pedido(
             new Produto("Headphone", 29.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto", "teste3@gmail.com"), 3)));
         assertFalse(comprador.getHistoricoDeCompras().isEmpty());
-        dao.remover("123456teste");
+        dao.remover("12345678901teste");
     }
 
     @Test
@@ -46,6 +46,6 @@ public class HistoricoDeComprasDaoImplTest {
         assertFalse(comprador.getHistoricoDeCompras().isEmpty());
         assertEquals(historico.verHistorico(comprador).size(), 1);
         assertEquals(historico.verHistorico(comprador).get(0), compra);
-        dao.remover("123456teste");
+        dao.remover("12345678901teste");
     }
 }
