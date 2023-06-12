@@ -103,12 +103,12 @@ public class ProdutoDaoImplTest {
     
     @Test
     public void testRemover() {
-        Produto produto = new Produto("Headphone", 29.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto", "teste@gmail.com");
+        Produto produto = new Produto("HeadphoneTeste", 29.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto", "teste@gmail.com");
         dao.cadastrar(produto);
         
         dao.remover(produto);
         
-        List<Produto> naoEncontrado = dao.buscar("Headphone");
+        List<Produto> naoEncontrado = dao.buscar("HeadphoneTeste");
         assertNotNull(naoEncontrado);
         assertTrue(naoEncontrado.isEmpty());
     }
