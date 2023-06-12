@@ -3,10 +3,17 @@ package model.dao.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import exception.StoreNotFoundException;
 import model.dao.CarrinhoDeComprasDao;
 import model.dao.CompradorDao;
 import model.dao.DaoFactory;
+import model.dao.HistoricoDeComprasDao;
+import model.dao.LojaDao;
+import model.dao.ProdutoDao;
+import model.entities.Compra;
 import model.entities.Comprador;
+import model.entities.Loja;
+import model.entities.Pedido;
 import model.entities.Produto;
 
 public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
@@ -78,7 +85,32 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 	}
 
 	@Override
-	public void comprar(Comprador comprador, Produto obj) {
+	public void comprar(Comprador comprador, Produto obj, int quantidade) throws StoreNotFoundException {
+		HistoricoDeComprasDao historicoDao = DaoFactory.criarHistoricoDeComprasDao();
+		ProdutoDao produtoDao = DaoFactory.criarProdutoDao();
+		LojaDao lojaDao = DaoFactory.criarLojaDao();
+		Loja loja = lojaDao.buscarPeloEmail(obj.getEmailLoja());
+		Produto produtoComprado = null;
 		
+		if (loja != null) {
+			for (Produto produto : loja.getProdutos()) {
+				if (produto.equals(obj)) {
+					produtoComprado = produto;
+					break;
+				}
+			}
+			produtoComprado.setQuantidade(produtoComprado.getQuantidade() - quantidade);
+
+			// Adicionar a compra no histórico
+			historicoDao.adicionar(comprador, new Compra(new Pedido(produtoComprado, quantidade)));
+
+			// Atualizar a loja no arquivo JSON
+			lojaDao.atualizar(loja);
+
+			// Atualizar o produto no arquivo JSON
+			produtoDao.atualizar(produtoComprado);
+		} else{
+			throw new StoreNotFoundException();
+		}
 	}
 }
