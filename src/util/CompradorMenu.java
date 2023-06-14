@@ -3,15 +3,13 @@ package util;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.xml.transform.SourceLocator;
-
+import exception.StoreNotFoundException;
 import model.dao.CarrinhoDeComprasDao;
 import model.dao.CompradorDao;
 import model.dao.DaoFactory;
 import model.dao.HistoricoDeComprasDao;
 import model.dao.LojaDao;
 import model.dao.ProdutoDao;
-import model.dao.impl.HistoricoDeComprasDaoImpl;
 import model.entities.Compra;
 import model.entities.Comprador;
 import model.entities.Loja;
@@ -35,10 +33,11 @@ public class CompradorMenu {
 			System.out.println("3. Buscar produto");
 			System.out.println("4. Listar todos os produtos");
 			System.out.println("5. Listar todos os produtos de uma loja específica");
-			System.out.println("6. Listar todos os produtos do carrinho de compras");
-			System.out.println("7. Ver histórico de compras");
-			System.out.println("8. Ir para a edição de perfil");
-			System.out.println("9. Excluir perfil");
+			System.out.println("6. Listar produtos do carrinho de compras");
+			System.out.println("7. Produtos disponíveis para compra");
+			System.out.println("8. Ver histórico de compras");
+			System.out.println("9. Ir para a edição de perfil");
+			System.out.println("10. Excluir perfil");
 			System.out.println("0. Sair");
 			System.out.print("Escolha uma opção: ");
 			opcao = sc.nextInt();
@@ -64,12 +63,15 @@ public class CompradorMenu {
 				listarProdutosDoCarrinho(comprador);
 				break;
 			case 7:
-				verHistoricoDeCompras(comprador);
+				listarProdutosParaCompra(comprador);
 				break;
 			case 8:
-				editarPerfilComprador(comprador);
+				verHistoricoDeCompras(comprador);
 				break;
 			case 9:
+				editarPerfilComprador(comprador);
+				break;
+			case 10:
 				excluirPerfilComprador(comprador);
 				break;
 			case 0:
@@ -195,51 +197,117 @@ public class CompradorMenu {
 	}
 
 	private void listarProdutosDoCarrinho(Comprador comprador) {
-	    List<Produto> produtos = carrinhoDeComprasDao.listarProdutos(comprador);
-	    if (produtos.isEmpty()) {
-	        System.out.println("Não há produtos no carrinho.");
-	    } else {
-	        System.out.println("Lista de todos os produtos do seu carrinho:");
-	        for (int i = 0; i < produtos.size(); i++) {
-	            Produto produto = produtos.get(i);
-	            System.out.println((i + 1) + ". " + produto.getNome());
-	        }
-	        System.out.println();
+		List<Produto> produtos = carrinhoDeComprasDao.listarProdutos(comprador);
+		if (produtos.isEmpty()) {
+			System.out.println("Não há produtos no carrinho.");
+		} else {
+			System.out.println("Lista de todos os produtos do seu carrinho:");
+			for (int i = 0; i < produtos.size(); i++) {
+				Produto produto = produtos.get(i);
+				System.out.println((i + 1) + ". " + produto.getNome());
+			}
+			System.out.println();
 
-	        System.out.print("Digite o número do produto que deseja remover (ou 0 para voltar): ");
-	        int escolha = sc.nextInt();
-	        sc.nextLine();
+			System.out.print("Digite o número do produto que deseja remover (ou 0 para voltar): ");
+			int escolha = sc.nextInt();
+			sc.nextLine();
 
-	        if (escolha == 0) {
-	            // Voltar para o menu
-	            return;
-	        } else if (escolha >= 1 && escolha <= produtos.size()) {
-	            Produto produtoEscolhido = produtos.get(escolha - 1);
-	            System.out.println("Produto escolhido: " + produtoEscolhido.getNome());
+			if (escolha == 0) {
+				// Voltar para o menu
+				return;
+			} else if (escolha >= 1 && escolha <= produtos.size()) {
+				Produto produtoEscolhido = produtos.get(escolha - 1);
+				System.out.println("Produto escolhido: " + produtoEscolhido.getNome());
 
-	            removerProdutoDoCarrinho(comprador, produtoEscolhido);
-	        } else {
-	            System.out.println("Escolha inválida!");
-	        }
-	    }
+				removerProdutoDoCarrinho(comprador, produtoEscolhido);
+			} else {
+				System.out.println("Escolha inválida!");
+			}
+		}
 	}
 
 	private void removerProdutoDoCarrinho(Comprador comprador, Produto produto) {
-	    System.out.print("Deseja remover o produto do carrinho (S/N)? ");
-	    String resposta = sc.nextLine();
+		System.out.print("Deseja remover o produto do carrinho (S/N)? ");
+		String resposta = sc.nextLine();
 
-	    if (resposta.equalsIgnoreCase("S")) {
-	        // Obtenha o objeto Comprador atualizado
-	        Comprador compradorAtualizado = compradorDao.buscar(comprador.getEmail());
+		if (resposta.equalsIgnoreCase("S")) {
+			// Obtenha o objeto Comprador atualizado
+			Comprador compradorAtualizado = compradorDao.buscar(comprador.getEmail());
 
-	        // Remova o produto do carrinho de compras
-	        carrinhoDeComprasDao.remover(compradorAtualizado, produto);
-	        System.out.println("Produto removido do carrinho com sucesso!");
-	    } else {
-	        System.out.println("Produto não foi removido do carrinho.");
-	    }
+			// Remova o produto do carrinho de compras
+			carrinhoDeComprasDao.remover(compradorAtualizado, produto);
+			System.out.println("Produto removido do carrinho com sucesso!");
+		} else {
+			System.out.println("Produto não foi removido do carrinho.");
+		}
 	}
 
+	////
+
+	private void listarProdutosParaCompra(Comprador comprador) {
+		List<Produto> produtosDisponiveis = comprador.getCarrinhoDeCompras();
+		if (produtosDisponiveis.isEmpty()) {
+			System.out.println("Não há produtos disponíveis para compra.");
+		} else {
+			System.out.println("Lista de todos os produtos disponíveis para compra:");
+			for (int i = 0; i < produtosDisponiveis.size(); i++) {
+				Produto produto = produtosDisponiveis.get(i);
+				System.out.println((i + 1) + ". " + produto.getNome());
+			}
+			System.out.println();
+
+			System.out.print("Digite o número do produto que deseja comprar (ou 0 para voltar): ");
+			int escolha = sc.nextInt();
+			sc.nextLine();
+
+			if (escolha == 0) {
+				// Voltar para o menu
+				return;
+			} else if (escolha >= 1 && escolha <= produtosDisponiveis.size()) {
+				Produto produtoEscolhido = produtosDisponiveis.get(escolha - 1);
+				System.out.println("Produto escolhido para compra: " + produtoEscolhido.getNome());
+
+				// Chame o método para realizar a compra do produto escolhido
+				realizarCompra(comprador, produtoEscolhido);
+			} else {
+				System.out.println("Escolha inválida!");
+			}
+		}
+
+	}
+
+	private void realizarCompra(Comprador comprador, Produto produtoEscolhido) {
+		try {
+			System.out.print("Deseja comprar o produto selecionado (S/N)? ");
+
+			String resposta = sc.nextLine();
+
+			if (resposta.equalsIgnoreCase("S")) {
+				int quantidadeDesejada;
+				do {
+					System.out.print("Digite a quantidade do produto que deseja comprar: ");
+					quantidadeDesejada = sc.nextInt();
+					sc.nextLine();
+					System.out.println("Quantidade invalida.");
+				} while (quantidadeDesejada <= 0 || quantidadeDesejada > produtoEscolhido.getQuantidade());
+
+				// Obtenha o objeto Comprador atualizado
+				Comprador compradorAtualizado = compradorDao.buscar(comprador.getEmail());
+				carrinhoDeComprasDao.comprar(compradorAtualizado, produtoEscolhido, quantidadeDesejada);
+				System.out.println("Produto comprado com sucesso!");
+				carrinhoDeComprasDao.remover(compradorAtualizado, produtoEscolhido);
+				
+			} else {
+				System.out.println("Produto não foi comprado.");
+			}
+
+		} catch (StoreNotFoundException e) {
+			System.out.println("Loja não encontrada. Detalhes do erro: " + e.getMessage());
+		}
+
+	}
+
+	////
 
 	private void editarPerfilComprador(Comprador comprador) {
 		System.out.print("Digite o seu CPF: ");
@@ -300,7 +368,7 @@ public class CompradorMenu {
 	private void verHistoricoDeCompras(Comprador comprador) {
 		List<Compra> historico = HistoricoDeCompras.verHistorico(comprador);
 
-		if(historico.isEmpty()){
+		if (historico.isEmpty()) {
 			System.out.println("Ainda não foi realizada nenhuma compra.\n");
 		} else {
 			System.out.println("Histórico de compras\n");

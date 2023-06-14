@@ -85,32 +85,58 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 	}
 
 	@Override
-	public void comprar(Comprador comprador, Produto obj, int quantidade) throws StoreNotFoundException {
+	public void comprar(Comprador comprador, Produto produtoComprado, int quantidade) throws StoreNotFoundException {
 		HistoricoDeComprasDao historicoDao = DaoFactory.criarHistoricoDeComprasDao();
 		ProdutoDao produtoDao = DaoFactory.criarProdutoDao();
 		LojaDao lojaDao = DaoFactory.criarLojaDao();
-		Loja loja = lojaDao.buscarPeloEmail(obj.getEmailLoja());
-		Produto produtoComprado = null;
-		
-		if (loja != null) {
-			for (Produto produto : loja.getProdutos()) {
-				if (produto.equals(obj)) {
-					produtoComprado = produto;
-					break;
-				}
+		Loja loja = lojaDao.buscarPeloEmail(produtoComprado.getEmailLoja());
+
+		int novaQuant = produtoComprado.getQuantidade() - quantidade;
+
+		List<Produto> produtos = loja.getProdutos();
+
+		Produto produtoRemovido = null;
+		for (Produto produto : loja.getProdutos()) {
+			if (produto.getNome().equals(produtoComprado.getNome())) {
+				produtoRemovido = produto;
+				break;
 			}
-			produtoComprado.setQuantidade(produtoComprado.getQuantidade() - quantidade);
+		}
+
+		// se a quant restante for zero faz isso
+		if (novaQuant == 0) {
+			produtoDao.remover(produtoComprado);
+			remover(comprador, produtoComprado);
+			loja.getProdutos().remove(produtoRemovido);
+			lojaDao.atualizar(loja);
+
+			// se sobrar algo diferente de zero faz isso
+		} else {
+			// atualizo a quantidade do produto no JSON chamado produtosExistentes
+			produtoComprado.setQuantidade(novaQuant);
+
+			// Atualizar o produto no arquivo JSON
+			produtoDao.atualizar(produtoComprado);
 
 			// Adicionar a compra no histórico
 			historicoDao.adicionar(comprador, new Compra(new Pedido(produtoComprado, quantidade)));
 
-			// Atualizar a loja no arquivo JSON
-			lojaDao.atualizar(loja);
+			for (Produto produto : produtos) {
+				// Realize as verificações para encontrar o produto específico
+				if (produto.getNome().equals(produtoComprado.getNome())) {
+					produto.setQuantidade(novaQuant);
+					break;
+				}
+			}
 
-			// Atualizar o produto no arquivo JSON
-			produtoDao.atualizar(produtoComprado);
-		} else{
-			throw new StoreNotFoundException();
+				// atualiza a quant do produto disponivel na loja
+				loja.setProdutos(produtos);
+
+				// Atualizar a loja no arquivo JSON
+				lojaDao.atualizar(loja);
+			
+
 		}
+		
 	}
 }
