@@ -47,7 +47,7 @@ public class ProdutoDaoImpl implements ProdutoDao{
 			writer.write(json);
 			writer.close();
 
-			System.out.println("Produto cadastrado com sucesso!");
+			
 		}
 		catch (IOException e) {
 			System.out.println("Erro ao cadastrar o produto: " + e.getMessage());
@@ -120,9 +120,9 @@ public class ProdutoDaoImpl implements ProdutoDao{
 			gson.toJson(produtos, writer);
 			writer.close();
 			if (acaoAtualizacao) {
-				System.out.println("Produto atualizado com sucesso!");
+				
 			} else {
-				System.out.println("Produto removido com sucesso!");
+				
 			}
 		} catch (IOException e) {
 			System.out.println("Erro ao atualizar/remover o produto: " + e.getMessage());

@@ -191,6 +191,7 @@ public class CompradorMenu {
 
 			// Agora você pode adicionar o produto ao carrinho de compras
 			carrinhoDeComprasDao.adicionar(compradorAtualizado, produto);
+			System.out.println("Produto adicionado ao carrinho com sucesso.");
 		} else {
 			System.out.println("Produto não foi adicionado ao carrinho.");
 		}
@@ -338,6 +339,7 @@ public class CompradorMenu {
 		comprador.setEndereco(novoEndereco);
 
 		compradorDao.atualizar(comprador);
+		System.out.println("Informações pessoais atualizadas com sucesso.");
 	}
 
 	private void excluirPerfilComprador(Comprador comprador) {
@@ -350,7 +352,6 @@ public class CompradorMenu {
 		if (!cpf.equals(comprador.getCpf())) {
 			System.out.println("Você não digitou o CPF.");
 			return;
-
 		}
 
 		System.out.println("Tem certeza disso(DIGITE S para confirmar)?");
@@ -360,6 +361,7 @@ public class CompradorMenu {
 		if (resp.equalsIgnoreCase("s")) {
 			// Remover a loja do arquivo JSON
 			compradorDao.remover(cpf);
+			System.out.println("Informações pessoais removidas com sucesso.");
 		} else {
 			return;
 		}

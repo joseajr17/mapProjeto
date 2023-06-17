@@ -38,12 +38,12 @@ public class LojaDaoImpl implements LojaDao {
 
 			// Ler as lojas existentes do arquivo
 			List<Loja> lojasExistentes = lerLojas();
-			
+
 			for (Loja loja : lojasExistentes) {
-		        if (loja.getCpfOUcnpj().equals(obj.getCpfOUcnpj()) || loja.getEmail().equals(obj.getEmail())) {
-		        	System.out.println("ERRO: Já existe uma loja com o CPF/CNPJ informado ou com o email informado.");
-		            return;
-		        }
+				if (loja.getCpfOUcnpj().equals(obj.getCpfOUcnpj()) || loja.getEmail().equals(obj.getEmail())) {
+					System.out.println("ERRO: Já existe uma loja com o CPF/CNPJ informado ou com o email informado.");
+					return;
+				}
 			}
 
 			// Adicionar o novo comprador à lista
@@ -57,7 +57,6 @@ public class LojaDaoImpl implements LojaDao {
 			writer.write(json);
 			writer.close();
 
-			System.out.println("Loja cadastrada com sucesso!");
 		} catch (IOException e) {
 			System.out.println("Erro ao cadastrar a loja: " + e.getMessage());
 		}
@@ -94,88 +93,87 @@ public class LojaDaoImpl implements LojaDao {
 	public Loja buscarPeloNome(String nome) {
 		List<Loja> lojas = lerLojas();
 
-	    for (Loja loja : lojas) {
-	        if (loja.getNome().equals(nome)) {
-	            return loja;
-	        }
-	    }
+		for (Loja loja : lojas) {
+			if (loja.getNome().equals(nome)) {
+				return loja;
+			}
+		}
 
-	    return null;
-	   }
-	
+		return null;
+	}
+
 	@Override
 	public Loja buscarPeloEmail(String email) {
 		List<Loja> lojas = lerLojas();
 
-	    for (Loja loja : lojas) {
-	        if (loja.getEmail().equals(email)) {
-	            return loja;
-	        }
-	    }
+		for (Loja loja : lojas) {
+			if (loja.getEmail().equals(email)) {
+				return loja;
+			}
+		}
 
-	    return null;
-	   }
+		return null;
+	}
 
 	@Override
 	public void atualizar(Loja obj) {
-		
+
 		List<Loja> lojas = lerLojas();
 
-	    for (int i = 0; i < lojas.size(); i++) {
-	        Loja loja = lojas.get(i);
-	        if (loja.getCpfOUcnpj().equals(obj.getCpfOUcnpj())) {
-	        	if (!obj.getNome().isEmpty()) {
-	        		loja.setNome(obj.getNome());
-	    	    }
-	        	if (!obj.getEmail().isEmpty()) {
-	        		loja.setEmail(obj.getEmail());
-	    	    }
-	        	if (!obj.getEndereco().isEmpty()) {
-	        		loja.setEndereco(obj.getEndereco());
-	    	    }
-	        	if (obj.getProdutos() != null) {
-	        		loja.setProdutos(obj.getProdutos());
-	    	    }
-	        	if (!obj.getSenha().isEmpty()) {
-	        		loja.setSenha(obj.getSenha());
-	    	    }
-	            break;
-	        }
-	    }
+		for (int i = 0; i < lojas.size(); i++) {
+			Loja loja = lojas.get(i);
+			if (loja.getCpfOUcnpj().equals(obj.getCpfOUcnpj())) {
+				if (!obj.getNome().isEmpty()) {
+					loja.setNome(obj.getNome());
+				}
+				if (!obj.getEmail().isEmpty()) {
+					loja.setEmail(obj.getEmail());
+				}
+				if (!obj.getEndereco().isEmpty()) {
+					loja.setEndereco(obj.getEndereco());
+				}
+				if (obj.getProdutos() != null) {
+					loja.setProdutos(obj.getProdutos());
+				}
+				if (!obj.getSenha().isEmpty()) {
+					loja.setSenha(obj.getSenha());
+				}
+				break;
+			}
+		}
 
-	    salvarLojas(lojas, true);
+		salvarLojas(lojas, true);
 
 	}
 
 	private void salvarLojas(List<Loja> lojas, boolean acaoAtualizacao) {
-	    Gson gson = new Gson();
+		Gson gson = new Gson();
 
-	    try {
-	        FileWriter writer = new FileWriter(lojasPath);
-	        gson.toJson(lojas, writer);
-	        writer.close();
-	        if (acaoAtualizacao) {
-	            System.out.println("Informações da loja atualizadas com sucesso.");
-	        } else {
-	            System.out.println("Loja removida com sucesso.");
-	        }
-	    } catch (IOException e) {
-	        System.out.println("Erro ao atualizar/remover a loja: " + e.getMessage());
-	    }
+		try {
+			FileWriter writer = new FileWriter(lojasPath);
+			gson.toJson(lojas, writer);
+			writer.close();
+			if (acaoAtualizacao) {
+
+			} else {
+
+			}
+		} catch (IOException e) {
+			System.out.println("Erro ao atualizar/remover a loja: " + e.getMessage());
+		}
 	}
 
 	@Override
 	public void remover(String cpfOUcnpj) {
 		List<Loja> lojas = lerLojas();
-		
+
 		for (Iterator<Loja> iterator = lojas.iterator(); iterator.hasNext();) {
-	        Loja loja = iterator.next();
-	        if (loja.getCpfOUcnpj().equals(cpfOUcnpj.toString())) {
-	            iterator.remove();
-	            System.out.println("Loja removida com sucesso!");
-	            break;
-	        }
-	    }
+			Loja loja = iterator.next();
+			if (loja.getCpfOUcnpj().equals(cpfOUcnpj.toString())) {
+				iterator.remove();
+				break;
+			}
+		}
 		salvarLojas(lojas, false);
 	}
 

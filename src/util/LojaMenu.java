@@ -54,31 +54,6 @@ public class LojaMenu {
 		} while (opcao != 0);
 	}
 
-	private void excluirPerfilLoja(Loja loja) {
-		System.out.println("----- EXCLUIR PERFIL DA LOJA -----");
-
-		System.out.print("Digite o CPF ou CNPJ da sua loja: ");
-		String cpfOuCnpj = sc.nextLine();
-
-		// Verificar se o CPF ou CNPJ corresponde ao da loja logada
-		if (!cpfOuCnpj.equals(loja.getCpfOUcnpj())) {
-			System.out.println("Você não digitou o CPF ou CNPJ correto.");
-			return;
-			
-		}
-
-		System.out.println("Tem certeza disso(DIGITE S para confirmar)?");
-
-		String resp = sc.nextLine();
-
-		if (resp.equalsIgnoreCase("s")) {
-			// Remover a loja do arquivo JSON
-			lojaDao.remover(cpfOuCnpj);
-		} else {
-			return;
-		}
-	}
-
 	private void adicionarProduto(Loja loja) {
 	    System.out.println("----- ADICIONAR PRODUTO -----");
 
@@ -122,6 +97,7 @@ public class LojaMenu {
 
 	        // cadastrar no arquivo JSON dos produtos
 	        produtoDao.cadastrar(produto);
+	        System.out.println("Produto cadastrado com sucesso!");
 	    } else {
 	        System.out.println("O produto já existe na loja.");
 	    }
@@ -205,6 +181,8 @@ public class LojaMenu {
 
 		// Atualizar o produto no arquivo JSON produtosExistentes
 		produtoDao.atualizar(produtoAtualizado);
+		System.out.println("Produto atualizado com sucesso!");
+		
 	}
 
 	private void removerProduto(Loja loja) {
@@ -241,6 +219,8 @@ public class LojaMenu {
 
 	        // Remover o produto do arquivo JSON produtosExistentes
 	        //produtoDao.remover(nomeProduto);
+	        
+	        System.out.println("Produto removido com sucesso!");
 
 	        // Verificar se a lista de produtos da loja está vazia e exibir mensagem apropriada
 	        if (loja.getProdutos().isEmpty()) {
@@ -287,5 +267,32 @@ public class LojaMenu {
 		loja.setProdutos(loja.getProdutos());
 
 		lojaDao.atualizar(loja);
+		System.out.println("Informações da loja atualizadas com sucesso.");
+	}
+	
+	private void excluirPerfilLoja(Loja loja) {
+		System.out.println("----- EXCLUIR PERFIL DA LOJA -----");
+
+		System.out.print("Digite o CPF ou CNPJ da sua loja: ");
+		String cpfOuCnpj = sc.nextLine();
+
+		// Verificar se o CPF ou CNPJ corresponde ao da loja logada
+		if (!cpfOuCnpj.equals(loja.getCpfOUcnpj())) {
+			System.out.println("Você não digitou o CPF ou CNPJ correto.");
+			return;
+			
+		}
+
+		System.out.println("Tem certeza disso(DIGITE S para confirmar)?");
+
+		String resp = sc.nextLine();
+
+		if (resp.equalsIgnoreCase("s")) {
+			// Remover a loja do arquivo JSON
+			lojaDao.remover(cpfOuCnpj);
+			System.out.println("Loja removida com sucesso.");
+		} else {
+			return;
+		}
 	}
 }

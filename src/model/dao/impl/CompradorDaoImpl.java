@@ -54,8 +54,6 @@ public class CompradorDaoImpl implements CompradorDao {
 			FileWriter writer = new FileWriter(compradoresPath);
 			writer.write(json);
 			writer.close();
-
-			System.out.println("Comprador cadastrado com sucesso!");
 		}
 		catch (IOException e) {
 			System.out.println("Erro ao cadastrar o comprador: " + e.getMessage());
@@ -137,9 +135,9 @@ public class CompradorDaoImpl implements CompradorDao {
 			gson.toJson(compradores, writer);
 			writer.close();
 			if (acaoBemSucedida) {
-				System.out.println("Informações pessoais atualizadas com sucesso.");
+				
 			} else {
-				System.out.println("Informações pessoais removidas com sucesso.");
+				
 			}
 		} catch (IOException e) {
 			System.out.println("Erro ao atualizar/remover o comprador: " + e.getMessage());
@@ -154,7 +152,6 @@ public class CompradorDaoImpl implements CompradorDao {
 			Comprador comprador = iterator.next();
 			if (comprador.getCpf().equals(cpf.toString())) {
 				iterator.remove();
-				System.out.println("Comprador removido com sucesso!");
 				break;
 			}
 		}
