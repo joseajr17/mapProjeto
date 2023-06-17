@@ -1,5 +1,6 @@
 package util;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,63 +25,70 @@ public class CompradorMenu {
 	private static Scanner sc = new Scanner(System.in);
 
 	public void exibirMenuComprador(Comprador comprador) {
-		int opcao;
+	    int opcao;
 
-		do {
-			System.out.println("----- MENU DO COMPRADOR -----");
-			System.out.println("1. Buscar loja");
-			System.out.println("2. Listar todas as lojas");
-			System.out.println("3. Buscar produto");
-			System.out.println("4. Listar todos os produtos");
-			System.out.println("5. Listar todos os produtos de uma loja específica");
-			System.out.println("6. Listar produtos do carrinho de compras");
-			System.out.println("7. Produtos disponíveis para compra");
-			System.out.println("8. Ver histórico de compras");
-			System.out.println("9. Ir para a edição de perfil");
-			System.out.println("10. Excluir perfil");
-			System.out.println("0. Sair");
-			System.out.print("Escolha uma opção: ");
-			opcao = sc.nextInt();
-			sc.nextLine();
+	    do {
+	        System.out.println("----- MENU DO COMPRADOR -----");
+	        System.out.println("1. Buscar loja");
+	        System.out.println("2. Listar todas as lojas");
+	        System.out.println("3. Buscar produto");
+	        System.out.println("4. Listar todos os produtos");
+	        System.out.println("5. Listar todos os produtos de uma loja específica");
+	        System.out.println("6. Listar produtos do carrinho de compras");
+	        System.out.println("7. Produtos disponíveis para compra");
+	        System.out.println("8. Ver histórico de compras");
+	        System.out.println("9. Ir para a edição de perfil");
+	        System.out.println("10. Excluir perfil");
+	        System.out.println("0. Sair");
+	        System.out.print("Escolha uma opção: ");
 
-			switch (opcao) {
-			case 1:
-				buscarLoja();
-				break;
-			case 2:
-				listarTodasAsLojas();
-				break;
-			case 3:
-				buscarProduto();
-				break;
-			case 4:
-				listarTodosOsProdutos();
-				break;
-			case 5:
-				listarProdutosDeLojaEspecifica(comprador);
-				break;
-			case 6:
-				listarProdutosDoCarrinho(comprador);
-				break;
-			case 7:
-				listarProdutosParaCompra(comprador);
-				break;
-			case 8:
-				verHistoricoDeCompras(comprador);
-				break;
-			case 9:
-				editarPerfilComprador(comprador);
-				break;
-			case 10:
-				excluirPerfilComprador(comprador);
-				break;
-			case 0:
-				System.out.println("Saindo do menu do comprador...");
-				break;
-			default:
-				System.out.println("Opção inválida. Tente novamente.");
-			}
-		} while (opcao != 0);
+	        try {
+	            opcao = sc.nextInt();
+	            sc.nextLine();
+
+	            switch (opcao) {
+	                case 1:
+	                    buscarLoja();
+	                    break;
+	                case 2:
+	                    listarTodasAsLojas();
+	                    break;
+	                case 3:
+	                    buscarProduto();
+	                    break;
+	                case 4:
+	                    listarTodosOsProdutos();
+	                    break;
+	                case 5:
+	                    listarProdutosDeLojaEspecifica(comprador);
+	                    break;
+	                case 6:
+	                    listarProdutosDoCarrinho(comprador);
+	                    break;
+	                case 7:
+	                    listarProdutosParaCompra(comprador);
+	                    break;
+	                case 8:
+	                    verHistoricoDeCompras(comprador);
+	                    break;
+	                case 9:
+	                    editarPerfilComprador(comprador);
+	                    break;
+	                case 10:
+	                    excluirPerfilComprador(comprador);
+	                    break;
+	                case 0:
+	                    System.out.println("Saindo do menu do comprador...");
+	                    break;
+	                default:
+	                    System.out.println("Opção inválida. Tente novamente.");
+	            }
+	        } catch (InputMismatchException e) {
+	            System.out.println("Entrada inválida. Digite um número inteiro.");
+	            sc.nextLine(); // Limpar o buffer do scanner
+	            opcao = -1; // Definir um valor inválido para continuar no loop
+	        }
+	    } while (opcao != 0);
 	}
 
 	private void buscarLoja() {

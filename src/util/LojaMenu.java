@@ -1,6 +1,7 @@
 package util;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import model.dao.DaoFactory;
@@ -16,42 +17,50 @@ public class LojaMenu {
 	private static Scanner sc = new Scanner(System.in);
 
 	public void exibirMenuLoja(Loja loja) {
-		int opcao;
+	    int opcao;
 
-		do {
-			System.out.println("----- MENU DA LOJA -----");
-			System.out.println("1. Adicionar produto");
-			System.out.println("2. Atualizar informações do produto");
-			System.out.println("3. Remover produto");
-			System.out.println("4. Editar perfil");
-			System.out.println("5. Excluir perfil");
-			System.out.println("0. Sair");
-			System.out.print("Escolha uma opção: ");
-			opcao = sc.nextInt();
-			sc.nextLine();
+	    do {
+	        System.out.println("----- MENU DA LOJA -----");
+	        System.out.println("1. Adicionar produto");
+	        System.out.println("2. Atualizar informações do produto");
+	        System.out.println("3. Remover produto");
+	        System.out.println("4. Editar perfil");
+	        System.out.println("5. Excluir perfil");
+	        System.out.println("0. Sair");
+	        System.out.print("Escolha uma opção: ");
 
-			switch (opcao) {
-			case 1:
-				adicionarProduto(loja);
-				break;
-			case 2:
-				atualizarInformacoesProduto(loja);
-				break;
-			case 3:
-				removerProduto(loja);
-				break;
-			case 4:
-				editarPerfilLoja(loja);
-				break;
-			case 5:
-				excluirPerfilLoja(loja);
-			case 0:
-				System.out.println("Saindo do menu da loja...");
-				break;
-			default:
-				System.out.println("Opção inválida. Tente novamente.");
-			}
-		} while (opcao != 0);
+	        try {
+	            opcao = sc.nextInt();
+	            sc.nextLine();
+
+	            switch (opcao) {
+	                case 1:
+	                    adicionarProduto(loja);
+	                    break;
+	                case 2:
+	                    atualizarInformacoesProduto(loja);
+	                    break;
+	                case 3:
+	                    removerProduto(loja);
+	                    break;
+	                case 4:
+	                    editarPerfilLoja(loja);
+	                    break;
+	                case 5:
+	                    excluirPerfilLoja(loja);
+	                    break;
+	                case 0:
+	                    System.out.println("Saindo do menu da loja...");
+	                    break;
+	                default:
+	                    System.out.println("Opção inválida. Tente novamente.");
+	            }
+	        } catch (InputMismatchException e) {
+	            System.out.println("Entrada inválida. Digite um número inteiro.");
+	            sc.nextLine(); // Limpar o buffer do scanner
+	            opcao = -1; // Definir um valor inválido para continuar no loop
+	        }
+	    } while (opcao != 0);
 	}
 
 	private void adicionarProduto(Loja loja) {

@@ -1,5 +1,6 @@
 package util;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import model.dao.CompradorDao;
@@ -21,31 +22,38 @@ public class CadastroMenu {
 	}
 
 	public void exibirMenuCadastro() {
-		int opcaoCadastro;
+	    int opcaoCadastro;
 
-		do {
-			System.out.println("----- MENU DE CADASTRO -----");
-			System.out.println("1. Comprador");
-			System.out.println("2. Loja");
-			System.out.println("0. Voltar");
-			System.out.print("Escolha uma opção: ");
-			opcaoCadastro = sc.nextInt();
-			sc.nextLine();
+	    do {
+	        System.out.println("----- MENU DE CADASTRO -----");
+	        System.out.println("1. Comprador");
+	        System.out.println("2. Loja");
+	        System.out.println("0. Voltar");
+	        System.out.print("Escolha uma opção: ");
 
-			switch (opcaoCadastro) {
-			case 1:
-				cadastrarComprador();
-				break;
-			case 2:
-				cadastrarLoja();
-				break;
-			case 0:
-				System.out.println("Voltando ao menu principal...");
-				break;
-			default:
-				System.out.println("Opção inválida. Tente novamente.");
-			}
-		} while (opcaoCadastro != 0);
+	        try {
+	            opcaoCadastro = sc.nextInt();
+	            sc.nextLine();
+
+	            switch (opcaoCadastro) {
+	                case 1:
+	                    cadastrarComprador();
+	                    break;
+	                case 2:
+	                    cadastrarLoja();
+	                    break;
+	                case 0:
+	                    System.out.println("Voltando ao menu principal...");
+	                    break;
+	                default:
+	                    System.out.println("Opção inválida. Tente novamente.");
+	            }
+	        } catch (InputMismatchException e) {
+	            System.out.println("Entrada inválida. Digite um número inteiro.");
+	            sc.nextLine(); // Limpar o buffer do scanner
+	            opcaoCadastro = -1; // Definir um valor inválido para continuar no loop
+	        }
+	    } while (opcaoCadastro != 0);
 	}
 
 	private void cadastrarComprador() {

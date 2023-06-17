@@ -1,5 +1,6 @@
 package util;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -30,21 +31,28 @@ public class LoginMenu {
             System.out.println("2. Loja");
             System.out.println("0. Voltar");
             System.out.print("Escolha uma opção: ");
-            opcaoLogin = sc.nextInt();
-            sc.nextLine();
 
-            switch (opcaoLogin) {
-                case 1:
-                    loginComprador();
-                    break;
-                case 2:
-                    loginLoja();
-                    break;
-                case 0:
-                    System.out.println("Voltando ao menu principal...");
-                    break;
-                default:
-                    System.out.println("Opção inválida. Tente novamente.");
+            try {
+                opcaoLogin = sc.nextInt();
+                sc.nextLine();
+
+                switch (opcaoLogin) {
+                    case 1:
+                        loginComprador();
+                        break;
+                    case 2:
+                        loginLoja();
+                        break;
+                    case 0:
+                        System.out.println("Voltando ao menu principal...");
+                        break;
+                    default:
+                        System.out.println("Opção inválida. Tente novamente.");
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Entrada inválida. Digite um número inteiro.");
+                sc.nextLine(); // Limpar o buffer do scanner
+                opcaoLogin = -1; // Definir um valor inválido para continuar no loop
             }
         } while (opcaoLogin != 0);
     }
