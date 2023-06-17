@@ -14,8 +14,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import model.dao.LojaDao;
-import model.entities.Comprador;
+import model.dao.ProdutoDao;
 import model.entities.Loja;
+import model.entities.Produto;
 
 public class LojaDaoImpl implements LojaDao {
 
@@ -93,56 +94,57 @@ public class LojaDaoImpl implements LojaDao {
 	public Loja buscarPeloNome(String nome) {
 		List<Loja> lojas = lerLojas();
 
-		for (Loja loja : lojas) {
-			if (loja.getNome().equals(nome)) {
-				return loja;
-			}
-		}
+	    for (Loja loja : lojas) {
+	        if (loja.getNome().equals(nome)) {
+	            return loja;
+	        }
+	    }
 
-		return null;
-	}
-
+	    return null;
+	   }
+	
 	@Override
 	public Loja buscarPeloEmail(String email) {
 		List<Loja> lojas = lerLojas();
 
-		for (Loja loja : lojas) {
-			if (loja.getEmail().equals(email)) {
-				return loja;
-			}
-		}
+	    for (Loja loja : lojas) {
+	        if (loja.getEmail().equals(email)) {
+	            return loja;
+	        }
+	    }
 
-		return null;
-	}
+	    return null;
+	   }
 
 	@Override
 	public void atualizar(Loja obj) {
-
+		
 		List<Loja> lojas = lerLojas();
 
-		for (int i = 0; i < lojas.size(); i++) {
-			Loja loja = lojas.get(i);
-			if (loja.getCpfOUcnpj().equals(obj.getCpfOUcnpj())) {
-				if (!obj.getNome().isEmpty()) {
-					loja.setNome(obj.getNome());
-				}
-				if (!obj.getEmail().isEmpty()) {
-					loja.setEmail(obj.getEmail());
-				}
-				if (!obj.getEndereco().isEmpty()) {
-					loja.setEndereco(obj.getEndereco());
-				}
-				if (obj.getProdutos() != null) {
-					loja.setProdutos(obj.getProdutos());
-				}
-				if (!obj.getSenha().isEmpty()) {
-					loja.setSenha(obj.getSenha());
-				}
-				break;
-			}
-		}
+	    for (int i = 0; i < lojas.size(); i++) {
+	        Loja loja = lojas.get(i);
+	        if (loja.getCpfOUcnpj().equals(obj.getCpfOUcnpj())) {
+	        	if (!obj.getNome().isEmpty()) {
+	        		loja.setNome(obj.getNome());
+	    	    }
+	        	if (!obj.getEmail().isEmpty()) {
+	        		loja.setEmail(obj.getEmail());
+	    	    }
+	        	if (!obj.getEndereco().isEmpty()) {
+	        		loja.setEndereco(obj.getEndereco());
+	    	    }
+	        	if (obj.getProdutos() != null) {
+	        		loja.setProdutos(obj.getProdutos());
+	    	    }
+	        	if (!obj.getSenha().isEmpty()) {
+	        		loja.setSenha(obj.getSenha());
+	    	    }
+				
+	            break;
+	        }
+	    }
 
-		salvarLojas(lojas, true);
+	    salvarLojas(lojas, true);
 
 	}
 
@@ -163,17 +165,28 @@ public class LojaDaoImpl implements LojaDao {
 		}
 	}
 
+
+	private void removerProdutos(Loja loja){
+		ProdutoDao produtoDao = new ProdutoDaoImpl();
+		if (loja.getProdutos() != null) {
+			for (Produto produto : loja.getProdutos()) {
+				produtoDao.remover(produto);
+			}
+		}
+	}
+
 	@Override
 	public void remover(String cpfOUcnpj) {
 		List<Loja> lojas = lerLojas();
-
+		
 		for (Iterator<Loja> iterator = lojas.iterator(); iterator.hasNext();) {
-			Loja loja = iterator.next();
-			if (loja.getCpfOUcnpj().equals(cpfOUcnpj.toString())) {
-				iterator.remove();
-				break;
-			}
-		}
+	        Loja loja = iterator.next();
+	        if (loja.getCpfOUcnpj().equals(cpfOUcnpj.toString())) {
+	            iterator.remove();
+				removerProdutos(loja);
+	            break;
+	        }
+	    }
 		salvarLojas(lojas, false);
 	}
 

@@ -76,6 +76,7 @@ public class CompradorMenu {
 	                    break;
 	                case 10:
 	                    excluirPerfilComprador(comprador);
+						opcao = 0;
 	                    break;
 	                case 0:
 	                    System.out.println("Saindo do menu do comprador...");
@@ -127,7 +128,7 @@ public class CompradorMenu {
 		List<Produto> produtos = produtoDao.buscar(nomeProduto);
 
 		if (produtos != null)
-			produtos.forEach(System.out::print);
+			produtos.forEach(System.out::println);
 		else {
 			System.out.println("Não existe produto com esse nome!");
 			return;
@@ -297,6 +298,7 @@ public class CompradorMenu {
 					System.out.print("Digite a quantidade do produto que deseja comprar: ");
 					quantidadeDesejada = sc.nextInt();
 					sc.nextLine();
+					if(quantidadeDesejada <= 0 || quantidadeDesejada > produtoEscolhido.getQuantidade())
 					System.out.println("Quantidade invalida.");
 				} while (quantidadeDesejada <= 0 || quantidadeDesejada > produtoEscolhido.getQuantidade());
 

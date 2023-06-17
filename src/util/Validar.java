@@ -67,7 +67,7 @@ public class Validar {
             }
         }
 
-        if(cpfOuCnpj.length() <= 18 && cpfOuCnpj.replaceAll("[^\\d]", "").length() != 14){
+        if(cpfOuCnpj.length() <= 18 && cpfOuCnpj.replaceAll("[^\\d]", "").length() == 11){
             return validarCpf(cpfOuCnpj);
         }
 
@@ -140,4 +140,5 @@ public class Validar {
         // Verificar se todos os critérios foram atendidos
         return letra && digito;
     }
+
 }

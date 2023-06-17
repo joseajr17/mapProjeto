@@ -48,6 +48,7 @@ public class LojaMenu {
 					break;
 				case 5:
 					excluirPerfilLoja(loja);
+					opcao = 0;
 					break;
 				case 0:
 					System.out.println("Saindo do menu da loja...");
@@ -98,10 +99,10 @@ public class LojaMenu {
 			System.out.print("Quantidade do produto: ");
 			quant = sc.nextInt();
 			sc.nextLine();
-			if (quant < 0) {
-				System.out.println("A quantidade de produto não pode ser negativa!");
+			if (quant <= 0) {
+				System.out.println("A quantidade de produto não pode ser negativa, nem igual a 0!");
 			}
-		} while (quant < 0);
+		} while (quant <= 0);
 
 		System.out.print("Marca do produto: ");
 		String marca = sc.nextLine();
@@ -128,6 +129,7 @@ public class LojaMenu {
 			System.out.println("O produto já existe na loja.");
 		}
 	}
+
 
 	private void atualizarInformacoesProduto(Loja loja) {
 		System.out.println("----- ATUALIZAR INFORMAÇÕES DO PRODUTO -----");

@@ -44,6 +44,7 @@ public class HistoricoDeComprasDaoImplTest {
         Compra compra = new Compra(new Pedido(new Produto("Headphone", 29.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto", "teste3@gmail.com"), 3));
         historico.adicionar(comprador, compra);
         assertFalse(comprador.getHistoricoDeCompras().isEmpty());
+        assertFalse(historico.verHistorico(comprador).isEmpty());
         assertEquals(historico.verHistorico(comprador).size(), 1);
         assertEquals(historico.verHistorico(comprador).get(0), compra);
         dao.remover("12345678901teste");

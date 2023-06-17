@@ -90,13 +90,15 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 		ProdutoDao produtoDao = DaoFactory.criarProdutoDao();
 		LojaDao lojaDao = DaoFactory.criarLojaDao();
 		Loja loja = lojaDao.buscarPeloEmail(produtoComprado.getEmailLoja());
-
+		if(loja == null) {
+			throw new StoreNotFoundException(); 
+		}
 		int novaQuant = produtoComprado.getQuantidade() - quantidade;
 
 		List<Produto> produtos = loja.getProdutos();
 
 		Produto produtoRemovido = null;
-		for (Produto produto : loja.getProdutos()) {
+		for (Produto produto : produtos) {
 			if (produto.getNome().equals(produtoComprado.getNome())) {
 				produtoRemovido = produto;
 				break;
@@ -121,13 +123,14 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 			// Adicionar a compra no histórico
 			historicoDao.adicionar(comprador, new Compra(new Pedido(produtoComprado, quantidade)));
 
-			for (Produto produto : produtos) {
+			/*for (Produto produto : produtos) {
 				// Realize as verificações para encontrar o produto específico
 				if (produto.getNome().equals(produtoComprado.getNome())) {
 					produto.setQuantidade(novaQuant);
 					break;
 				}
-			}
+			}*/
+			produtoRemovido.setQuantidade(novaQuant);
 
 				// atualiza a quant do produto disponivel na loja
 				loja.setProdutos(produtos);

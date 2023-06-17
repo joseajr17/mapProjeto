@@ -3,6 +3,9 @@ package Testes;
 import org.junit.Assert;
 import org.junit.Test;
 
+import model.dao.CompradorDao;
+import model.dao.impl.CompradorDaoImpl;
+import model.entities.Comprador;
 import util.Validar;
 
 public class ValidarTeste {
@@ -59,4 +62,5 @@ public class ValidarTeste {
         Assert.assertFalse(Validar.validarSenha("123456789"));
         Assert.assertFalse(Validar.validarSenha("senha"));
     }
+
 }
