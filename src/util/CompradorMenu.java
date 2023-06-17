@@ -213,7 +213,7 @@ public class CompradorMenu {
 			System.out.println("Lista de todos os produtos do seu carrinho:");
 			for (int i = 0; i < produtos.size(); i++) {
 				Produto produto = produtos.get(i);
-				System.out.println((i + 1) + ". " + produto.getNome());
+				System.out.println((i + 1) + ". " + produto);
 			}
 			System.out.println();
 
@@ -261,7 +261,7 @@ public class CompradorMenu {
 			System.out.println("Lista de todos os produtos disponíveis para compra:");
 			for (int i = 0; i < produtosDisponiveis.size(); i++) {
 				Produto produto = produtosDisponiveis.get(i);
-				System.out.println((i + 1) + ". " + produto.getNome());
+				System.out.println((i + 1) + ". " + produto);
 			}
 			System.out.println();
 

@@ -46,7 +46,7 @@ public class Compra {
 
     @Override
     public String toString() {
-        return  "Data: " + date + "Hora: " + time + "\nCompra: " + pedido;
+        return  "Data: " + date + " Hora: " + time + "\nCompra -> " + pedido;
     }
    
 }

@@ -41,7 +41,7 @@ public void setValor(double valor) {
 
 @Override
 public String toString() {
-    return "Produto: " + produto.getNome() + "Quantidade: " + quantidade + "Valor: " + valor + "\n";
+    return "Produto: " + produto.getNome() + ", Quantidade: " + quantidade + ", Valor: " + valor + "\n";
 }
 
 
