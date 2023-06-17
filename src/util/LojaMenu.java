@@ -17,101 +17,117 @@ public class LojaMenu {
 	private static Scanner sc = new Scanner(System.in);
 
 	public void exibirMenuLoja(Loja loja) {
-	    int opcao;
+		int opcao;
 
-	    do {
-	        System.out.println("----- MENU DA LOJA -----");
-	        System.out.println("1. Adicionar produto");
-	        System.out.println("2. Atualizar informações do produto");
-	        System.out.println("3. Remover produto");
-	        System.out.println("4. Editar perfil");
-	        System.out.println("5. Excluir perfil");
-	        System.out.println("0. Sair");
-	        System.out.print("Escolha uma opção: ");
+		do {
+			System.out.println("----- MENU DA LOJA -----");
+			System.out.println("1. Adicionar produto");
+			System.out.println("2. Atualizar informações do produto");
+			System.out.println("3. Remover produto");
+			System.out.println("4. Editar perfil");
+			System.out.println("5. Excluir perfil");
+			System.out.println("0. Sair");
+			System.out.print("Escolha uma opção: ");
 
-	        try {
-	            opcao = sc.nextInt();
-	            sc.nextLine();
+			try {
+				opcao = sc.nextInt();
+				sc.nextLine();
 
-	            switch (opcao) {
-	                case 1:
-	                    adicionarProduto(loja);
-	                    break;
-	                case 2:
-	                    atualizarInformacoesProduto(loja);
-	                    break;
-	                case 3:
-	                    removerProduto(loja);
-	                    break;
-	                case 4:
-	                    editarPerfilLoja(loja);
-	                    break;
-	                case 5:
-	                    excluirPerfilLoja(loja);
-	                    break;
-	                case 0:
-	                    System.out.println("Saindo do menu da loja...");
-	                    break;
-	                default:
-	                    System.out.println("Opção inválida. Tente novamente.");
-	            }
-	        } catch (InputMismatchException e) {
-	            System.out.println("Entrada inválida. Digite um número inteiro.");
-	            sc.nextLine(); // Limpar o buffer do scanner
-	            opcao = -1; // Definir um valor inválido para continuar no loop
-	        }
-	    } while (opcao != 0);
+				switch (opcao) {
+				case 1:
+					adicionarProduto(loja);
+					break;
+				case 2:
+					atualizarInformacoesProduto(loja);
+					break;
+				case 3:
+					removerProduto(loja);
+					break;
+				case 4:
+					editarPerfilLoja(loja);
+					break;
+				case 5:
+					excluirPerfilLoja(loja);
+					break;
+				case 0:
+					System.out.println("Saindo do menu da loja...");
+					break;
+				default:
+					System.out.println("Opção inválida. Tente novamente.");
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("Entrada inválida. Digite um número inteiro.");
+				sc.nextLine(); // Limpar o buffer do scanner
+				opcao = -1; // Definir um valor inválido para continuar no loop
+			}
+		} while (opcao != 0);
 	}
 
 	private void adicionarProduto(Loja loja) {
-	    System.out.println("----- ADICIONAR PRODUTO -----");
+		System.out.println("----- ADICIONAR PRODUTO -----");
 
-	    // Solicitar as informações do novo produto
-	    System.out.print("Nome do produto: ");
-	    String nome = sc.nextLine();
+		// Solicitar as informações do novo produto
+		System.out.print("Nome do produto: ");
+		String nome = sc.nextLine();
 
-	    System.out.print("Valor do produto em R$: ");
-	    Double valor = sc.nextDouble();
+		System.out.print("Valor do produto em R$: ");
+		Double valor = sc.nextDouble();
 
-	    System.out.print("Tipo do produto: ");
-	    ProdutoTipo tipo = ProdutoTipo.valueOf(sc.next().toUpperCase());
+		ProdutoTipo tipo = null;
+		boolean tipoValido = false;
 
-	    Integer quant;
-	    do{
-            System.out.print("Quantidade do produto: ");
-	    quant = sc.nextInt();
-	    sc.nextLine();
-        if(quant < 0){
-            System.out.println("A quantidade de produto não pode ser negativa!");
-        }
-        } while(quant < 0);
+		while (!tipoValido) {
+			System.out.print("Tipo do produto: ");
+			String tipoStr = sc.next().toUpperCase();
 
-	    System.out.print("Marca do produto: ");
-	    String marca = sc.nextLine();
+			try {
+				tipo = ProdutoTipo.valueOf(tipoStr);
 
-	    System.out.print("Descrição do produto: ");
-	    String descricao = sc.nextLine();
+				if (tipo == ProdutoTipo.CALÇADO || tipo == ProdutoTipo.COSMÉTICO || tipo == ProdutoTipo.ELETRÔNICO
+						|| tipo == ProdutoTipo.LIVRO || tipo == ProdutoTipo.ROUPA) {
+					tipoValido = true; // Tipo válido, sair do loop
+				}
 
-	    Produto produto = new Produto(nome, valor, tipo, quant, marca, descricao, loja.getEmail());
+			} catch (IllegalArgumentException e) {
+				System.out.println("Tipo de produto inválido. Tipos válidos: CALÇADO, COSMÉTICO, ELETRÔNICO, LIVRO, ROUPA.\nTente novamente!");
+			}
+		}
 
-	    // Verificar se a lista de produtos da loja está inicializada
-	    if (loja.getProdutos() == null) {
-	        loja.setProdutos(new ArrayList<>());
-	    }
+		Integer quant;
+		do {
+			System.out.print("Quantidade do produto: ");
+			quant = sc.nextInt();
+			sc.nextLine();
+			if (quant < 0) {
+				System.out.println("A quantidade de produto não pode ser negativa!");
+			}
+		} while (quant < 0);
 
-	    // Verificar se o produto já existe na loja antes de adicionar
-	    if (!loja.getProdutos().contains(produto)) {
-	        loja.getProdutos().add(produto);
-	        lojaDao.atualizar(loja);
+		System.out.print("Marca do produto: ");
+		String marca = sc.nextLine();
 
-	        // cadastrar no arquivo JSON dos produtos
-	        produtoDao.cadastrar(produto);
-	        System.out.println("Produto cadastrado com sucesso!");
-	    } else {
-	        System.out.println("O produto já existe na loja.");
-	    }
+		System.out.print("Descrição do produto: ");
+		String descricao = sc.nextLine();
+
+		Produto produto = new Produto(nome, valor, tipo, quant, marca, descricao, loja.getEmail());
+
+		// Verificar se a lista de produtos da loja está inicializada
+		if (loja.getProdutos() == null) {
+			loja.setProdutos(new ArrayList<>());
+		}
+
+		// Verificar se o produto já existe na loja antes de adicionar
+		if (!loja.getProdutos().contains(produto)) {
+			loja.getProdutos().add(produto);
+			lojaDao.atualizar(loja);
+
+			// cadastrar no arquivo JSON dos produtos
+			produtoDao.cadastrar(produto);
+			System.out.println("Produto cadastrado com sucesso!");
+		} else {
+			System.out.println("O produto já existe na loja.");
+		}
 	}
-
 
 	private void atualizarInformacoesProduto(Loja loja) {
 		System.out.println("----- ATUALIZAR INFORMAÇÕES DO PRODUTO -----");
@@ -191,58 +207,59 @@ public class LojaMenu {
 		// Atualizar o produto no arquivo JSON produtosExistentes
 		produtoDao.atualizar(produtoAtualizado);
 		System.out.println("Produto atualizado com sucesso!");
-		
+
 	}
 
 	private void removerProduto(Loja loja) {
-	    System.out.println("----- REMOVER PRODUTO -----");
+		System.out.println("----- REMOVER PRODUTO -----");
 
-	    // Solicitar o nome do produto a ser removido
-	    System.out.print("Digite o nome do produto a ser removido: ");
-	    String nomeProduto = sc.nextLine();
+		// Solicitar o nome do produto a ser removido
+		System.out.print("Digite o nome do produto a ser removido: ");
+		String nomeProduto = sc.nextLine();
 
-	    // Verificar se o produto existe na lista de produtos da loja
-	    Produto produtoRemovido = null;
-	    for (Produto produto : loja.getProdutos()) {
-	        if (produto.getNome().equalsIgnoreCase(nomeProduto)) {
-	            produtoRemovido = produto;
-	            break;
-	        }
-	    }
+		// Verificar se o produto existe na lista de produtos da loja
+		Produto produtoRemovido = null;
+		for (Produto produto : loja.getProdutos()) {
+			if (produto.getNome().equalsIgnoreCase(nomeProduto)) {
+				produtoRemovido = produto;
+				break;
+			}
+		}
 
-	    if (produtoRemovido == null) {
-	        System.out.println("Produto não encontrado na loja.");
-	        return;
-	    }
+		if (produtoRemovido == null) {
+			System.out.println("Produto não encontrado na loja.");
+			return;
+		}
 
-	    // Confirmar a exclusão do produto
-	    System.out.print("Tem certeza que deseja remover o produto? (S/N): ");
-	    String confirmacao = sc.nextLine();
+		// Confirmar a exclusão do produto
+		System.out.print("Tem certeza que deseja remover o produto? (S/N): ");
+		String confirmacao = sc.nextLine();
 
-	    if (confirmacao.equalsIgnoreCase("S")) {
-	        // Remover o produto da lista de produtos da loja
-	        loja.getProdutos().remove(produtoRemovido);
+		if (confirmacao.equalsIgnoreCase("S")) {
+			// Remover o produto da lista de produtos da loja
+			loja.getProdutos().remove(produtoRemovido);
 
-	        // Atualizar a loja no arquivo JSON
-	        lojaDao.atualizar(loja);
+			// Atualizar a loja no arquivo JSON
+			lojaDao.atualizar(loja);
 
-	        // Remover o produto do arquivo JSON produtosExistentes
-	        //produtoDao.remover(nomeProduto);
-	        
-	        System.out.println("Produto removido com sucesso!");
+			// Remover o produto do arquivo JSON produtosExistentes
+			// produtoDao.remover(nomeProduto);
 
-	        // Verificar se a lista de produtos da loja está vazia e exibir mensagem apropriada
-	        if (loja.getProdutos().isEmpty()) {
-	            System.out.println("A lista de produtos da loja está vazia.");
-	        } else {
-	            System.out.println("Produtos restantes na loja:");
-	            for (Produto produto : loja.getProdutos()) {
-	                System.out.println(produto.getNome());
-	            }
-	        }
-	    } else {
-	        System.out.println("Exclusão cancelada.");
-	    }
+			System.out.println("Produto removido com sucesso!");
+
+			// Verificar se a lista de produtos da loja está vazia e exibir mensagem
+			// apropriada
+			if (loja.getProdutos().isEmpty()) {
+				System.out.println("A lista de produtos da loja está vazia.");
+			} else {
+				System.out.println("Produtos restantes na loja:");
+				for (Produto produto : loja.getProdutos()) {
+					System.out.println(produto.getNome());
+				}
+			}
+		} else {
+			System.out.println("Exclusão cancelada.");
+		}
 	}
 
 	private void editarPerfilLoja(Loja loja) {
@@ -272,13 +289,13 @@ public class LojaMenu {
 		System.out.print("Novo endereço (deixe em branco para manter o atual): ");
 		String novoEndereco = sc.nextLine();
 		loja.setEndereco(novoEndereco);
-		
+
 		loja.setProdutos(loja.getProdutos());
 
 		lojaDao.atualizar(loja);
 		System.out.println("Informações da loja atualizadas com sucesso.");
 	}
-	
+
 	private void excluirPerfilLoja(Loja loja) {
 		System.out.println("----- EXCLUIR PERFIL DA LOJA -----");
 
@@ -289,7 +306,7 @@ public class LojaMenu {
 		if (!cpfOuCnpj.equals(loja.getCpfOUcnpj())) {
 			System.out.println("Você não digitou o CPF ou CNPJ correto.");
 			return;
-			
+
 		}
 
 		System.out.println("Tem certeza disso(DIGITE S para confirmar)?");
