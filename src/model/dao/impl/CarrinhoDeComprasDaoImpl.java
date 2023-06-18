@@ -73,19 +73,16 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 
 	@Override
 	public List<Produto> listarProdutos(Comprador comprador) {
-		List<Produto> produtos = new ArrayList<>();
-
-		List<Produto> carrinhoDeCompras = comprador.getCarrinhoDeCompras();
-
-		if (carrinhoDeCompras != null) {
-			produtos.addAll(carrinhoDeCompras);
-		}
-
-		return produtos;
+		comprador = compradorDao.buscar(comprador.getEmail());
+	    List<Produto> carrinhoDeCompras = comprador.getCarrinhoDeCompras();
+	    return carrinhoDeCompras;
 	}
+
+
 
 	@Override
 	public void comprar(Comprador comprador, Produto produtoComprado, int quantidade) throws StoreNotFoundException {
+		comprador = compradorDao.buscar(comprador.getEmail());
 		HistoricoDeComprasDao historicoDao = DaoFactory.criarHistoricoDeComprasDao();
 		ProdutoDao produtoDao = DaoFactory.criarProdutoDao();
 		LojaDao lojaDao = DaoFactory.criarLojaDao();
@@ -137,9 +134,6 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 
 				// Atualizar a loja no arquivo JSON
 				lojaDao.atualizar(loja);
-			
-
 		}
-		
 	}
 }

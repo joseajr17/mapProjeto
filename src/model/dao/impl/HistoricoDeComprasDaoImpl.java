@@ -30,6 +30,7 @@ public class HistoricoDeComprasDaoImpl implements HistoricoDeComprasDao{
 
 	@Override
 	public List<Compra> verHistorico(Comprador comprador) {
+		comprador = compradorDao.buscar(comprador.getEmail());
 		List<Compra> historico = comprador.getHistoricoDeCompras();
 		if(historico == null){
 			historico = new ArrayList<>();

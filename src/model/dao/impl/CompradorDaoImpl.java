@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -96,49 +98,46 @@ public class CompradorDaoImpl implements CompradorDao {
 		return null;
 	}
 
+	
 	@Override
 	public void atualizar(Comprador obj) {
-		List<Comprador> compradores = lerCompradores();
+	    List<Comprador> compradores = lerCompradores();
 
-		for (int i = 0; i < compradores.size(); i++) {
-			Comprador comprador = compradores.get(i);
-			if (comprador.getCpf().equals(obj.getCpf())) {
-				if (!obj.getNome().isEmpty()) {
-					comprador.setNome(obj.getNome());
-				}
-				if (!obj.getEmail().isEmpty()) {
-					comprador.setEmail(obj.getEmail());
-				}
-				if (!obj.getSenha().isEmpty()) {
-					comprador.setSenha(obj.getSenha());
-				}
-				if (!obj.getEndereco().isEmpty()) {
-					comprador.setEndereco(obj.getEndereco());
-				}
-				if(!obj.getCarrinhoDeCompras().isEmpty()) {
-					comprador.setCarrinhoDeCompras(obj.getCarrinhoDeCompras());
-				}
-				if(!obj.getHistoricoDeCompras().isEmpty()) {
-					comprador.setHistoricoDeCompras(obj.getHistoricoDeCompras());
-				}
-				break;
-			}
-		}
-		salvarCompradores(compradores, true);
+	    for (int i = 0; i < compradores.size(); i++) {
+	        Comprador comprador = compradores.get(i);
+	        if (comprador.getCpf().equals(obj.getCpf())) {
+	            if (!obj.getNome().isEmpty()) {
+	                comprador.setNome(obj.getNome());
+	            }
+	            if (!obj.getEmail().isEmpty()) {
+	                comprador.setEmail(obj.getEmail());
+	            }
+	            if (!obj.getSenha().isEmpty()) {
+	                comprador.setSenha(obj.getSenha());
+	            }
+	            if (!obj.getEndereco().isEmpty()) {
+	                comprador.setEndereco(obj.getEndereco());
+	            }
+	            if (!obj.getCarrinhoDeCompras().isEmpty()) {
+	                comprador.setCarrinhoDeCompras(obj.getCarrinhoDeCompras());
+	            }
+	            if (!obj.getHistoricoDeCompras().isEmpty()) {
+	                comprador.setHistoricoDeCompras(obj.getHistoricoDeCompras());
+	            }
+	            break;
+	        }
+	    }
+	    salvarCompradores(compradores);
 	}
 
-	private void salvarCompradores(List<Comprador> compradores, boolean acaoBemSucedida) {
+
+	private void salvarCompradores(List<Comprador> compradores) {
 		Gson gson = new Gson();
 
 		try {
 			FileWriter writer = new FileWriter(compradoresPath);
 			gson.toJson(compradores, writer);
 			writer.close();
-			if (acaoBemSucedida) {
-				
-			} else {
-				
-			}
 		} catch (IOException e) {
 			System.out.println("Erro ao atualizar/remover o comprador: " + e.getMessage());
 		}
@@ -155,7 +154,7 @@ public class CompradorDaoImpl implements CompradorDao {
 				break;
 			}
 		}
-		salvarCompradores(compradores, false);
+		salvarCompradores(compradores);
 	}
 
 	@Override
