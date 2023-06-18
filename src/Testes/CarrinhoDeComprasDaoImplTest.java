@@ -43,7 +43,7 @@ public class CarrinhoDeComprasDaoImplTest {
         Comprador comprador = new Comprador("Teste", "Teste@gmail.com", "123456teste", "12345678901teste", "Rua Teste");
         dao.cadastrar(comprador);
         assertTrue(comprador.getCarrinhoDeCompras().isEmpty());
-        carrinho.adicionar(comprador, new Produto("Headphone", 29.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto", "teste3@gmail.com"));
+        carrinho.adicionar(comprador, new Produto("Headphone", 29.99, ProdutoTipo.ELETRONICO, 10, "Stax", "Headphone preto", "teste3@gmail.com"));
         assertFalse(comprador.getCarrinhoDeCompras().isEmpty());
     }
 
@@ -52,7 +52,7 @@ public class CarrinhoDeComprasDaoImplTest {
         Comprador comprador = new Comprador("Teste", "Teste@gmail.com", "123456teste", "12345678901teste", "Rua Teste");
         dao.cadastrar(comprador);
         assertTrue(comprador.getCarrinhoDeCompras().isEmpty());
-        Produto produto = new Produto("Headphone", 29.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto", "teste32gmail.com");
+        Produto produto = new Produto("Headphone", 29.99, ProdutoTipo.ELETRONICO, 10, "Stax", "Headphone preto", "teste32gmail.com");
         carrinho.adicionar(comprador, produto);
         assertFalse(comprador.getCarrinhoDeCompras().isEmpty());
         carrinho.remover(comprador, produto);
@@ -64,7 +64,7 @@ public class CarrinhoDeComprasDaoImplTest {
     public void testListarProdutos(){
         Comprador comprador = new Comprador("Teste", "Teste@gmail.com", "123456teste", "12345678901teste", "Rua Teste");
         dao.cadastrar(comprador);
-         Produto produto1 = new Produto("Headphone", 29.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto", "teste3@gmail.com");
+         Produto produto1 = new Produto("Headphone", 29.99, ProdutoTipo.ELETRONICO, 10, "Stax", "Headphone preto", "teste3@gmail.com");
         carrinho.adicionar(comprador, produto1);
         assertFalse(carrinho.listarProdutos(comprador).isEmpty());
         assertEquals(1, carrinho.listarProdutos(comprador).size());
@@ -78,7 +78,7 @@ public class CarrinhoDeComprasDaoImplTest {
     public void testComprar() throws StoreNotFoundException{
         Comprador comprador = new Comprador("Teste", "Teste@gmail.com", "123456teste", "12345678901teste", "Rua Teste");
         dao.cadastrar(comprador);
-        Produto produto1 = new Produto("Headphone", 29.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto", "teste3@gmail.com");
+        Produto produto1 = new Produto("Headphone", 29.99, ProdutoTipo.ELETRONICO, 10, "Stax", "Headphone preto", "teste3@gmail.com");
         Loja loja = new Loja("Loja de fones", "teste3@gmail.com", "123teste", "teste123456", "Rua dos fones", new ArrayList<>());
         LojaDaoImpl lojaDao = new LojaDaoImpl();
         lojaDao.cadastrar(loja);
@@ -104,7 +104,7 @@ public class CarrinhoDeComprasDaoImplTest {
     public void testComprarException() throws StoreNotFoundException{
         Comprador comprador = new Comprador("Teste", "Teste@gmail.com", "123456teste", "12345678901teste", "Rua Teste");
         dao.cadastrar(comprador);
-        Produto produto1 = new Produto("Headphone", 29.99, ProdutoTipo.ELETRÔNICO, 10, "Stax", "Headphone preto", "teste5@gmail.com");
+        Produto produto1 = new Produto("Headphone", 29.99, ProdutoTipo.ELETRONICO, 10, "Stax", "Headphone preto", "teste5@gmail.com");
         Loja loja = new Loja("Loja de fones", "teste3@gmail.com", "123teste", "teste123456", "Rua dos fones", new ArrayList<>());
         LojaDaoImpl lojaDao = new LojaDaoImpl();
         lojaDao.cadastrar(loja);

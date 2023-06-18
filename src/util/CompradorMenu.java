@@ -245,7 +245,7 @@ public class CompradorMenu {
 			Comprador compradorAtualizado = compradorDao.buscar(comprador.getEmail());
 
 			// Remova o produto do carrinho de compras
-			carrinhoDeComprasDao.remover(compradorAtualizado, produto);
+			carrinhoDeComprasDao.remover(comprador, produto);
 			System.out.println("Produto removido do carrinho com sucesso!");
 		} else {
 			System.out.println("Produto não foi removido do carrinho.");
@@ -255,7 +255,7 @@ public class CompradorMenu {
 	////
 
 	private void listarProdutosParaCompra(Comprador comprador) {
-		List<Produto> produtosDisponiveis = comprador.getCarrinhoDeCompras();
+		List<Produto> produtosDisponiveis = carrinhoDeComprasDao.listarProdutos(comprador);
 		if (produtosDisponiveis.isEmpty()) {
 			System.out.println("Não há produtos disponíveis para compra.");
 		} else {

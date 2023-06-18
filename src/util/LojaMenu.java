@@ -84,7 +84,7 @@ public class LojaMenu {
 			try {
 				tipo = ProdutoTipo.valueOf(tipoStr);
 
-				if (tipo == ProdutoTipo.CALÇADO || tipo == ProdutoTipo.COSMÉTICO || tipo == ProdutoTipo.ELETRÔNICO
+				if (tipo == ProdutoTipo.CALCADO || tipo == ProdutoTipo.COSMETICO || tipo == ProdutoTipo.ELETRONICO
 						|| tipo == ProdutoTipo.LIVRO || tipo == ProdutoTipo.ROUPA) {
 					tipoValido = true; // Tipo válido, sair do loop
 				}

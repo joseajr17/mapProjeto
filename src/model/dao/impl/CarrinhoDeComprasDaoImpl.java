@@ -42,43 +42,36 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 		comprador.setCarrinhoDeCompras(carrinhoDeCompras);
 
 		compradorDao.atualizar(comprador);
-		System.out.println("Produto adicionado ao carrinho com sucesso!");
 	}
 
 	@Override
 	public void remover(Comprador comprador, Produto obj) {
+		comprador = compradorDao.buscar(comprador.getEmail());
 		List<Produto> carrinhoDeCompras = comprador.getCarrinhoDeCompras();
-
 		if (carrinhoDeCompras == null || carrinhoDeCompras.isEmpty()) {
 			System.out.println("O carrinho de compras está vazio.");
 			return;
 		}
-
 		// Verificar se o produto está no carrinho
 		boolean produtoEncontrado = carrinhoDeCompras.stream().anyMatch(
 				p -> p.getNome().equalsIgnoreCase(obj.getNome()) && p.getEmailLoja().equals(obj.getEmailLoja()));
-
 		if (!produtoEncontrado) {
 			System.out.println("O produto da mesma loja com o mesmo nome não está presente no carrinho.");
 			return;
 		}
-
 		carrinhoDeCompras.removeIf(
 				p -> p.getNome().equalsIgnoreCase(obj.getNome()) && p.getEmailLoja().equals(obj.getEmailLoja()));
-
+		
 		comprador.setCarrinhoDeCompras(carrinhoDeCompras);
-
 		compradorDao.atualizar(comprador);
 	}
 
 	@Override
 	public List<Produto> listarProdutos(Comprador comprador) {
 		comprador = compradorDao.buscar(comprador.getEmail());
-	    List<Produto> carrinhoDeCompras = comprador.getCarrinhoDeCompras();
-	    return carrinhoDeCompras;
+		List<Produto> carrinhoDeCompras = comprador.getCarrinhoDeCompras();
+		return carrinhoDeCompras;
 	}
-
-
 
 	@Override
 	public void comprar(Comprador comprador, Produto produtoComprado, int quantidade) throws StoreNotFoundException {
@@ -87,8 +80,8 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 		ProdutoDao produtoDao = DaoFactory.criarProdutoDao();
 		LojaDao lojaDao = DaoFactory.criarLojaDao();
 		Loja loja = lojaDao.buscarPeloEmail(produtoComprado.getEmailLoja());
-		if(loja == null) {
-			throw new StoreNotFoundException(); 
+		if (loja == null) {
+			throw new StoreNotFoundException();
 		}
 		int novaQuant = produtoComprado.getQuantidade() - quantidade;
 
@@ -120,20 +113,18 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 			// Adicionar a compra no histórico
 			historicoDao.adicionar(comprador, new Compra(new Pedido(produtoComprado, quantidade)));
 
-			/*for (Produto produto : produtos) {
-				// Realize as verificações para encontrar o produto específico
-				if (produto.getNome().equals(produtoComprado.getNome())) {
-					produto.setQuantidade(novaQuant);
-					break;
-				}
-			}*/
+			/*
+			 * for (Produto produto : produtos) { // Realize as verificações para encontrar
+			 * o produto específico if (produto.getNome().equals(produtoComprado.getNome()))
+			 * { produto.setQuantidade(novaQuant); break; } }
+			 */
 			produtoRemovido.setQuantidade(novaQuant);
 
-				// atualiza a quant do produto disponivel na loja
-				loja.setProdutos(produtos);
+			// atualiza a quant do produto disponivel na loja
+			loja.setProdutos(produtos);
 
-				// Atualizar a loja no arquivo JSON
-				lojaDao.atualizar(loja);
+			// Atualizar a loja no arquivo JSON
+			lojaDao.atualizar(loja);
 		}
 	}
 }

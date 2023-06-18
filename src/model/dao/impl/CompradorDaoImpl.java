@@ -6,8 +6,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +14,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import model.dao.CompradorDao;
+import model.dao.DaoFactory;
 import model.entities.Comprador;
 
 public class CompradorDaoImpl implements CompradorDao {
@@ -56,8 +55,7 @@ public class CompradorDaoImpl implements CompradorDao {
 			FileWriter writer = new FileWriter(compradoresPath);
 			writer.write(json);
 			writer.close();
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			System.out.println("Erro ao cadastrar o comprador: " + e.getMessage());
 		}
 	}
@@ -98,38 +96,36 @@ public class CompradorDaoImpl implements CompradorDao {
 		return null;
 	}
 
-	
 	@Override
 	public void atualizar(Comprador obj) {
-	    List<Comprador> compradores = lerCompradores();
 
-	    for (int i = 0; i < compradores.size(); i++) {
-	        Comprador comprador = compradores.get(i);
-	        if (comprador.getCpf().equals(obj.getCpf())) {
-	            if (!obj.getNome().isEmpty()) {
-	                comprador.setNome(obj.getNome());
-	            }
-	            if (!obj.getEmail().isEmpty()) {
-	                comprador.setEmail(obj.getEmail());
-	            }
-	            if (!obj.getSenha().isEmpty()) {
-	                comprador.setSenha(obj.getSenha());
-	            }
-	            if (!obj.getEndereco().isEmpty()) {
-	                comprador.setEndereco(obj.getEndereco());
-	            }
-	            if (!obj.getCarrinhoDeCompras().isEmpty()) {
-	                comprador.setCarrinhoDeCompras(obj.getCarrinhoDeCompras());
-	            }
-	            if (!obj.getHistoricoDeCompras().isEmpty()) {
-	                comprador.setHistoricoDeCompras(obj.getHistoricoDeCompras());
-	            }
-	            break;
-	        }
-	    }
-	    salvarCompradores(compradores);
+		List<Comprador> compradores = lerCompradores();
+
+		for (int i = 0; i < compradores.size(); i++) {
+			Comprador comprador = compradores.get(i);
+			if (comprador.getCpf().equals(obj.getCpf())) {
+				if (!obj.getNome().isEmpty()) {
+					comprador.setNome(obj.getNome());
+				}
+				if (!obj.getEmail().isEmpty()) {
+					comprador.setEmail(obj.getEmail());
+				}
+				if (!obj.getSenha().isEmpty()) {
+					comprador.setSenha(obj.getSenha());
+				}
+				if (!obj.getEndereco().isEmpty()) {
+					comprador.setEndereco(obj.getEndereco());
+				}
+
+				comprador.setCarrinhoDeCompras(obj.getCarrinhoDeCompras());
+
+				comprador.setHistoricoDeCompras(obj.getHistoricoDeCompras());
+
+				break;
+			}
+		}
+		salvarCompradores(compradores);
 	}
-
 
 	private void salvarCompradores(List<Comprador> compradores) {
 		Gson gson = new Gson();
