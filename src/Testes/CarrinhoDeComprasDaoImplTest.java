@@ -56,7 +56,7 @@ public class CarrinhoDeComprasDaoImplTest {
         carrinho.adicionar(comprador, produto);
         assertFalse(comprador.getCarrinhoDeCompras().isEmpty());
         carrinho.remover(comprador, produto);
-        assertTrue(comprador.getCarrinhoDeCompras().isEmpty());
+        assertTrue(dao.buscar(comprador.getEmail()).getCarrinhoDeCompras().isEmpty());
         assertTrue(carrinho.listarProdutos(comprador).isEmpty());
     }
 
@@ -89,8 +89,8 @@ public class CarrinhoDeComprasDaoImplTest {
         carrinho.adicionar(comprador, produto1);
         carrinho.comprar(comprador, produto1, 3);
         HistoricoDeComprasDaoImpl historico = new HistoricoDeComprasDaoImpl();
-        assertFalse(historico.verHistorico(comprador).isEmpty());
-        assertEquals(1, historico.verHistorico(comprador).size());
+        assertFalse(historico.verHistorico(dao.buscar(comprador.getEmail())).isEmpty());
+        assertEquals(1, historico.verHistorico(dao.buscar(comprador.getEmail())).size());
         int quantidade = lojaDao.buscarPeloEmail(produto1.getEmailLoja()).getProdutos().get(0).getQuantidade();
         assertEquals(7, quantidade);
         quantidade = produtoDao.buscar("Headphone").get(0).getQuantidade();
