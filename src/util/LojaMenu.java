@@ -120,7 +120,7 @@ public class LojaMenu {
 		// Verificar se o produto já existe na loja antes de adicionar
 		if (!loja.getProdutos().contains(produto)) {
 			loja.getProdutos().add(produto);
-			lojaDao.atualizar(loja);
+			lojaDao.atualizar(loja); 
 
 			// cadastrar no arquivo JSON dos produtos
 			produtoDao.cadastrar(produto);

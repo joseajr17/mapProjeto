@@ -120,13 +120,14 @@ public class Produto implements Serializable{
 				return false;
 		} else if (!nome.equals(other.nome))
 			return false;
+		
 		if (quantidade == null) {
 			if (other.quantidade != null)
 				return false;
-		} else if (!quantidade.equals(other.quantidade))
-			return false;
+				
+		}
 		if (tipo != other.tipo)
-			return false;
+			return false; 
 		if (valor == null) {
 			if (other.valor != null)
 				return false;

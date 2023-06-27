@@ -95,6 +95,27 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 			}
 		}
 
+		// atualizo a quantidade do produto no JSON chamado produtosExistentes
+		produtoComprado.setQuantidade(novaQuant);
+
+		// Atualizar o produto no arquivo JSON
+		produtoDao.atualizar(produtoComprado);
+
+		// Adicionar a compra no histórico
+		historicoDao.adicionar(comprador, new Compra(new Pedido(produtoComprado, quantidade)));
+
+		/*
+		 * for (Produto produto : produtos) { // Realize as verificações para encontrar
+		 * o produto específico if (produto.getNome().equals(produtoComprado.getNome()))
+		 * { produto.setQuantidade(novaQuant); break; } }
+		 */
+		produtoRemovido.setQuantidade(novaQuant);
+
+		// atualiza a quant do produto disponivel na loja
+		loja.setProdutos(produtos);
+
+		// Atualizar a loja no arquivo JSON
+		lojaDao.atualizar(loja);
 		// se a quant restante for zero faz isso
 		if (novaQuant == 0) {
 			produtoDao.remover(produtoComprado);
@@ -102,29 +123,7 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 			loja.getProdutos().remove(produtoRemovido);
 			lojaDao.atualizar(loja);
 
-			// se sobrar algo diferente de zero faz isso
-		} else {
-			// atualizo a quantidade do produto no JSON chamado produtosExistentes
-			produtoComprado.setQuantidade(novaQuant);
-
-			// Atualizar o produto no arquivo JSON
-			produtoDao.atualizar(produtoComprado);
-
-			// Adicionar a compra no histórico
-			historicoDao.adicionar(comprador, new Compra(new Pedido(produtoComprado, quantidade)));
-
-			/*
-			 * for (Produto produto : produtos) { // Realize as verificações para encontrar
-			 * o produto específico if (produto.getNome().equals(produtoComprado.getNome()))
-			 * { produto.setQuantidade(novaQuant); break; } }
-			 */
-			produtoRemovido.setQuantidade(novaQuant);
-
-			// atualiza a quant do produto disponivel na loja
-			loja.setProdutos(produtos);
-
-			// Atualizar a loja no arquivo JSON
-			lojaDao.atualizar(loja);
 		}
+
 	}
 }

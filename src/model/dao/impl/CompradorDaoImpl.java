@@ -14,7 +14,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import model.dao.CompradorDao;
-import model.dao.DaoFactory;
 import model.entities.Comprador;
 
 public class CompradorDaoImpl implements CompradorDao {
@@ -158,4 +157,5 @@ public class CompradorDaoImpl implements CompradorDao {
 		List<Comprador> compradores = lerCompradores();
 		return compradores;
 	}
+
 }

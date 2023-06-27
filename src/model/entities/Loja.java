@@ -3,6 +3,9 @@ package model.entities;
 import java.io.Serializable;
 import java.util.List;
 
+import model.dao.ComentarioDao;
+import model.dao.impl.ComentarioDaoImpl;
+
 public class Loja implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -128,6 +131,32 @@ public class Loja implements Serializable{
 		} else if (!senha.equals(other.senha))
 			return false;
 		return true;
+	}
+
+	private double getMediaNota(){
+		ComentarioDao comentarioDao = new ComentarioDaoImpl();
+		List<Comentario> comentarios = comentarioDao.listar(this);
+		double nota = 0.0;
+		int n = 0;
+		for(Comentario comentario: comentarios){
+			nota += comentario.getNota();
+			n++;
+		}
+		return nota/n;
+	}
+
+	public Conceito getConceito(){
+		double mediaNota = getMediaNota();
+
+		if(mediaNota <= 2){
+			return Conceito.RUIM;
+		} else if(mediaNota <= 3){
+			return Conceito.MEDIO;
+		} else if (mediaNota <= 4){
+			return Conceito.BOM;
+		} else{
+			return Conceito.EXCELENTE;
+		}
 	}
 
 	@Override
