@@ -161,7 +161,7 @@ public class Loja implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Loja [nome=" + nome + ", email=" + email + ", senha=" + senha + ", cpfOUcnpj=" + cpfOUcnpj
+		return "Loja [nome=" + nome + ", email=" + email + "conceito= " + getConceito() + ", senha=" + senha + ", cpfOUcnpj=" + cpfOUcnpj
 				+ ", endereco=" + endereco + ", produtos=" + produtos + "]";
 	}
 }
