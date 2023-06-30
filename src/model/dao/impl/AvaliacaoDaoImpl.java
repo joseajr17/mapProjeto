@@ -110,26 +110,4 @@ public class AvaliacaoDaoImpl implements AvaliacaoDao {
 		}
 		return false;
 	}
-
-	// talvez nao vá precisar usar o remover!!!
-	/*
-	 * public String remover(Avaliacao avaliacao){ List <Avaliacao> avaliacoes =
-	 * lerAvaliacoes();
-	 * 
-	 * for (Iterator<Avaliacao> iterator = avaliacoes.iterator();
-	 * iterator.hasNext();) { Avaliacao coment = iterator.next(); if
-	 * (coment.equals(avaliacao)) { iterator.remove(); salvarAvaliacoes(avaliacoes);
-	 * return "Avaliacao removida com sucesso!";
-	 * 
-	 * } } return "Avaliacao não encontrada"; }
-	 * 
-	 * private void salvarAvaliacoes(List<Avaliacao> avaliacoes) { Gson gson = new
-	 * Gson();
-	 * 
-	 * try { FileWriter writer = new FileWriter(avaliacoesPath);
-	 * gson.toJson(avaliacoes, writer); writer.close();
-	 * 
-	 * } catch (IOException e) { System.out.println("Erro ao remover a avaliacao: "
-	 * + e.getMessage()); } }
-	 */
 }
