@@ -317,8 +317,18 @@ public class CompradorMenu {
 				// Obtenha o objeto Comprador atualizado
 				Comprador compradorAtualizado = compradorDao.buscar(comprador.getEmail());
 				carrinhoDeComprasDao.comprar(compradorAtualizado, produtoEscolhido, quantidadeDesejada);
+				
+				// Verificar se o comprador possui 5 pontos e conceder frete grátis
+	            if (compradorAtualizado.getPontuacao() >= 5) {
+	                System.out.println("Parabéns por causa da sua pontuação, você ganhou frete grátis nesse produto!");
+	                compradorAtualizado.setPontuacao(compradorAtualizado.getPontuacao() - 5);
+	            }
+				
 				System.out.println("Produto comprado com sucesso!");
 				carrinhoDeComprasDao.remover(compradorAtualizado, produtoEscolhido);
+
+				compradorAtualizado.setPontuacao(compradorAtualizado.getPontuacao() + 1);
+				compradorDao.atualizar(compradorAtualizado);
 
 			} else {
 				System.out.println("Produto não foi comprado.");
@@ -444,6 +454,9 @@ public class CompradorMenu {
 				avaliacaoDao.adicionar(new Avaliacao(comentario, produtoEscolhido, nota));
 
 				System.out.println("Avaliação realizada com sucesso!");
+				
+				comprador.setPontuacao(comprador.getPontuacao() + 1);
+				compradorDao.atualizar(comprador);
 			}
 
 		} else {

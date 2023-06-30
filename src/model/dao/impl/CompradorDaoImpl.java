@@ -119,6 +119,10 @@ public class CompradorDaoImpl implements CompradorDao {
 				comprador.setCarrinhoDeCompras(obj.getCarrinhoDeCompras());
 
 				comprador.setHistoricoDeCompras(obj.getHistoricoDeCompras());
+				
+				if (!obj.getPontuacao().equals(-1)) {
+					comprador.setPontuacao(obj.getPontuacao());
+				}
 
 				break;
 			}

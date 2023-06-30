@@ -15,21 +15,24 @@ public class Comprador implements Serializable{
 	private String endereco;
 	private List<Produto> carrinhoDeCompras;
 	private List<Compra> historicoDeCompras;
+	private Integer pontuacao;
 	
 	public Comprador() {
 		this("", "", "", "", "");
 	}
 
 	public Comprador(String nome, String email, String senha, String cpf, String endereco) {
-		super();
-		this.nome = nome;
-		this.email = email;
-		this.senha = senha;
-		this.cpf = cpf;
-		this.endereco = endereco;
-		this.carrinhoDeCompras = new ArrayList<>();
-		this.historicoDeCompras = new ArrayList<>();
+	    super();
+	    this.nome = nome;
+	    this.email = email;
+	    this.senha = senha;
+	    this.cpf = cpf;
+	    this.endereco = endereco;
+	    this.carrinhoDeCompras = new ArrayList<>();
+	    this.historicoDeCompras = new ArrayList<>();
+	    this.pontuacao = 0;
 	}
+
 
 	public String getNome() {
 		return nome;
@@ -86,6 +89,15 @@ public class Comprador implements Serializable{
 	public void setHistoricoDeCompras(List<Compra> historicoDeCompras) {
 		this.historicoDeCompras = historicoDeCompras;
 	}
+	
+	public Integer getPontuacao() {
+	    return pontuacao;
+	}
+
+	public void setPontuacao(Integer pontuacao) {
+	    this.pontuacao = pontuacao;
+	}
+
 
 	@Override
 	public int hashCode() {
