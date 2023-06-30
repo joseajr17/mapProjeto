@@ -16,18 +16,20 @@ import com.google.gson.reflect.TypeToken;
 import model.dao.AvaliacaoDao;
 import model.entities.Avaliacao;
 import model.entities.Loja;
+import model.entities.Produto;
 
-public class AvaliacaoDaoImpl implements AvaliacaoDao{
+public class AvaliacaoDaoImpl implements AvaliacaoDao {
 
-    private static final String avaliacoesPath = "C:\\Teste\\AvaliacoesExistentes.json";
+	private static final String avaliacoesPath = "C:\\Teste\\AvaliacoesExistentes.json";
+
 	public AvaliacaoDaoImpl() {
-		
+
 	}
 
 	@Override
 	public void adicionar(Avaliacao avaliacao) {
 		Gson gson = new Gson();
-		
+
 		try {
 			// Verificar se o arquivo existe
 			File arquivo = new File(avaliacoesPath);
@@ -48,17 +50,15 @@ public class AvaliacaoDaoImpl implements AvaliacaoDao{
 			writer.write(json);
 			writer.close();
 
-			
-		}
-		catch (IOException e) {
+		} catch (IOException e) {
 			System.out.println("Erro ao adicionar a avaliacao: " + e.getMessage());
 		}
 	}
 
 	private List<Avaliacao> lerAvaliacoes() {
-		
+
 		Gson gson = new Gson();
-		
+
 		List<Avaliacao> avaliacoes = new ArrayList<>();
 
 		try {
@@ -73,58 +73,63 @@ public class AvaliacaoDaoImpl implements AvaliacaoDao{
 		} catch (IOException e) {
 			System.out.println("Erro ao ler o arquivo de avaliacoes: " + e.getMessage());
 		}
-		
-		if (avaliacoes == null) {
-	        avaliacoes = new ArrayList<>();
-	    }
-	
-        return avaliacoes;
-	}
 
+		if (avaliacoes == null) {
+			avaliacoes = new ArrayList<>();
+		}
+
+		return avaliacoes;
+	}
 
 	private List<Avaliacao> buscar(String loja) {
-	    List<Avaliacao> avaliacoes = lerAvaliacoes();
-	    List<Avaliacao> avaliacoesEncontradas = new ArrayList<>();
+		List<Avaliacao> avaliacoes = lerAvaliacoes();
+		List<Avaliacao> avaliacoesEncontradas = new ArrayList<>();
 
-	    for (Avaliacao avaliacao : avaliacoes) {
-	        if (avaliacao.getKeyLoja().equals(loja)) {
-	            avaliacoesEncontradas.add(avaliacao);
-	        }
-	    }
-	    return avaliacoesEncontradas;
+		for (Avaliacao avaliacao : avaliacoes) {
+			if (avaliacao.getKeyLoja().equals(loja)) {
+				avaliacoesEncontradas.add(avaliacao);
+			}
+		}
+		return avaliacoesEncontradas;
 	}
-
 
 	@Override
-    public List<Avaliacao> listar(Loja loja) {
-        return buscar(loja.getEmail());
-    }
-
-	public String remover(Avaliacao avaliacao){
-		List <Avaliacao> avaliacoes = lerAvaliacoes();
-
-		for (Iterator<Avaliacao> iterator = avaliacoes.iterator(); iterator.hasNext();) {
-	        Avaliacao coment = iterator.next();
-	        if (coment.equals(avaliacao)) {
-	            iterator.remove();
-				salvarAvaliacoes(avaliacoes);
-	            return "Avaliacao removida com sucesso!";
-	
-	        }
-	    }
-		return "Avaliacao não encontrada";
+	public List<Avaliacao> listar(Loja loja) {
+		return buscar(loja.getEmail());
 	}
 
-	private void salvarAvaliacoes(List<Avaliacao> avaliacoes) {
-		Gson gson = new Gson();
+	@Override
+	public boolean existe(Produto produtoEscolhido) {
 
-		try {
-			FileWriter writer = new FileWriter(avaliacoesPath);
-			gson.toJson(avaliacoes, writer);
-			writer.close();
-			
-		} catch (IOException e) {
-			System.out.println("Erro ao remover a avaliacao: " + e.getMessage());
+		List<Avaliacao> avaliacoes = lerAvaliacoes();
+
+		for (Avaliacao avaliacao : avaliacoes) {
+			if (avaliacao.getProduto().equals(produtoEscolhido)) {
+				return true;
+			}
 		}
+		return false;
 	}
+
+	// talvez nao vá precisar usar o remover!!!
+	/*
+	 * public String remover(Avaliacao avaliacao){ List <Avaliacao> avaliacoes =
+	 * lerAvaliacoes();
+	 * 
+	 * for (Iterator<Avaliacao> iterator = avaliacoes.iterator();
+	 * iterator.hasNext();) { Avaliacao coment = iterator.next(); if
+	 * (coment.equals(avaliacao)) { iterator.remove(); salvarAvaliacoes(avaliacoes);
+	 * return "Avaliacao removida com sucesso!";
+	 * 
+	 * } } return "Avaliacao não encontrada"; }
+	 * 
+	 * private void salvarAvaliacoes(List<Avaliacao> avaliacoes) { Gson gson = new
+	 * Gson();
+	 * 
+	 * try { FileWriter writer = new FileWriter(avaliacoesPath);
+	 * gson.toJson(avaliacoes, writer); writer.close();
+	 * 
+	 * } catch (IOException e) { System.out.println("Erro ao remover a avaliacao: "
+	 * + e.getMessage()); } }
+	 */
 }

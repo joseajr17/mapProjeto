@@ -5,15 +5,18 @@ import java.util.List;
 import java.util.Scanner;
 
 import exception.StoreNotFoundException;
+import model.dao.AvaliacaoDao;
 import model.dao.CarrinhoDeComprasDao;
 import model.dao.CompradorDao;
 import model.dao.DaoFactory;
 import model.dao.HistoricoDeComprasDao;
 import model.dao.LojaDao;
 import model.dao.ProdutoDao;
+import model.entities.Avaliacao;
 import model.entities.Compra;
 import model.entities.Comprador;
 import model.entities.Loja;
+import model.entities.Pedido;
 import model.entities.Produto;
 
 public class CompradorMenu {
@@ -21,75 +24,84 @@ public class CompradorMenu {
 	private static LojaDao lojaDao = DaoFactory.criarLojaDao();
 	private static ProdutoDao produtoDao = DaoFactory.criarProdutoDao();
 	private static CarrinhoDeComprasDao carrinhoDeComprasDao = DaoFactory.criarCarrinhoDeComprasDao();
-	private static HistoricoDeComprasDao HistoricoDeCompras = DaoFactory.criarHistoricoDeComprasDao();
+	private static HistoricoDeComprasDao historicoDeComprasDao = DaoFactory.criarHistoricoDeComprasDao();
+	private static AvaliacaoDao avaliacaoDao = DaoFactory.criarAvaliacaoDao();
+
 	private static Scanner sc = new Scanner(System.in);
 
 	public void exibirMenuComprador(Comprador comprador) {
-	    int opcao;
+		int opcao;
 
-	    do {
-	        System.out.println("----- MENU DO COMPRADOR -----");
-	        System.out.println("1. Buscar loja");
-	        System.out.println("2. Listar todas as lojas");
-	        System.out.println("3. Buscar produto");
-	        System.out.println("4. Listar todos os produtos");
-	        System.out.println("5. Listar todos os produtos de uma loja específica");
-	        System.out.println("6. Listar produtos do carrinho de compras");
-	        System.out.println("7. Produtos disponíveis para compra");
-	        System.out.println("8. Ver histórico de compras");
-	        System.out.println("9. Ir para a edição de perfil");
-	        System.out.println("10. Excluir perfil");
-	        System.out.println("0. Sair");
-	        System.out.print("Escolha uma opção: ");
+		do {
+			System.out.println("----- MENU DO COMPRADOR -----");
+			System.out.println("1. Buscar loja");
+			System.out.println("2. Listar todas as lojas");
+			System.out.println("3. Buscar produto");
+			System.out.println("4. Listar todos os produtos");
+			System.out.println("5. Listar todos os produtos de uma loja específica");
+			System.out.println("6. Listar produtos do carrinho de compras");
+			System.out.println("7. Produtos disponíveis para compra");
+			System.out.println("8. Ver histórico de compras");
+			System.out.println("9. Ir para a edição de perfil");
+			System.out.println("10. Excluir perfil");
+			System.out.println("0. Sair");
+			System.out.print("Escolha uma opção: ");
 
-	        try {
-	            opcao = sc.nextInt();
-	            sc.nextLine();
+			try {
+				opcao = sc.nextInt();
+				sc.nextLine();
 
-	            switch (opcao) {
-	                case 1:
-	                    buscarLoja();
-	                    break;
-	                case 2:
-	                    listarTodasAsLojas();
-	                    break;
-	                case 3:
-	                    buscarProduto();
-	                    break;
-	                case 4:
-	                    listarTodosOsProdutos();
-	                    break;
-	                case 5:
-	                    listarProdutosDeLojaEspecifica(comprador);
-	                    break;
-	                case 6:
-	                    listarProdutosDoCarrinho(comprador);
-	                    break;
-	                case 7:
-	                    listarProdutosParaCompra(comprador);
-	                    break;
-	                case 8:
-	                    verHistoricoDeCompras(comprador);
-	                    break;
-	                case 9:
-	                    editarPerfilComprador(comprador);
-	                    break;
-	                case 10:
-	                    excluirPerfilComprador(comprador);
-						opcao = 0;
-	                    break;
-	                case 0:
-	                    System.out.println("Saindo do menu do comprador...");
-	                    break;
-	                default:
-	                    System.out.println("Opção inválida. Tente novamente.");
-	            }
-	        } catch (InputMismatchException e) {
-	            System.out.println("Entrada inválida. Digite um número inteiro.");
-	            sc.nextLine(); // Limpar o buffer do scanner
-	            opcao = -1; // Definir um valor inválido para continuar no loop
-	        }
-	    } while (opcao != 0);
+				switch (opcao) {
+				case 1:
+					buscarLoja();
+					break;
+				case 2:
+					listarTodasAsLojas();
+					break;
+				case 3:
+					buscarProduto();
+					break;
+				case 4:
+					listarTodosOsProdutos();
+					break;
+				case 5:
+					listarProdutosDeLojaEspecifica(comprador);
+					break;
+				case 6:
+					listarProdutosDoCarrinho(comprador);
+					break;
+				case 7:
+					listarProdutosParaCompra(comprador);
+					break;
+				case 8:
+					verHistoricoDeCompras(comprador);
+					break;
+				case 9:
+					editarPerfilComprador(comprador);
+					break;
+				case 10:
+					excluirPerfilComprador(comprador);
+					opcao = 0;
+					break;
+				case 11:
+					testarListagemAvaliacoes(comprador);
+				case 0:
+					System.out.println("Saindo do menu do comprador...");
+					break;
+				default:
+					System.out.println("Opção inválida. Tente novamente.");
+				}
+			} catch (InputMismatchException e) {
+				System.out.println("Entrada inválida. Digite um número inteiro.");
+				sc.nextLine(); // Limpar o buffer do scanner
+				opcao = -1; // Definir um valor inválido para continuar no loop
+			}
+		} while (opcao != 0);
+	}
+
+	private void testarListagemAvaliacoes(Comprador comprador) {
+		// TODO Auto-generated method stub
+
 	}
 
 	private void buscarLoja() {
@@ -298,8 +310,8 @@ public class CompradorMenu {
 					System.out.print("Digite a quantidade do produto que deseja comprar: ");
 					quantidadeDesejada = sc.nextInt();
 					sc.nextLine();
-					if(quantidadeDesejada <= 0 || quantidadeDesejada > produtoEscolhido.getQuantidade())
-					System.out.println("Quantidade invalida.");
+					if (quantidadeDesejada <= 0 || quantidadeDesejada > produtoEscolhido.getQuantidade())
+						System.out.println("Quantidade invalida.");
 				} while (quantidadeDesejada <= 0 || quantidadeDesejada > produtoEscolhido.getQuantidade());
 
 				// Obtenha o objeto Comprador atualizado
@@ -307,7 +319,7 @@ public class CompradorMenu {
 				carrinhoDeComprasDao.comprar(compradorAtualizado, produtoEscolhido, quantidadeDesejada);
 				System.out.println("Produto comprado com sucesso!");
 				carrinhoDeComprasDao.remover(compradorAtualizado, produtoEscolhido);
-				
+
 			} else {
 				System.out.println("Produto não foi comprado.");
 			}
@@ -378,15 +390,65 @@ public class CompradorMenu {
 	}
 
 	private void verHistoricoDeCompras(Comprador comprador) {
-		List<Compra> historico = HistoricoDeCompras.verHistorico(comprador);
+		List<Compra> historico = historicoDeComprasDao.verHistorico(comprador);
 
 		if (historico.isEmpty()) {
 			System.out.println("Ainda não foi realizada nenhuma compra.\n");
 		} else {
 			System.out.println("Histórico de compras\n");
-			for (Compra compra : historico) {
-				System.out.println(compra);
+			for (int i = 0; i < historico.size(); i++) {
+				Compra compra = historico.get(i);
+				System.out.println((i + 1) + ". " + compra);
+			}
+
+			System.out.println();
+
+			System.out.print("Digite o número da compra para realizar a avaliação (ou 0 para voltar): ");
+			int escolha = sc.nextInt();
+			sc.nextLine();
+
+			if (escolha == 0) {
+				// Voltar para o menu
+				return;
+			} else if (escolha >= 1 && escolha <= historico.size()) {
+				Compra compraEscolhida = historico.get(escolha - 1);
+
+				System.out.println("Compra escolhida para realizar a avaliação: " + compraEscolhida);
+
+				// Chame o método para realizar a avaliação da compra escolhida
+				realizarAvaliacao(comprador, compraEscolhida);
+			} else {
+				System.out.println("Escolha inválida!");
 			}
 		}
 	}
+
+	private void realizarAvaliacao(Comprador comprador, Compra compraEscolhida) {
+		System.out.print("Deseja avaliar a compra selecionada (S/N)? ");
+		String resposta = sc.nextLine();
+
+		if (resposta.equalsIgnoreCase("S")) {
+
+			Pedido pedidoEscolhido = compraEscolhida.getPedido();
+			Produto produtoEscolhido = pedidoEscolhido.getProduto();
+
+			if (avaliacaoDao.existe(produtoEscolhido)) {
+				System.out.println("Esse produto escolhido já foi avaliado!");
+			} else {
+				System.out.print("Digite o seu comentário para essa compra: ");
+				String comentario = sc.nextLine();
+
+				System.out.print("Digite a sua nota para essa compra: ");
+				int nota = sc.nextInt();
+
+				avaliacaoDao.adicionar(new Avaliacao(comentario, produtoEscolhido, nota));
+
+				System.out.println("Avaliação realizada com sucesso!");
+			}
+
+		} else {
+			System.out.println("Avaliação não foi realizada.");
+		}
+	}
+
 }
