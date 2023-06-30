@@ -1,12 +1,11 @@
 package model.entities;
 
-public class Comentario {
+public class Avaliacao {
     private String comentario;
     private Produto produto;
     private int nota;
-
     
-    public Comentario(String comentario, Produto produto, int nota) {
+    public Avaliacao(String comentario, Produto produto, int nota) {
         this.comentario = comentario;
         this.produto = produto;
         this.nota = nota;
@@ -17,7 +16,7 @@ public class Comentario {
     public void setNota(int nota) {
         this.nota = nota;
     }
-    public Comentario(String comentario, Produto produto) {
+    public Avaliacao(String comentario, Produto produto) {
         this.comentario = comentario;
         this.produto = produto;
     }
@@ -59,7 +58,7 @@ public class Comentario {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Comentario other = (Comentario) obj;
+        Avaliacao other = (Avaliacao) obj;
         if (comentario == null) {
             if (other.comentario != null)
                 return false;
@@ -74,8 +73,4 @@ public class Comentario {
             return false;
         return true;
     }
-    
- 
-
-    
 }

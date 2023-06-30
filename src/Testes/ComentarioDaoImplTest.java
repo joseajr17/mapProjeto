@@ -7,18 +7,18 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import model.dao.ComentarioDao;
-import model.dao.impl.ComentarioDaoImpl;
-import model.entities.Comentario;
+import model.dao.AvaliacaoDao;
+import model.dao.impl.AvaliacaoDaoImpl;
+import model.entities.Avaliacao;
 import model.entities.Loja;
 import model.entities.Produto;
 import model.entities.ProdutoTipo;
 
 public class ComentarioDaoImplTest {
-    private ComentarioDaoImpl comentarioDao;
+    private AvaliacaoDaoImpl comentarioDao;
     @Before
     public void setUp() {
-        comentarioDao = new ComentarioDaoImpl();
+        comentarioDao = new AvaliacaoDaoImpl();
     }
 
     @Test
@@ -27,7 +27,7 @@ public class ComentarioDaoImplTest {
         assertTrue(comentarioDao.listar(loja).isEmpty());
          Produto produto = new Produto("Headphone", 79.99, ProdutoTipo.ELETRONICO, 5, "Stax", "Headphone preto", "testelojaEmail");
         
-        Comentario comentario = new Comentario("teste1", produto);
+        Avaliacao comentario = new Avaliacao("teste1", produto);
         comentarioDao.adicionar(comentario);
         assertFalse(comentarioDao.listar(loja).isEmpty());
         comentarioDao.remover(comentario);
@@ -39,12 +39,12 @@ public class ComentarioDaoImplTest {
         assertTrue(comentarioDao.listar(loja).isEmpty());
          Produto produto = new Produto("Headphone", 79.99, ProdutoTipo.ELETRONICO, 5, "Stax", "Headphone preto", "testelojaEmail");
         
-        Comentario comentario = new Comentario("teste1", produto);
+        Avaliacao comentario = new Avaliacao("teste1", produto);
         comentarioDao.adicionar(comentario);
         assertFalse(comentarioDao.listar(loja).isEmpty());
          Produto produto2 = new Produto("teste2", 79.99, ProdutoTipo.ELETRONICO, 5, "test", "teste 2", "testelojaEmail");
         
-        Comentario comentario2 = new Comentario("teste2", produto2);
+        Avaliacao comentario2 = new Avaliacao("teste2", produto2);
         comentarioDao.adicionar(comentario2);
 
         assertTrue(comentarioDao.listar(loja).contains(comentario));
@@ -60,7 +60,7 @@ public class ComentarioDaoImplTest {
         assertTrue(comentarioDao.listar(loja).isEmpty());
          Produto produto = new Produto("Headphone", 79.99, ProdutoTipo.ELETRONICO, 5, "Stax", "Headphone preto", "testelojaEmail");
         
-        Comentario comentario = new Comentario("teste1", produto);
+        Avaliacao comentario = new Avaliacao("teste1", produto);
         assertEquals("Comentário não encontrado", comentarioDao.remover(comentario));
         comentarioDao.adicionar(comentario);
         assertFalse(comentarioDao.listar(loja).isEmpty());

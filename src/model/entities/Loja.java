@@ -3,8 +3,8 @@ package model.entities;
 import java.io.Serializable;
 import java.util.List;
 
-import model.dao.ComentarioDao;
-import model.dao.impl.ComentarioDaoImpl;
+import model.dao.AvaliacaoDao;
+import model.dao.impl.AvaliacaoDaoImpl;
 
 public class Loja implements Serializable{
 	
@@ -134,12 +134,12 @@ public class Loja implements Serializable{
 	}
 
 	private double getMediaNota(){
-		ComentarioDao comentarioDao = new ComentarioDaoImpl();
-		List<Comentario> comentarios = comentarioDao.listar(this);
+		AvaliacaoDao avaliacaoDao = new AvaliacaoDaoImpl();
+		List<Avaliacao> avaliacoes = avaliacaoDao.listar(this);
 		double nota = 0.0;
 		int n = 0;
-		for(Comentario comentario: comentarios){
-			nota += comentario.getNota();
+		for(Avaliacao avaliacao: avaliacoes){
+			nota += avaliacao.getNota();
 			n++;
 		}
 		return nota/n;
