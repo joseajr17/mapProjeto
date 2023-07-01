@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import model.dao.AvaliacaoDao;
 import model.dao.DaoFactory;
 import model.dao.LojaDao;
 import model.dao.ProdutoDao;
+import model.entities.Avaliacao;
 import model.entities.Loja;
 import model.entities.Produto;
 import model.entities.ProdutoTipo;
@@ -318,6 +320,9 @@ public class LojaMenu {
 		if (resp.equalsIgnoreCase("s")) {
 			// Remover a loja do arquivo JSON
 			lojaDao.remover(cpfOuCnpj);
+			AvaliacaoDao avaliacaoDao = DaoFactory.criarAvaliacaoDao();
+			// Remover avaliações da loja excluída
+			avaliacaoDao.remover(loja);
 			System.out.println("Loja removida com sucesso.");
 		} else {
 			return;

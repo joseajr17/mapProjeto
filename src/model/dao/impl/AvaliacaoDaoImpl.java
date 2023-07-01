@@ -16,17 +16,15 @@ import com.google.gson.reflect.TypeToken;
 import model.dao.AvaliacaoDao;
 import model.entities.Avaliacao;
 import model.entities.Loja;
-import model.entities.Produto;
 
-public class AvaliacaoDaoImpl implements AvaliacaoDao {
+public class AvaliacaoDaoImpl implements AvaliacaoDao{
 
-	private static final String avaliacoesPath = "C:\\Teste\\AvaliacoesExistentes.json";
-
+    private static final String avaliacoesPath = "C:\\Teste\\AvaliacoesExistentes.json";
 	public AvaliacaoDaoImpl() {
-
+		
 	}
 
-	@Override
+		@Override
 	public void adicionar(Avaliacao avaliacao) {
 		Gson gson = new Gson();
 
@@ -98,16 +96,31 @@ public class AvaliacaoDaoImpl implements AvaliacaoDao {
 		return buscar(loja.getEmail());
 	}
 
+	// Deleção em cascata da loja
 	@Override
-	public boolean existe(Produto produtoEscolhido) {
+	public void remover(Loja loja){
+		List <Avaliacao> comentarios = lerAvaliacoes();
+		String emailLoja = loja.getEmail();
 
-		List<Avaliacao> avaliacoes = lerAvaliacoes();
+		for (Iterator<Avaliacao> iterator = comentarios.iterator(); iterator.hasNext();) {
+	        Avaliacao coment = iterator.next();
+	        if (coment.getKeyLoja().equals(emailLoja)) {
+	            iterator.remove();
+	        }
+	    }
+		salvarComentarios(comentarios);
+	}
 
-		for (Avaliacao avaliacao : avaliacoes) {
-			if (avaliacao.getProduto().equals(produtoEscolhido)) {
-				return true;
-			}
+	private void salvarComentarios(List<Avaliacao> comentarios) {
+		Gson gson = new Gson();
+
+		try {
+			FileWriter writer = new FileWriter(avaliacoesPath);
+			gson.toJson(comentarios, writer);
+			writer.close();
+			
+		} catch (IOException e) {
+			System.out.println("Erro ao remover os comentários da loja: " + e.getMessage());
 		}
-		return false;
 	}
 }

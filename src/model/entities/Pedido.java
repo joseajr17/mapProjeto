@@ -44,5 +44,4 @@ public String toString() {
     return "Produto: " + produto.getNome() + ", Quantidade: " + quantidade + ", Valor: " + valor + "\n";
 }
 
-
 }

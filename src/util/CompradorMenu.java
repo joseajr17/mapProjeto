@@ -442,7 +442,10 @@ public class CompradorMenu {
 			Pedido pedidoEscolhido = compraEscolhida.getPedido();
 			Produto produtoEscolhido = pedidoEscolhido.getProduto();
 
-			if (avaliacaoDao.existe(produtoEscolhido)) {
+			if(lojaDao.buscarPeloEmail(compraEscolhida.getPedido().getProduto().getEmailLoja()) == null){
+				System.out.println("A loja do produto foi excluída do sistema.");
+			}
+			else if (compraEscolhida.isAvaliado()) {
 				System.out.println("Esse produto escolhido já foi avaliado!");
 			} else {
 				System.out.print("Digite o seu comentário para essa compra: ");
@@ -454,6 +457,8 @@ public class CompradorMenu {
 				avaliacaoDao.adicionar(new Avaliacao(comentario, produtoEscolhido, nota));
 
 				System.out.println("Avaliação realizada com sucesso!");
+				compraEscolhida.setAvaliado(true);
+				historicoDeComprasDao.atualizar(comprador, compraEscolhida);
 				
 				comprador.setPontuacao(comprador.getPontuacao() + 1);
 				compradorDao.atualizar(comprador);

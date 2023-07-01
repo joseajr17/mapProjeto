@@ -7,6 +7,7 @@ public class Compra {
     private String date;
     private String time;
     private Pedido pedido;
+    private boolean avaliado;
     
     public Compra() {
     }
@@ -16,6 +17,7 @@ public class Compra {
         this.pedido = pedido;
         this.date = LocalDate.now().toString();
         this.time = LocalTime.now().toString();
+        this.avaliado = false;
     }
 
 
@@ -47,6 +49,16 @@ public class Compra {
     @Override
     public String toString() {
         return  "Data: " + date + " Hora: " + time + "\nCompra -> " + pedido;
+    }
+
+
+    public boolean isAvaliado() {
+        return avaliado;
+    }
+
+
+    public void setAvaliado(boolean avaliado) {
+        this.avaliado = avaliado;
     }
    
 }
