@@ -87,6 +87,7 @@ public class CompradorMenu {
 					break;
 				case 11:
 					listarLojasConceito();
+					break;
 				case 0:
 					System.out.println("Saindo do menu do comprador...");
 					break;
