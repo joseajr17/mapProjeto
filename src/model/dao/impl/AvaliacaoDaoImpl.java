@@ -99,28 +99,28 @@ public class AvaliacaoDaoImpl implements AvaliacaoDao{
 	// Deleção em cascata da loja
 	@Override
 	public void remover(Loja loja){
-		List <Avaliacao> comentarios = lerAvaliacoes();
+		List <Avaliacao> avaliacoes = lerAvaliacoes();
 		String emailLoja = loja.getEmail();
 
-		for (Iterator<Avaliacao> iterator = comentarios.iterator(); iterator.hasNext();) {
+		for (Iterator<Avaliacao> iterator = avaliacoes.iterator(); iterator.hasNext();) {
 	        Avaliacao coment = iterator.next();
 	        if (coment.getKeyLoja().equals(emailLoja)) {
 	            iterator.remove();
 	        }
 	    }
-		salvarComentarios(comentarios);
+		salvarAvaliacoes(avaliacoes);
 	}
 
-	private void salvarComentarios(List<Avaliacao> comentarios) {
+	private void salvarAvaliacoes(List<Avaliacao> avaliacoes) {
 		Gson gson = new Gson();
 
 		try {
 			FileWriter writer = new FileWriter(avaliacoesPath);
-			gson.toJson(comentarios, writer);
+			gson.toJson(avaliacoes, writer);
 			writer.close();
 			
 		} catch (IOException e) {
-			System.out.println("Erro ao remover os comentários da loja: " + e.getMessage());
+			System.out.println("Erro ao remover as avaliações da loja: " + e.getMessage());
 		}
 	}
 }

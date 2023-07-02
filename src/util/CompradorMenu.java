@@ -37,15 +37,15 @@ public class CompradorMenu {
 			System.out.println("----- MENU DO COMPRADOR -----");
 			System.out.println("1. Buscar loja");
 			System.out.println("2. Listar todas as lojas");
-			System.out.println("3. Buscar produto");
-			System.out.println("4. Listar todos os produtos");
-			System.out.println("5. Listar todos os produtos de uma loja específica");
-			System.out.println("6. Listar produtos do carrinho de compras");
-			System.out.println("7. Produtos disponíveis para compra");
-			System.out.println("8. Ver histórico de compras");
-			System.out.println("9. Ir para a edição de perfil");
-			System.out.println("10. Excluir perfil");
-			System.out.println("11. Listar lojas de acordo com o conceito");
+			System.out.println("3. Listar lojas de acordo com o conceito");
+			System.out.println("4. Buscar produto");
+			System.out.println("5. Listar todos os produtos");
+			System.out.println("6. Listar todos os produtos de uma loja específica");
+			System.out.println("7. Listar produtos do carrinho de compras");
+			System.out.println("8. Produtos disponíveis para compra");
+			System.out.println("9. Ver histórico de compras");
+			System.out.println("10. Ir para a edição de perfil");
+			System.out.println("11. Excluir perfil");
 			System.out.println("0. Sair");
 			System.out.print("Escolha uma opção: ");
 
@@ -61,33 +61,34 @@ public class CompradorMenu {
 					listarTodasAsLojas();
 					break;
 				case 3:
-					buscarProduto();
+					listarLojasConceito();
 					break;
 				case 4:
-					listarTodosOsProdutos();
+					buscarProduto();
 					break;
 				case 5:
-					listarProdutosDeLojaEspecifica(comprador);
+					listarTodosOsProdutos();
 					break;
 				case 6:
-					listarProdutosDoCarrinho(comprador);
+					listarProdutosDeLojaEspecifica(comprador);
 					break;
 				case 7:
-					listarProdutosParaCompra(comprador);
+					listarProdutosDoCarrinho(comprador);
 					break;
 				case 8:
-					verHistoricoDeCompras(comprador);
+					listarProdutosParaCompra(comprador);
 					break;
 				case 9:
-					editarPerfilComprador(comprador);
+					verHistoricoDeCompras(comprador);
 					break;
 				case 10:
+					editarPerfilComprador(comprador);
+					break;
+				case 11:
 					excluirPerfilComprador(comprador);
 					opcao = 0;
 					break;
-				case 11:
-					listarLojasConceito();
-					break;
+
 				case 0:
 					System.out.println("Saindo do menu do comprador...");
 					break;
@@ -100,21 +101,6 @@ public class CompradorMenu {
 				opcao = -1; // Definir um valor inválido para continuar no loop
 			}
 		} while (opcao != 0);
-	}
-
-		private void listarLojasConceito() {
-		List<Loja> lojas = lojaDao.listarLojas();
-
-		if (lojas.isEmpty()) {
-			System.out.println("Não há lojas cadastradas.");
-		} else {
-
-			System.out.println("Lista de todas as lojas:");
-			lojas.sort(Comparator.comparing(Loja::getConceito));
-			for (Loja loja : lojas) {
-				System.out.println(loja.getNome() + " - " + loja.getConceito());
-			}
-		}	
 	}
 
 	private void buscarLoja() {
@@ -139,6 +125,21 @@ public class CompradorMenu {
 			System.out.println("Lista de todas as lojas:");
 			for (Loja loja : lojas) {
 				System.out.println(loja.getNome());
+			}
+		}
+	}
+	
+	private void listarLojasConceito() {
+		List<Loja> lojas = lojaDao.listarLojas();
+
+		if (lojas.isEmpty()) {
+			System.out.println("Não há lojas cadastradas.");
+		} else {
+
+			System.out.println("Lista de todas as lojas:");
+			lojas.sort(Comparator.comparing(Loja::getConceito));
+			for (Loja loja : lojas) {
+				System.out.println(loja.getNome() + " - " + loja.getConceito());
 			}
 		}
 	}
@@ -329,14 +330,15 @@ public class CompradorMenu {
 
 				// Obtenha o objeto Comprador atualizado
 				Comprador compradorAtualizado = compradorDao.buscar(comprador.getEmail());
-				String mensagem = carrinhoDeComprasDao.comprar(compradorAtualizado, produtoEscolhido, quantidadeDesejada);
-				
+				String mensagem = carrinhoDeComprasDao.comprar(compradorAtualizado, produtoEscolhido,
+						quantidadeDesejada);
+
 				// Verificar se o comprador possui 5 pontos e conceder frete grátis
-	            if (compradorAtualizado.getPontuacao() >= 5) {
-	                System.out.println("Parabéns por causa da sua pontuação, você ganhou frete grátis nesse produto!");
-	                compradorAtualizado.setPontuacao(compradorAtualizado.getPontuacao() - 5);
-	            }
-				
+				if (compradorAtualizado.getPontuacao() >= 5) {
+					System.out.println("Parabéns por causa da sua pontuação, você ganhou frete grátis nesse produto!");
+					compradorAtualizado.setPontuacao(compradorAtualizado.getPontuacao() - 5);
+				}
+
 				System.out.println(mensagem);
 				carrinhoDeComprasDao.remover(compradorAtualizado, produtoEscolhido);
 
@@ -455,10 +457,9 @@ public class CompradorMenu {
 			Pedido pedidoEscolhido = compraEscolhida.getPedido();
 			Produto produtoEscolhido = pedidoEscolhido.getProduto();
 
-			if(lojaDao.buscarPeloEmail(compraEscolhida.getPedido().getProduto().getEmailLoja()) == null){
+			if (lojaDao.buscarPeloEmail(compraEscolhida.getPedido().getProduto().getEmailLoja()) == null) {
 				System.out.println("A loja do produto foi excluída do sistema.");
-			}
-			else if (compraEscolhida.isAvaliado()) {
+			} else if (compraEscolhida.isAvaliado()) {
 				System.out.println("Esse produto escolhido já foi avaliado!");
 			} else {
 				System.out.print("Digite o seu comentário para essa compra: ");
@@ -472,7 +473,7 @@ public class CompradorMenu {
 				System.out.println("Avaliação realizada com sucesso!");
 				compraEscolhida.setAvaliado(true);
 				historicoDeComprasDao.atualizar(comprador, compraEscolhida);
-				
+
 				comprador.setPontuacao(comprador.getPontuacao() + 1);
 				compradorDao.atualizar(comprador);
 			}
