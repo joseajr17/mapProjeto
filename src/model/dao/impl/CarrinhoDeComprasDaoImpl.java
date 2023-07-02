@@ -46,7 +46,7 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 
 	@Override
 	public void remover(Comprador comprador, Produto obj) {
-		comprador = compradorDao.buscar(comprador.getEmail());
+		//comprador = compradorDao.buscar(comprador.getEmail());
 		List<Produto> carrinhoDeCompras = comprador.getCarrinhoDeCompras();
 		if (carrinhoDeCompras == null || carrinhoDeCompras.isEmpty()) {
 			System.out.println("O carrinho de compras está vazio.");
@@ -74,8 +74,8 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 	}
 
 	@Override
-	public void comprar(Comprador comprador, Produto produtoComprado, int quantidade) throws StoreNotFoundException {
-		comprador = compradorDao.buscar(comprador.getEmail());
+	public String comprar(Comprador comprador, Produto produtoComprado, int quantidade) throws StoreNotFoundException {
+		//comprador = compradorDao.buscar(comprador.getEmail());
 		HistoricoDeComprasDao historicoDao = DaoFactory.criarHistoricoDeComprasDao();
 		ProdutoDao produtoDao = DaoFactory.criarProdutoDao();
 		LojaDao lojaDao = DaoFactory.criarLojaDao();
@@ -102,7 +102,7 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 		produtoDao.atualizar(produtoComprado);
 
 		// Adicionar a compra no histórico
-		historicoDao.adicionar(comprador, new Compra(new Pedido(produtoComprado, quantidade)));
+		String mensagem = historicoDao.adicionar(comprador, new Compra(new Pedido(produtoComprado, quantidade)));
 
 		/*
 		 * for (Produto produto : produtos) { // Realize as verificações para encontrar
@@ -124,6 +124,6 @@ public class CarrinhoDeComprasDaoImpl implements CarrinhoDeComprasDao {
 			lojaDao.atualizar(loja);
 
 		}
-
+		return "Produto comprado com sucesso. " + mensagem;
 	}
 }

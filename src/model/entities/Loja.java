@@ -154,8 +154,11 @@ public class Loja implements Serializable{
 			return Conceito.MEDIO;
 		} else if (mediaNota <= 4){
 			return Conceito.BOM;
-		} else{
+		} else if (mediaNota <= 5){
 			return Conceito.EXCELENTE;
+		}
+		else{
+			return Conceito.TBD;
 		}
 	}
 

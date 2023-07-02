@@ -87,7 +87,6 @@ public class CompradorMenu {
 					break;
 				case 11:
 					listarLojasConceito();
-					break;
 				case 0:
 					System.out.println("Saindo do menu do comprador...");
 					break;
@@ -102,7 +101,7 @@ public class CompradorMenu {
 		} while (opcao != 0);
 	}
 
-	private void listarLojasConceito() {
+		private void listarLojasConceito() {
 		List<Loja> lojas = lojaDao.listarLojas();
 
 		if (lojas.isEmpty()) {
@@ -329,16 +328,16 @@ public class CompradorMenu {
 
 				// Obtenha o objeto Comprador atualizado
 				Comprador compradorAtualizado = compradorDao.buscar(comprador.getEmail());
-				carrinhoDeComprasDao.comprar(compradorAtualizado, produtoEscolhido, quantidadeDesejada);
-
-				System.out.println("Produto comprado com sucesso!");
-				carrinhoDeComprasDao.remover(compradorAtualizado, produtoEscolhido);
-
+				String mensagem = carrinhoDeComprasDao.comprar(compradorAtualizado, produtoEscolhido, quantidadeDesejada);
+				
 				// Verificar se o comprador possui 5 pontos e conceder frete grátis
-				if (compradorAtualizado.getPontuacao() >= 5) {
-					System.out.println("Parabéns por causa da sua pontuação, você ganhou frete grátis nesse produto!");
-					compradorAtualizado.setPontuacao(compradorAtualizado.getPontuacao() - 5);
-				}
+	            if (compradorAtualizado.getPontuacao() >= 5) {
+	                System.out.println("Parabéns por causa da sua pontuação, você ganhou frete grátis nesse produto!");
+	                compradorAtualizado.setPontuacao(compradorAtualizado.getPontuacao() - 5);
+	            }
+				
+				System.out.println(mensagem);
+				carrinhoDeComprasDao.remover(compradorAtualizado, produtoEscolhido);
 
 				compradorAtualizado.setPontuacao(compradorAtualizado.getPontuacao() + 1);
 				compradorDao.atualizar(compradorAtualizado);
@@ -455,9 +454,10 @@ public class CompradorMenu {
 			Pedido pedidoEscolhido = compraEscolhida.getPedido();
 			Produto produtoEscolhido = pedidoEscolhido.getProduto();
 
-			if (lojaDao.buscarPeloEmail(compraEscolhida.getPedido().getProduto().getEmailLoja()) == null) {
+			if(lojaDao.buscarPeloEmail(compraEscolhida.getPedido().getProduto().getEmailLoja()) == null){
 				System.out.println("A loja do produto foi excluída do sistema.");
-			} else if (compraEscolhida.isAvaliado()) {
+			}
+			else if (compraEscolhida.isAvaliado()) {
 				System.out.println("Esse produto escolhido já foi avaliado!");
 			} else {
 				System.out.print("Digite o seu comentário para essa compra: ");
@@ -471,10 +471,11 @@ public class CompradorMenu {
 				System.out.println("Avaliação realizada com sucesso!");
 				compraEscolhida.setAvaliado(true);
 				historicoDeComprasDao.atualizar(comprador, compraEscolhida);
-
+				
 				comprador.setPontuacao(comprador.getPontuacao() + 1);
 				compradorDao.atualizar(comprador);
 			}
+
 		} else {
 			System.out.println("Avaliação não foi realizada.");
 		}

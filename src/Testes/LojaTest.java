@@ -22,7 +22,7 @@ public class LojaTest {
        Loja loja = new Loja("lojateste1", "testelojaEmail", "testesenha", "cpfteste", "teste", null);
         assertTrue(avaliacaoDao.listar(loja).isEmpty());
          Produto produto = new Produto("Headphone", 79.99, ProdutoTipo.ELETRONICO, 5, "Stax", "Headphone preto", "testelojaEmail");
-        
+        assertEquals(Conceito.TBD, loja.getConceito());
         Avaliacao comentario = new Avaliacao("teste1", produto, 5);
         avaliacaoDao.adicionar(comentario);
         assertEquals(Conceito.EXCELENTE, loja.getConceito());

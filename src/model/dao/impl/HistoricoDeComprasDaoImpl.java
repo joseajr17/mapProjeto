@@ -14,7 +14,7 @@ public class HistoricoDeComprasDaoImpl implements HistoricoDeComprasDao{
     private static CompradorDao compradorDao = DaoFactory.criarCompradorDao();
 
 	@Override
-	public void adicionar(Comprador comprador, Compra compra) {
+	public String adicionar(Comprador comprador, Compra compra) {
 		List<Compra> historicos = comprador.getHistoricoDeCompras();
 
 		if (historicos == null) {
@@ -25,7 +25,7 @@ public class HistoricoDeComprasDaoImpl implements HistoricoDeComprasDao{
 		comprador.setHistoricoDeCompras(historicos);
 
 		compradorDao.atualizar(comprador);
-		
+		return "Compra registrada.";
 	}
 
 	@Override

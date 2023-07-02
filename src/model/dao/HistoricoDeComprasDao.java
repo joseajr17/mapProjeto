@@ -6,7 +6,7 @@ import model.entities.Comprador;
 import model.entities.Compra;
 
 public interface HistoricoDeComprasDao {
-    void adicionar(Comprador comprador, Compra compra);
+    String adicionar(Comprador comprador, Compra compra);
     List<Compra> verHistorico(Comprador comprador);
     String atualizar(Comprador comprador, Compra compra);
 }

@@ -95,7 +95,7 @@ public class CarrinhoDeComprasDaoImplTest {
         assertEquals(7, quantidade);
         quantidade = produtoDao.buscar("Headphone").get(0).getQuantidade();
         assertEquals(7, quantidade);
-        carrinho.comprar(comprador, produto1, quantidade);
+        assertEquals("Produto comprado com sucesso. Compra registrada.", carrinho.comprar(comprador, produto1, quantidade));
         assertThrows(IndexOutOfBoundsException.class, () -> {lojaDao.buscarPeloEmail(produto1.getEmailLoja()).getProdutos().get(0).getQuantidade();});
         // quantidade = lojaDao.buscarPeloEmail(produto1.getEmailLoja()).getProdutos().get(0).getQuantidade();
        // assertEquals(0, quantidade);

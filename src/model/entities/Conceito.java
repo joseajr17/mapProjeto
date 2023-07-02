@@ -4,5 +4,6 @@ public enum Conceito {
     RUIM,
     MEDIO,
     BOM,
-    EXCELENTE
+    EXCELENTE,
+    TBD
 }
