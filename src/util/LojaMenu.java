@@ -27,7 +27,8 @@ public class LojaMenu {
 			System.out.println("2. Atualizar informações do produto");
 			System.out.println("3. Remover produto");
 			System.out.println("4. Editar perfil");
-			System.out.println("5. Excluir perfil");
+			System.out.println("5. Ver o conceito da minha loja");
+			System.out.println("6. Excluir perfil");
 			System.out.println("0. Sair");
 			System.out.print("Escolha uma opção: ");
 
@@ -49,6 +50,9 @@ public class LojaMenu {
 					editarPerfilLoja(loja);
 					break;
 				case 5:
+					verConceito(loja);
+					break;
+				case 6:
 					excluirPerfilLoja(loja);
 					opcao = 0;
 					break;
@@ -64,6 +68,10 @@ public class LojaMenu {
 				opcao = -1; // Definir um valor inválido para continuar no loop
 			}
 		} while (opcao != 0);
+	}
+
+	private void verConceito(Loja loja) {
+		System.out.println("O conceito da sua loja atualmente é: " + loja.getConceito());
 	}
 
 	private void adicionarProduto(Loja loja) {

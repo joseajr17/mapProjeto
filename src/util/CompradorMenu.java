@@ -1,5 +1,6 @@
 package util;
 
+import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -44,6 +45,7 @@ public class CompradorMenu {
 			System.out.println("8. Ver histórico de compras");
 			System.out.println("9. Ir para a edição de perfil");
 			System.out.println("10. Excluir perfil");
+			System.out.println("11. Listar lojas de acordo com o conceito");
 			System.out.println("0. Sair");
 			System.out.print("Escolha uma opção: ");
 
@@ -84,7 +86,8 @@ public class CompradorMenu {
 					opcao = 0;
 					break;
 				case 11:
-					testarListagemAvaliacoes(comprador);
+					listarLojasConceito();
+					break;
 				case 0:
 					System.out.println("Saindo do menu do comprador...");
 					break;
@@ -99,9 +102,19 @@ public class CompradorMenu {
 		} while (opcao != 0);
 	}
 
-	private void testarListagemAvaliacoes(Comprador comprador) {
-		// TODO Auto-generated method stub
+	private void listarLojasConceito() {
+		List<Loja> lojas = lojaDao.listarLojas();
 
+		if (lojas.isEmpty()) {
+			System.out.println("Não há lojas cadastradas.");
+		} else {
+
+			System.out.println("Lista de todas as lojas:");
+			lojas.sort(Comparator.comparing(Loja::getConceito));
+			for (Loja loja : lojas) {
+				System.out.println(loja.getNome() + " - " + loja.getConceito());
+			}
+		}	
 	}
 
 	private void buscarLoja() {
@@ -317,15 +330,15 @@ public class CompradorMenu {
 				// Obtenha o objeto Comprador atualizado
 				Comprador compradorAtualizado = compradorDao.buscar(comprador.getEmail());
 				carrinhoDeComprasDao.comprar(compradorAtualizado, produtoEscolhido, quantidadeDesejada);
-				
-				// Verificar se o comprador possui 5 pontos e conceder frete grátis
-	            if (compradorAtualizado.getPontuacao() >= 5) {
-	                System.out.println("Parabéns por causa da sua pontuação, você ganhou frete grátis nesse produto!");
-	                compradorAtualizado.setPontuacao(compradorAtualizado.getPontuacao() - 5);
-	            }
-				
+
 				System.out.println("Produto comprado com sucesso!");
 				carrinhoDeComprasDao.remover(compradorAtualizado, produtoEscolhido);
+
+				// Verificar se o comprador possui 5 pontos e conceder frete grátis
+				if (compradorAtualizado.getPontuacao() >= 5) {
+					System.out.println("Parabéns por causa da sua pontuação, você ganhou frete grátis nesse produto!");
+					compradorAtualizado.setPontuacao(compradorAtualizado.getPontuacao() - 5);
+				}
 
 				compradorAtualizado.setPontuacao(compradorAtualizado.getPontuacao() + 1);
 				compradorDao.atualizar(compradorAtualizado);
@@ -442,10 +455,9 @@ public class CompradorMenu {
 			Pedido pedidoEscolhido = compraEscolhida.getPedido();
 			Produto produtoEscolhido = pedidoEscolhido.getProduto();
 
-			if(lojaDao.buscarPeloEmail(compraEscolhida.getPedido().getProduto().getEmailLoja()) == null){
+			if (lojaDao.buscarPeloEmail(compraEscolhida.getPedido().getProduto().getEmailLoja()) == null) {
 				System.out.println("A loja do produto foi excluída do sistema.");
-			}
-			else if (compraEscolhida.isAvaliado()) {
+			} else if (compraEscolhida.isAvaliado()) {
 				System.out.println("Esse produto escolhido já foi avaliado!");
 			} else {
 				System.out.print("Digite o seu comentário para essa compra: ");
@@ -459,11 +471,10 @@ public class CompradorMenu {
 				System.out.println("Avaliação realizada com sucesso!");
 				compraEscolhida.setAvaliado(true);
 				historicoDeComprasDao.atualizar(comprador, compraEscolhida);
-				
+
 				comprador.setPontuacao(comprador.getPontuacao() + 1);
 				compradorDao.atualizar(comprador);
 			}
-
 		} else {
 			System.out.println("Avaliação não foi realizada.");
 		}
